@@ -1,0 +1,17 @@
+#name:         Exporter
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        CSV export preparation tool
+#website:      www.navigatormultimedia.com
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       2.6
+#usedin:       admin
+#incl:         exportcsv
+#initfile:     exportcsv.php
+#headerfunc:   exportcsv_headerprep
+#depends:      
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+//#active:       yes

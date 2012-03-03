@@ -1,0 +1,16 @@
+#name:         JTime
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        Adds jQuery time/date controls
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         jtime
+#initfile:     jtime.core.php
+#headerfunc:   jtime_headerprep
+#depends:      jquery
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

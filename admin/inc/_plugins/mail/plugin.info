@@ -1,0 +1,15 @@
+#name:         FormtoEmail Pro (Foundry version)
+#ver:          1.0
+#author:       Chris Donalds. (c) FormToEmail.com 2006 - 2009
+#descr:        Form2Email Pro adaptation for Foundry
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         form2email
+#initfile:     formtoemail_head.php
+#headerfunc:   form2email_headerprep
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

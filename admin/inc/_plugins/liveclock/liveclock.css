@@ -1,0 +1,29 @@
+.liveclock_default {
+	z-index: 999;
+	display: inline-block;
+	color: #000000;
+}
+
+.lc_text {
+	display: block;
+	color: #fff;
+	background-color: #222;
+	border: 1px solid #aaa;
+	border-radius: 4px;
+	width: 100px;
+	height: 35px;
+	font-family: Arial, Helvetica, Tahoma, Verdana;
+	font-weight: bold;
+	font-size: 12pt;
+	padding: 12px 5px 3px 5px;
+	text-align: center;
+}
+
+.lc_caption {
+	display: block;
+	color: #aaa;
+	font-size: 8pt;
+	font-weight: normal;
+}
+
+

@@ -1,0 +1,17 @@
+#name:         Googlemap
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        Google Map API integrator
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         googlemap
+#initfile:     googlemap.core.php
+#headerfunc:   googlemap_headerprep
+#settingsfunc: googlemap_settings
+#depends:      jquery
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

@@ -1,0 +1,38 @@
+	    switch($param['action']) {
+	    	case DEF_ACTION_UNPUBLISH:
+				$retn = updateRec($tables['db_table'], "published = 0", "id = '{$param['row_id']}'");
+
+				$retn = updateRec($tables['db_table'], "published = 0", "id = '{$param['row_id']}'");
+				$rec = getRec($tables['db_table'], "cat_id, gallery_def", "id = '{$param['row_id']}'");
+				if($rec[0]['gallery_def'] == 1){
+					// this photo was the gallery default, unset all in gallery and set the first published one
+					updateRec($tables['db_table'], "gallery_def = 0", "cat_id = '{$rec[0]['cat_id']}'");	// clear all defaults
+					updateRec($tables['db_table'], "gallery_def = 1", "cat_id = '{$rec[0]['cat_id']}' AND published = 1 LIMIT 1");
+				}
+	    		break;
+
+				showPagination($rowcount, true, array(
+									array("organizebut", "Organize", "jQuery('#organizepanel').dialog('open');", "", "Organize Ads", ""),
+									array("gobackbut", "Back to Categories", "goback()", "", "Go back to categories", "")
+								), "Listing");
+
+								
+data alias
+----------
+
+eg 1 for table data: /%tablecode%/%year%/%month%/%day%/%code%	/events/2012/02/15/kinsmen_valentines_day			
+																 page.php?t=events&cc=2012-02-15&c=kinsmen_valentines_day or events_details.php?c=kinsmen_valentines_day
+eg 2 for table data: /%tablecode%/%categorycode%/%code%			/dealers/kelowna/harmony_honda			
+																 page.php?t=dealers&cc=kelowna&c=harmony_honda or dealers_details.php?c=harmony_honda
+eg 3 for table data: /%tablecode%/%categorycode%/%code%			/photos/gallery1/bighouse
+																 page.php?t=photos&cc=gallery1&c=bighouse or photos_details.php?c=bighouse
+eg 4 for table cat: /%tablecode%/%year%/%month%/%day%			/events/2012/02/15
+																 page.php?t=events&c=2012-02-15 or events_details.php?c=2012-02-15
+eg 5 for table cat: /%tablecode%/%code%							/photos/gallery1
+																 page.php?t=photos_cat&c=gallery1 or photos.php?c=gallery1
+
+So, in the `register` table:
+	eg 1: fileurl = /events/(\d{4})/(\d{2})/(\d{2})/([^\/]+)$, db_table = events, parameters = {"cc":"$1-$2-$3", "c":"$4"}
+	eg 2: fileurl = /dealers/([^\/]+)/([^\/]+)$, db_table = dealers, parameters = {"cc":"$1", "c":"$2"}
+	eg 3: fileurl = /photos/([^\/]+)/([^\/]+)$, db_table = photos, parameters = {"cc":"$1", "c":"$2"}
+	eg 4: fileurl = /photos/([^\/]+)$, db_table = photos_cat, parameters = {"cc":"$1"}

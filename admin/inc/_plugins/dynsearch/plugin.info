@@ -1,0 +1,15 @@
+#name:         DynSearch
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        Dynamic site search engine tool
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         dynsearch
+#initfile:     dynsearch.core.php
+#depends:      
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

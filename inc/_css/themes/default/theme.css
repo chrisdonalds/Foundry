@@ -1,0 +1,76 @@
+@charset "utf-8";
+/* -----------------------------------------
+Title:			Default Style Sheet
+Author: 		Sean Langlands
+Updated: 		Nov.24.2010
+Updated By: 	Sean Langlands
+-------------------------------------------- */
+
+/* ----- Theme Color Palette ------
+Start all palette lines with 'palette[n]' in comment block
+Try to use full 6-character HEX codes or color names in your CSS */
+
+/* palette1: #000000, #ffffff */
+
+/* ---------- Fonts/Misc ---------- */
+
+a:link {
+}
+a:visited {
+}
+a:active {
+}
+a:hover {
+}
+h1 {
+}
+h2, h3 {
+}
+hr {
+}
+img {
+}
+
+/* ---------- Global/Structure ---------- */
+
+html, body {
+}
+
+/* ---------- Inputs ---------- */
+
+.button:link,
+.button:visited,
+.button  {
+}
+.button:active,
+.button:hover  {
+}
+.inputfield {
+}
+
+/* ---------- Header ---------- */
+
+#header {
+    /*headimg1: image1.png */
+    /*headimg2: image2.png */
+}
+
+/* ---------- Main Nav ---------- */
+
+#nav {
+}
+#nav a{
+}
+#nav a:hover, #nav .on {
+}
+
+/* ---------- Global Sections ---------- */
+
+.section {
+}
+
+/* ---------- Footer ---------- */		
+
+#footer a,
+#footer li {
+}

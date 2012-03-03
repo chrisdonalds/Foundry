@@ -1,0 +1,45 @@
+# ----- 301 Redirects
+
+# ----- Turn on Rewrite Engine
+Options +FollowSymLinks
+RewriteEngine On
+
+# ----- Admin
+RewriteRule ^admin/$ admin/index.php
+RewriteRule ^admin$ admin/index.php
+
+# ----- Public
+RewriteRule ^$ inc/_core/loader.php?f=index
+RewriteRule ^(.*)/$ $1/inc/_core/loader.php?f=index
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule (.*) inc/_core/loader.php?f=$1
+
+# ----- ShrinkURL
+RewriteRule ^s/([^\/]+)$ inc/_plugins/shrinkurl/shrinkurl.core.php?s=$1
+RewriteRule ([^\/]+)/s/([^\/]+)$ inc/_plugins/shrinkurl/shrinkurl.core.php?s=$2
+
+# ----- SEO
+#RewriteRule pagename/([0-9]+)/([0-9a-z]+)$ pagename.php?id=$1&var=$2
+#RewriteRule pagename/([^\/]+)$ pagename.php?code=$1
+
+# ----- WWW Rewrites
+#RewriteCond %{HTTP_HOST} ^([a-z.]+)?sitename\.com$ [NC]
+#RewriteCond %{HTTP_HOST} !^www\. [NC]
+#RewriteRule .? http://www.%1websitedomain.com%{REQUEST_URI} [R=301]
+#RewriteCond %{HTTP_HOST} ^sitename.com [NC]
+#RewriteRule ^(.*)$ http://www.sitename.com/$1 [L,R=301]
+
+# ----- Image Hotlinking
+#RewriteCond %{HTTP_REFERER} !^$
+#RewriteCond %{HTTP_REFERER} !^http://(www\.)?localhost/.*$ [NC]
+#RewriteRule \.(gif|jpg|png)$ - [F]
+
+# ----- Misc
+<ifmodule mod_expires.c>
+<filesmatch "\.(jpg|gif|png|css|js|ico)$">
+ExpiresActive on
+ExpiresDefault "access plus 1 year"
+</filesmatch>
+</ifmodule>
+
+FileETag MTime Size

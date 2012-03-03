@@ -1,0 +1,110 @@
+<!ELEMENT xiamSMS ((deliverResponse+,submitRequest+)*|(submitRequest*|submitResponse*|deliverRequest*|deliverResponse*|reportRequest*|reportResponse*))>
+<!ATTLIST xiamSMS 
+status CDATA #IMPLIED
+statusText CDATA #IMPLIED>
+
+<!-- MT requests -->
+<!ELEMENT submitRequest (from, to+, content?, class?, priority?, sendOnPath?, sendOnGroup?, udh?, 
+	udhPort?, replace?, extraRef?, concatenationScheme?, concatenationMax?, deferredDelivery?,
+	noPlus?, predefined?, requestDeliveryReport?, smscNumber?, validityPeriod?, smppServiceType?, tariffCode?, wapPushSIURL? )> 
+<!ATTLIST submitRequest id CDATA #REQUIRED>
+<!ELEMENT submitResponse (result+)>
+<!ATTLIST submitResponse id CDATA #REQUIRED>
+
+<!-- MO requests -->
+<!ELEMENT deliverRequest (from, to+, content?, class?, udh?, udhPort?, replace?, smscTimestamp?, 
+	carrierType?, receivedOnPath?, receivedOnGroup?, xirMessageID?, application?, operatorPath? )>
+<!ATTLIST deliverRequest id CDATA #REQUIRED>
+<!ELEMENT deliverResponse (result+)>
+<!ATTLIST deliverResponse id CDATA #REQUIRED>
+
+<!-- Delivery report requests -->
+<!ELEMENT reportRequest (from, to, extraRef?, smscTimestamp?, carrierType?, receivedOnPath?, 
+	receivedOnGroup?, smscReference?, smscStatus?, smscStatusText?, smscStatusTime?, 
+	smscSpecificStatus?, xirMessageID?, application?, operatorPath?)>
+<!ATTLIST reportRequest id CDATA #REQUIRED>
+<!ELEMENT reportResponse (result+)>
+<!ATTLIST reportResponse id CDATA #REQUIRED>
+
+<!ELEMENT application EMPTY>
+<!ATTLIST application value CDATA #REQUIRED>
+<!ELEMENT carrierType EMPTY>
+<!ATTLIST carrierType value (SMPP|OIS|CIMD|EMI|DEVICE) #REQUIRED>
+<!ELEMENT class EMPTY>
+<!ATTLIST class value (0|1|2|3) #REQUIRED>
+<!ELEMENT content (#PCDATA)>
+<!ATTLIST content type (text|binary) #REQUIRED>
+<!ELEMENT concatenationMax EMPTY>
+<!ATTLIST concatenationMax value CDATA #REQUIRED>
+<!ELEMENT concatenationScheme EMPTY>
+<!ATTLIST concatenationScheme value (udh|text) #REQUIRED>
+<!ELEMENT day (#PCDATA)>
+<!ELEMENT deferredDelivery (year?, month?, day?, hour?, minute?, second?, timezone?)>
+<!ATTLIST deferredDelivery type (Relative|Absolute) #REQUIRED>
+<!ELEMENT extraRef EMPTY>
+<!ATTLIST extraRef value CDATA #REQUIRED>
+<!ELEMENT from (#PCDATA)>
+<!ATTLIST from 
+ton CDATA #IMPLIED
+npi CDATA #IMPLIED>
+<!ELEMENT hour (#PCDATA)>
+<!ELEMENT minute (#PCDATA)>
+<!ELEMENT month (#PCDATA)>
+<!ELEMENT noPlus EMPTY>
+<!ATTLIST noPlus value (yes|no) #REQUIRED>
+<!ELEMENT operatorPath EMPTY>
+<!ATTLIST operatorPath value CDATA #REQUIRED>
+<!ELEMENT predefined EMPTY>
+<!ATTLIST predefined value CDATA #REQUIRED>
+<!ELEMENT priority EMPTY>
+<!ATTLIST priority value (1|2|3|4|5|6|7|8|9|10) #REQUIRED>
+<!ELEMENT receivedOnGroup EMPTY>
+<!ATTLIST receivedOnGroup value CDATA #REQUIRED>
+<!ELEMENT receivedOnPath EMPTY>
+<!ATTLIST receivedOnPath value CDATA #REQUIRED>
+<!ELEMENT replace EMPTY>
+<!ATTLIST replace value (1|2|3|4|5|6|7) #REQUIRED>
+<!ELEMENT requestDeliveryReport EMPTY>
+<!ATTLIST requestDeliveryReport value (yes|no) #REQUIRED>
+<!ELEMENT result (#PCDATA)>
+<!ATTLIST result 
+status CDATA #IMPLIED
+statusText CDATA #IMPLIED>
+<!ELEMENT second (#PCDATA)>
+<!ELEMENT sendOnGroup EMPTY>
+<!ATTLIST sendOnGroup value CDATA #REQUIRED>
+<!ELEMENT sendOnPath EMPTY>
+<!ATTLIST sendOnPath value CDATA #REQUIRED>
+<!ELEMENT smppServiceType (#PCDATA)>
+<!ATTLIST smppServiceType value CDATA #REQUIRED>
+<!ELEMENT smscNumber (#PCDATA)>
+<!ELEMENT smscReference EMPTY>
+<!ATTLIST smscReference value CDATA #REQUIRED>
+<!ELEMENT smscSpecificStatus EMPTY>
+<!ATTLIST smscSpecificStatus value CDATA #REQUIRED>
+<!ELEMENT smscStatus EMPTY>
+<!ATTLIST smscStatus value CDATA #REQUIRED>
+<!ELEMENT smscStatusText EMPTY>
+<!ATTLIST smscStatusText value CDATA #REQUIRED>
+<!ELEMENT smscStatusTime (year?, month?, day?, hour?, minute?, second?, timezone?)>
+<!ATTLIST smscStatusTime type (Relative|Absolute) #REQUIRED>
+<!ELEMENT smscTimestamp (year?, month?, day?, hour?, minute?, second?, timezone?)>
+<!ATTLIST smscTimestamp type (Relative|Absolute) #REQUIRED>
+<!ELEMENT tariffCode EMPTY>
+<!ATTLIST tariffCode value CDATA #REQUIRED>
+<!ELEMENT timezone (#PCDATA)>
+<!ELEMENT to (#PCDATA)>
+<!ATTLIST to 
+ton CDATA #IMPLIED
+npi CDATA #IMPLIED>
+<!ELEMENT udh (#PCDATA)>
+<!ATTLIST udh when (once|all) #REQUIRED>
+<!ELEMENT udhPort EMPTY>
+<!ATTLIST udhPort value CDATA #REQUIRED>
+<!ELEMENT validityPeriod (year?, month?, day?, hour?, minute?, second?, timezone?)>
+<!ATTLIST validityPeriod type (Relative|Absolute) #REQUIRED>
+<!ELEMENT wapPushSIURL EMPTY>
+<!ATTLIST wapPushSIURL value CDATA #REQUIRED>
+<!ELEMENT xirMessageID EMPTY>
+<!ATTLIST xirMessageID value CDATA #REQUIRED>
+<!ELEMENT year (#PCDATA)>

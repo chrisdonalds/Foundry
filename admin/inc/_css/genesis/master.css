@@ -1,0 +1,14 @@
+@charset "utf-8";
+/**
+ *  --------------------------------------------------------------------------------------
+ *  Foundry Admin Theme CSS
+ *  @sysversion 2.6
+ *  @theme 		Genesis
+ *  ----------------------------------------------------
+ *  Modified	August 2011
+ *  @version	3.8.0
+ *  @author		Chris Donalds <chrisd@navigatormm.com>
+ *  ----------------------------------------------------
+ */
+@import url(admin.css);
+@import url(custom.css);

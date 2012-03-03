@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xiamSMS SYSTEM "xiamSMSMessage.dtd">
+<xiamSMS>
+  <deliverRequest id="">
+    <from ton=""></from>
+    <to ton=""></to>
+    <content type="text"></content>
+    <receivedOnGroup value=""/>
+  </deliverRequest>
+</xiamSMS>

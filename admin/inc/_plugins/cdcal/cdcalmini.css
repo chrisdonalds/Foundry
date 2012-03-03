@@ -1,0 +1,311 @@
+/* CD-CAL CSS
+
+    Created on : May 3, 2010, 12:18:35 PM
+    Author     : Chris Donalds
+*/
+
+.calendar-wrapper {
+	/*width: 100%; */
+	padding: 1px; 
+	border: 1px solid gray;
+	background-color: #fff;
+	margin-bottom: 0.5em;
+	border-collapse: separate;
+	border-spacing: 0px;
+    float: left;
+}
+
+.calendar-wrapper div a, a:visited {
+	text-decoration: none;
+	font-size: 8pt;
+	font-weight: normal;
+	color: #000;
+}
+
+/*----- MONTH HEADER -----*/
+
+.calendar-month-leftbuttons {		/* Month/Year Back Buttons */
+	/*width: 80px;*/
+	/*height: 30px;*/
+	text-align: center !important;
+	vertical-align: middle;
+	background: #ccc;
+	color: #000;
+}
+
+.calendar-month-leftbuttons a, a:visited {
+	text-decoration: none;
+	font-size: 10pt;
+	font-weight: normal;
+	color: #ffc100;
+}
+
+.calendar-month-header {			/* Month Title */
+	/*width: 400px;*/
+	/*height: 30px;*/
+	font-size: 9pt;
+	font-weight: bold;
+	text-align: center !important;
+	vertical-align: middle;
+	background: #ccc;
+	color: #000;
+}
+.calendar-month-header span {
+	padding-top: 2px;
+	font-size: 10pt;
+}
+
+.calendar-month-rightbuttons {		/* Month/Year Forward Buttons */
+	/*width: 80px;*/
+	/*height: 30px;*/
+	text-align: center !important;
+	vertical-align: middle;
+	background: #ccc;
+	color: #000;
+}
+
+.calendar-month-rightbuttons a, a:visited {
+	text-decoration: none;
+	font-size: 9pt;
+	font-weight: normal;
+	color: #ffc100;
+}
+
+/*----- WEEK NUMBERS AND WEEKDAYS -----*/
+
+.calendar-weekhdr-weeknum {			/* Header above week numbers (normally empty) */
+	/*width: 80px;*/
+	/*height: 25px;*/
+	border: 0 solid #aaa; 
+	text-align: center !important;
+}
+
+.calendar-weekhdr-weekday {			/* Header containing week days */
+	/*width: 80px;*/
+	/*height: 25px;*/
+	border: 0 solid #aaa; 
+	text-align: center !important;
+}
+
+.calendar-cell-weeknum {			/* Week numbers */
+	/*width: 80px;*/
+	/*height: 50px;*/
+	border: 0 solid #aaa; 
+	text-align: center !important;
+	font-size: 9pt;
+}
+
+/*----- FOOTER -----*/
+
+.calendar-todayjump {
+	padding: 4px 0;
+	text-align: center !important;
+	color: #000;
+	background-color: #fff;
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+.calendar-todayjump a, a:visited, a:hover {
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+/*----- DATE CELLS -----*/
+
+.calendar-cell-all {				/* Common */
+	/*height: 70px;*/
+	border: 1px solid #aaa; 
+	text-align: center !important;
+	vertical-align: top;
+	font-size: 8pt;
+	overflow: hidden;
+}
+
+.calendar-cell-allhdr {
+	/*height: 1.25em;*/
+	text-align: center; 
+	font-size: 9pt;
+}
+
+.calendar-cell-eighthwidth {
+	width: 12%
+}
+
+.calendar-cell-seventhwidth {
+	width: 14%
+}
+
+.calendar-cell-prev {				/* Month Previous */
+	color: #000;
+}
+
+.calendar-cell-prevhdr {
+	background-color: #fff;
+	color: #aaa;
+}
+
+.calendar-cell-prevhdr-today {		/* Today's Date in Previous Month */
+	background-color: #555;
+	color: #000;
+	font-size: 9pt;
+	font-weight: bold;
+}
+
+.calendar-cell-cur {				/* Month Current */
+	color: #000;
+}
+
+.calendar-cell-curhdr {
+	background-color: #fff;
+	color: #000;
+}
+
+.calendar-cell-curhdr-sel {                    /* Today's Date */
+	background-color: #ffee88;
+    border: 1px solid black;
+	/*height: 68px;*/
+}
+
+.calendar-cell-curhdr-nosel {                    /* Today's Date */
+	background-color: #fff;
+	/*height: 68px;*/
+}
+
+.calendar-cell-curhdr-today {		/* Today's Date in Current Month */
+	color: #000;
+	font-size: 10pt;
+	font-weight: bold;
+}
+
+.calendar-cell-next {				/* Month Next */
+	color: #000;
+}
+
+.calendar-cell-nexthdr {
+	background-color: #fff;
+	color: #aaa;
+}
+
+.calendar-cell-nexthdr-today {                  /* Today's Date in Next Month */
+	background-color: #555;
+	color: #000;
+	font-size: 9pt;
+	font-weight: bold;
+}
+
+/*----- CELL STYLES -----*/
+
+.calendar-cell-event {				/* Event content */
+	/*height: 68px;*/
+	margin: 1px;
+	color: #000;
+	overflow: hidden;
+	text-align: left;
+	display: block;
+}
+
+.calendar-cell-special {			/* Special notes */
+	color: #ff0000;
+	font-size: 8pt;
+}
+
+.calendar-cell-caption {			/* Expiration caption */
+	color: #000;
+	font-size: 8pt;
+}
+
+.calendar-cell-caption a, a:visited {
+	font-decoration: none;
+	font-size: 8pt;
+	color: #888;
+}
+
+.calendar-cell-caption a:hover {
+	font-decoration: underline;
+	font-size: 8pt;
+	color: #000;
+}
+
+.calendar-cell-timenote {		/* Time-of-day note */
+	color: #ff0000;
+	font-size: 8pt;
+}
+
+.calendar-cell-disabled {		/* Disabled cell contents */
+	color: #eee;
+}
+
+.calendar-div-hidden {
+	display: none;
+}
+
+.calendar-popup-contents {
+	color: #000;
+	padding-bottom: 10px;
+	padding-top: 0;
+}
+
+.calendar-popup-contents {
+	font-decoration: none;
+	font-size: 8pt;
+	font-weight: normal;
+	color: #000;
+}
+
+.calendar-popup-contents-title {
+	font-size: 9pt;
+	font-weight: bold;
+	color: #000;
+}
+
+.calendar-popup-contents-label {
+	width: 80px;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #000;
+	display: block;
+	float: left;
+        clear: both;
+}
+
+.calendar-popup-contents-data {
+	width: 300px;
+	font-size: 8pt;
+	font-weight: normal;
+	color: #000;
+	display: block;
+	float: left;
+}
+
+.calendar-popup-contents-data a, 
+.calendar-popup-contents-data a:visited,
+.calendar-popup-contents-data a:hover {
+	font-size: 8pt;
+	font-weight: none;
+	color: #000;
+}
+
+/*------------- Hacks/Fixes ------------- */
+/* Fire Fox Float Fix                     */
+.calendar-clearfix:after {
+	height:				0;
+	visibility: 			hidden;
+	display: 			block;
+	clear: 				both;
+	content: 			".";
+	line-height: 			0;
+}
+
+.calendar-clearfix {
+	display: 			block;
+}
+
+html[xmlns] .calendar-clearfix {
+	display:			block;
+}
+
+* html .calendar-clearfix {
+	height: 			1%;
+}

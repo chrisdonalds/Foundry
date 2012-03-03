@@ -1,0 +1,377 @@
+Feb 29, 2012
+	y Create data alias structure
+		- data storage of aliases
+		- persistence in system ($_data)
+		- parsing from macro to regex
+		- rendering from url to data
+	y Create page alias structure
+		- persistence in system ($_page)
+		- rendering from url to data
+		- handling of 404s
+		- centralizing in loader.php
+		- set rules in htaccess
+	y Create content macros
+		- data storage of macros
+		- parsing macro to specific function
+		- calling of macro function
+		- adding to showContent function
+
+Feb 27, 2012
+	y Add server/agent/network status features to help/about
+	y Fix list row highlight getting cleared on hover-mouseleave
+	y Complete plugin settings function capability and support
+	y Fix user row not being removed when user is deleted in settings
+	y Fix direct page (*.php) problems where header.php is not loaded and $_page is not populated
+		
+Feb 7, 2012
+	y Site offline mechanism
+	y Data tables prefix editor
+	y Customizable error sensitivity and logging
+	y Allow the debugger to be enabled/disabled
+	y Provide machanism for permitted user to alter framework versions from within settings
+	
+Jan 29, 2012
+	y Enhance page URL handling:
+		y home page switcher
+		y multiple folder depth allowed in aliases
+	
+Nov 23, 2011
+	y list search: "draft" => $where_clause .= $concat." p.draft = 1 OR p.published = 0 ";
+
+Nov 22, 2011
+	y Modify Organizer feature to allow an array of field rather than just textfld
+	y FileUploader: check for and define folder, tempfolder, and libfolder constants (IMGEDITOR_... => IMGUPLOAD_...)
+	y FileUploader: remove all basic JS code (onclick, onmouseover...) and move script to jQuery file
+	
+Nov 17, 2011
+	- Create a CKEditor settings function for plugins area
+	- Under Themes(?) add a feature to enable/disable HTML editor and choose the editor (CKEditor or TinyMCE)
+	- session_save_path(SITE_PATH."temp/");        // NetFirms Hack
+	y line 84 in menu.php: $value = preg_replace("/{div}/i", $_SESSION['rootname'], $value);
+	
+Nov 8, 2011
+	- Plan to build a login wrapper to use Google, Twitter, Facebook or OpenID credentials
+		From: (loginpage) -> (auth) -> (admin)
+		To:   (single-signin loginpage) -> (proxy auth) -> (auth) -> (admin)
+
+Oct 31, 2011
+	- Move session functions to new session class: start/update/destroy session, read/update/insert/clean session database items
+	- Leave $_SESSION global alone, but can be managed in class
+	
+Oct 26, 2011
+	* a statistics class and control (simple webstats like hits, pageviews, referers, ips)
+
+Oct 25, 2011
+    y alternative to HTTP_REFERER
+		if(isset($_SESSION['curpage'])) $_SESSION['prevpage'] = $_SESSION['curpage'];
+		$_SESSION['curpage'] = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+	y fix to validateDate:
+		- return ((checkdate($m, $d, $y)) ? date(PHP_DATE_FORMAT, mktime(0, 0, 0, $m, $d, $y)) : null);
+
+	y make PHP_DATE_FORMAT in config editable in settings
+	y update to showCheckboxList
+	/**
+	 * displays Admin checkbox list fields
+	 * @param string $label
+	 * @param string $id
+	 * @param array $selectionarray
+	 * @param array $chosenvaluesarray
+	 * @param string $separator
+	 * @param array $jsarray
+	 * @param string $labelclass
+	 * @param string $fldclass
+	 * @param integer $displaytype
+	 */
+	function showCheckboxList($label, $id, $selectionarray, $chosenvaluesarray, $separator = "&nbsp;", $jsarray = null, $labelclass = null, $fldclass = "", $spanclassarray = null, $displaytype = FLD_ALL){
+		if(strpos($label, "*") !== false) $fldclass = trim("required ".$fldclass);
+		if($labelclass != "") $labelclass = " class=\"{$labelclass}\"";
+		if($fldclass != "") $fldclass = " class=\"{$fldclass}\"";
+		if($js != "" && substr($js, 0, 1) != " ") $js = " ".$js;
+		(substr($label, -1, 1) == "*") ? $label = str_replace("*", "", $label).": ".REQD_ENTRY : $label .= ": ";
+
+		if($displaytype != FLD_DATA) print "<tr><td class=\"editlabel {$labelclass}\">{$label}</td></tr>\n";
+		if($displaytype != FLD_LABEL && $displaytype != FLD_DATA) print "<tr><td>";
+		if(is_array($selectionarray)){
+			foreach($selectionarray as $key => $value){
+				if(is_array($chosenvaluesarray)){
+					(in_array($key, $chosenvaluesarray)) ? $selected = " checked=\"checked\"" : $selected = "";
+				}elseif(is_numeric($chosenvaluesarray[$key])){
+					(($chosenvaluesarray[$key] > 0 || $value == $chosenvaluesarray[$key])) ? $selected = " checked=\"checked\"" : $selected = "";
+				}else{
+					(($chosenvaluesarray[$key] != '')) ? $selected = " checked=\"checked\"" : $selected = "";
+				}
+				($spanclassarray[$key] != "") ? $spanclass = " class=\"{$spanclassarray[$key]}\"" : $spanclass = "";
+				if($displaytype != FLD_LABEL) print "<span{$spanclass}><input type=\"checkbox\" id=\"{$id}{$key}\" name=\"{$id}[{$key}]\" value=\"{$key}\"{$selected}{$fldclass}{$jsarray[$key]}/>{$value}</span>{$separator}\n";
+			}
+		}
+		if($displaytype == FLD_ALL) print "</td></tr>\n";
+	}
+
+Oct 17, 2011
+	y in admincommon_form:
+		private function showValidatorCode(){
+			if(strpos($incl, "validator") === false) return null;
+
+Oct 14, 2011
+	y
+	/**
+	 * Return whether or not parameter is a valid date
+	 * @param string $date
+	 * @param string $format
+	 * @return boolean
+	 */
+	function validateDate($date, $format = ""){
+		if($format == '') $format = DATE_FORMAT;
+		switch(strtoupper($format)){
+			case 'YYYY/MM/DD':
+			case 'YYYY-MM-DD':
+				list($y, $m, $d) = preg_split('/[-\.\/ ]/', $date);
+				break;
+			case 'YYYY/DD/MM':
+			case 'YYYY-DD-MM':
+				list($y, $d, $m) = preg_split('/[-\.\/ ]/', $date);
+				break;
+			case 'DD-MM-YYYY':
+			case 'DD/MM/YYYY':
+				list($d, $m, $y) = preg_split('/[-\.\/ ]/', $date);
+				break;
+			case 'MM-DD-YYYY':
+			case 'MM/DD/YYYY':
+				list($m, $d, $y) = preg_split('/[-\.\/ ]/', $date);
+				break;
+			case 'YYYYMMDD':
+				$y = substr($date, 0, 4);
+				$m = substr($date, 4, 2);
+				$d = substr($date, 6, 2);
+				break;
+			case 'YYYYDDMM':
+				$y = substr($date, 0, 4);
+				$d = substr($date, 4, 2);
+				$m = substr($date, 6, 2);
+				break;
+			default:
+				addErrorMsg("Invalid Date Format '$format'");
+		}
+		return checkdate($m, $d, $y);
+	}
+
+Oct 13, 2011
+	y add function called 'queuefunction('function', 'task', $arglist, $first)', 'dequeuefunction('function')', 'add_event('function', timestamp, recurrence)', 'remove_event('function')'
+	y fix:
+	function checkImagePath($image, $inpath, $noimgurl = NO_IMG) {
+		if($image != ""){
+			if(substr($inpath, -1, 1) != "/") $inpath .= "/";
+			$path         = pathinfo($image);
+			$filename     = $path['basename'];
+			$photo_pic    = $inpath.$filename;
+			if ($filename == "" OR !@file_exists(SITE_PATH.$photo_pic)){
+				$photo_pic = (($nothmurl != "") ? IMG_UPLOAD_FOLDER.$nothmurl : "");
+			}
+		}
+		return $photo_pic;
+	}
+
+	function checkThumbPath($image, $inpath, $nothmurl = NO_THM) {
+		if($image != ""){
+			if(substr($inpath, -1, 1) != "/") $inpath .= "/";
+			$path         = pathinfo($image);
+			$filename     = $path['basename'];
+			$photo_pic    = $inpath.$filename;
+			if ($filename == "" OR !@file_exists(SITE_PATH.$photo_pic)){
+				$photo_pic = (($nothmurl != "") ? THM_UPLOAD_FOLDER.$nothmurl : "");
+			}
+		}
+		return $photo_pic;
+	}
+
+Oct 11, 2011
+	- centralize image database records.  instead of requiring each table to have image/thumb as varchar set them as int pointing to image table records
+	y complete the edit record preview function
+	- consolidate edit and add functions into one page -- edit
+	y add $typecase parameter to getRequestData
+	y auto-folder creation for FileUploader plugin --> /images/temp/img, /images/temp/thm, /images/temp/lib (ImageEditor plugin uses these folders as well)
+
+Oct 7, 2011
+	y compressing multiple JS files into one script call
+	- admin skin UI
+	- class-based 
+		- pagination, 
+		na organizer, 
+		y forms (part of $_page)
+	y hierarchical categories
+	- tag lists, tag clouds
+	- widget areas
+	- list class
+	- RSS and Atom class
+
+Sept 22, 2011
+	- Check out http://wp.smashingmagazine.com/2011/09/21/interacting-with-the-wordpress-database/
+	- And... http://www.csslab.cl/2011/08/18/jquery-timelinr/
+
+Aug 18, 2011
+	y Handle plugin dependencies, and usage zones
+	y Output JS lines together before CSS lines in HEAD (addHeadPlugin)
+	y Core and runtime error output handled in footer
+
+Aug 12, 2011
+	- Check out template at http://medialoot.com/item/html5-admin-template/ for ideas
+ 
+June 24, 2011
+To do:
+    y db: add a flatten parameter to getRec, getRecJoin... that will return recordset in single dimension array
+    y db: make crit, order, limit and groupby parameters optional in all functions
+    y add/edit code: put "foreach ($recset[0] as $key => $value)..." into new function called extractArray($arry[, $extract_type]) that can handle multiple-dimension arrays
+    y plugins: apply changes to ImgEdit, FileUploader, and GoogleMap plugins
+    y login: a "Forgot Password" function for login
+    y lists: bulk delete, undelete, publish, unpublish... actions (with checkbox)
+    y lists: replace search code with condensed class (part of _page class)
+    - lists: a "view deleted items" link
+    y lists: organize by query (pull query from db)
+    y lists: convert table to divs
+    y lists: show actions only on row hover
+    y lists: better colattr handling (eg. showing images and expr is difficult)
+    - nav: better nav array storage and (future) build a Navigation Bar editor
+    - toolbar: link to "home" page
+    y pages list: hierarchical page view rather than page > sub-page
+    - package: build "Packages" setup tool
+    y add/edit/list code: convert field building functions to a field-array wrapper (removing the need for multiple show... calls)
+    y add/edit code: "back to..." buttons go back to list page including search and sort parameters; adopt new header.php file code (showPrevPageButtons(array("What's New List" => "whatsnew/list-whatsnew.php$search_query"));)
+    y add/edit code: remove JS alert when record is saved/updated. redirect additions to edit page
+    y add/edit/list code: simplify page creation
+    	y standardize showBlock "contentarea"
+    	y standardize showBlock "edit_content"
+    	y standardize showBlock "editor_buttons"
+    	y standardize titles
+    	y convert include "footer.php" to showFooter
+    - add/edit code: new function to handle insert/update of data
+    y list code: search_prep function which will contain code from "$limit = LIST..." to "// build query"
+    y list: put "if(ALLOW_SEARCH){" condition into showSearch function
+    y collapsible search panel
+    - add/edit code: deprecate validator.js inclusion
+    y front/admin: create content macros (shortcode) feature
+    - admin: temp image/file garbage collection
+    - upgrade Administer plugin so that it is displayed in pop-out box rather than block-level links
+    y name the system -- 1) Foundry, 2) Forge
+    y incorporate all available frameworks from Google APIs
+    p global classes:
+    	y system (plugins, frameworks, pluginsprob, pluginsincl, incl),
+    	- err,
+    	y db,
+    	y page (js, form, nav),
+    	y users (accounts, allowances),
+    	- list class
+    	- RSS and Atom class
+	y handle plugin dependencies, and usage zones
+	y output JS lines together before CSS lines in HEAD (addHeadPlugin)
+	y put core, status and runtime error output modifier in footer; divs in menu
+	y rename several functions such as cgi_get to more recognizable names
+	y remove unnecessary or non-customizable code from editor files
+	y create function that allows designers to customize the help dialog contents
+	y update any plugins that are directly included in code outside of normal inclusion process
+	y compressing multiple JS/CSS files into one script call
+		y gZip/deflate compression
+		y JS and CSS file chain loading
+		y .htaccess preloader
+		y file caching
+		y HTTP 304/ETag support
+		y automatically optimizes scripts called from all folders -- event YUI, Scriptaculous and Prototype
+		y cached files garbage collection
+    y index portal page (load_page(name, folder) => searches for 'folder'/'name'.php, then 'name'.php, then 'name' database page record, then 'name' function in 'folder' class)
+    y frontend setup
+    y class-based pagination, organizer, forms
+    y hierarchical categories
+    y complete the edit record preview function
+    y auto-folder creation for FileUploader plugin
+    y move $this_page array to $_page class and document all $page object properties (currently pageCls object only has formTemplate property and it's null).  All scalar variables such as metadescription are currently globalized, they will be included in the globalized $_page object
+    y email obfuscating
+
+
+-------- Plugins -------
+- Nav NewsBuddy (for Foundry)
+- SEO Manager
+- Nav Form (for Foundry)
+- Google Sitemap
+- Sharethis
+- Google Plus
+- TinyMCE
+- Foundry Roles
+- Minify
+- CloudTags
+- VideoTube
+- Nav Photo Album (for Foundry)
+- Tubepress
+- Foundry Pagination
+- Nav Store (for Foundry)
+- Nav Events
+- Google Analytics
+- Social Links
+- Thickbox
+- Translator
+- HoverIntent
+- CustomTags
+- Farbtastic Colorwheel
+- Foundry Blog
+- Foundry Gallery
+- Wordpress Importer
+- Foundry Store
+- Form Builder
+- RSS Manager
+- NavBook
+- Captcha
+- ContactUs
+- QR Coder
+- Feedback
+- Google Math
+- Foundry Camo
+- Google Analytics
+- Social Links
+- Thickbox
+- Translator
+- HoverIntent
+- CustomTags
+- Farbtastic Colorwheel
+- Foundry Blog
+- Foundry Gallery
+- Wordpress Importer
+- Foundry Store
+- Form Builder
+- RSS Manager
+- NavBook
+- Captcha
+- ContactUs
+- QR Coder
+- Feedback
+- Google Math
+- Foundry Camo (obfuscator)
+
+------- Misc code ------
+- admincommon_form:
+function showLabel($label, $labelclass = "", $text = ""){
+    if($labelclass != "") $labelclass = " {$labelclass}";
+    (substr($label, -1, 1) == "*") ? $label = str_replace("*", "", $label).": ".REQD_ENTRY : $label .= ": ";
+
+    print "<tr><td class=\"editlabel{$labelclass}\">{$label}</td></tr>";
+    if($text != "") {
+        print "<tr><td>$text</td></tr>\n";
+    }
+}
+
+        <h3 class="header">Page Links</h3>
+        <p>You can customize how page requests are handled.  By default, <?=SYS_NAME?> first looks for the content by filename, then by page record, and finally by code class function.</p>
+        <div>Page Handling Priority:&nbsp;
+        	<select name="ht_pagehandling" id="ht_pagehandling">
+        	<?
+        	$ph_array = array(	"" => "Filename, Page Record, Class Function (Default)",
+        						"fpc" => "Filename, Class Function, Page Record",
+        						"pfc" => "Page Record, Filename, Class Function",
+        						"pcf" => "Page Record, Class Function, Filename",
+        						"cfp" => "Class Function, Filename, Page Record",
+        						"cpf" => "Class Function, Page Record, Filename"
+        	);
+        	foreach($ph_array as $key => $item){
+        		echo '<option value="'.$key.'">'.$item.'</option>'.PHP_EOL;
+        	}
+        	?>
+        	</select>
+        </div>

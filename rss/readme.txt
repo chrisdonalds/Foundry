@@ -1,0 +1,1 @@
+<link href="http://blogs.msdn.com/ie/rss.xml" rel="alternate" type="application/rss+xml" title="IEBlog (RSS 2.0)" />

@@ -1,0 +1,71 @@
+basic allowances
+
+Pages
+- view_pages_list
+- edit_page
+- add_page
+- delete_page
+- rename_page
+- view_page
+- publish_page
+- activate_page
+- clone_page
+- edit_page_meta
+
+Users
+- view_users
+- create_user
+- create_lower_user
+- edit_user
+- edit_profile
+- delete_user
+- delete_lower_user
+- activate_user
+- activate_lower_user
+- ban_user
+- ban_lower_user
+
+Themes
+- view_themes
+- install_theme
+- edit_theme
+- delete_theme
+- activate_theme
+
+Plugins
+- view_plugins
+- install_plugins
+- update_plugins
+- repair_plugins
+- delete_plugins
+- activate_plugins
+- activate_frameworks
+
+Media
+- view_media_settings
+- edit_media_settings
+
+General
+- view_general_settings
+- edit_general_settings
+
+Advanced
+- manage_database
+- view_advanced_settings
+- upload_files
+- edit_advanced_settings
+
+custom allowances
+
+- view_list
+- edit_record
+- add_record
+- delete_record
+- rename_record
+- view_record
+- publish_record
+- activate_record
+- clone_record
+- organize_records
+- export_records
+- send_emails

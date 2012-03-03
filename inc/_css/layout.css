@@ -1,0 +1,348 @@
+@charset "utf-8";
+/* -----------------------------------------
+Title:			Layout Style Sheet
+Author: 		Chris Satterthwaite
+Updated: 		May.03.2010
+Updated By: 	Chris Satterthwaite
+--------------------------------------------
+TABLE OF CONTENTS
+--------------------------------------------
+Body:
+Wrapper:
+Header:
+Nav:
+Nav Links:
+Content:
+Footer:
+--------------------------------------------
+STYLE RULES
+--------------------------------------------
+Box
+			height
+			width
+			background
+			border
+			margin
+			padding
+			display
+
+CSS3
+			border-radius
+			box-shadow
+
+
+
+Position
+			position
+			top
+			right
+			bottom
+			left
+			float
+			clear
+			z-index
+
+Font
+			color
+			font family
+			font size
+			line height
+----------------------------------------- */
+/*----------------- Body ---------------- */
+body {
+	background:				#827058;
+	margin: 				10px 0px 0px 0px;
+	padding: 	    	  	0px;
+}
+/*-------------- Wrapper ---------------- */
+#wrapper {
+	width:					900px;
+	margin:         		0px auto; /*Centers the site*/
+	padding:          	    0px;
+	position:       		relative;
+	z-index:				10; /*This index sets the base index for all other elements*/
+}
+/*-------------- Header ----------------- */
+#header {
+	height:					260px;
+	width:					860px;
+	background:				#f9e9cf;
+	border:					1px solid #e8d6a6;
+	padding:                20px;
+	/* Rounded corners (native in Safari, Firefox and Chrome) */
+	-moz-border-radius: 	5px;
+    -webkit-border-radius: 	5px;
+	/* Box Shadow (native in Safari, Firefox and Chrome) */
+	-webkit-box-shadow: 2px 2px 5px #363636;
+	-moz-box-shadow: 2px 2px 5px #363636;
+	box-shadow: 2px 2px 5px #363636;
+	position:				relative;
+	z-index:				20;
+}
+
+#header-picture {
+	height:					260px;
+	width:					860px;
+	border:					1px solid #e8d6a6;
+	/* Rounded corners (native in Safari, Firefox and Chrome) */
+	-moz-border-radius: 	8px;
+    -webkit-border-radius: 	8px;
+	z-index:				20;
+}
+
+#logo {
+	height:					100px;
+	width:					276px;
+	position: 				absolute;
+	top:					40px;
+	left:					20px;
+}
+/*----------- Nav ---------------------- */
+#nav {
+	height:					40px;
+	width:					900px;
+	background:				url(../images/interface/bg-nav.gif) no-repeat;
+	z-index:				40;
+}
+#nav li {
+	margin:					0px;
+	padding:          		0px;
+	position:				absolute;
+	float:					left;
+	list-style-type:		none;
+}
+#nav li span {
+	display:				none;
+}
+#nav  li a {
+	height: 				40px; /*sets the height of the LI*/
+	display: 				block;
+}
+/*----------- Nav Links ---------------- */
+.nav-home {
+	left:					21px;
+	width:					96px;
+}
+.nav-about {
+	left:					168px;
+	width:					112px;
+}
+.nav-gallery {
+	left:					335px;
+	width:					94px;
+}
+.nav-products {
+	left:					484px;
+	width:					100px;
+}
+.nav-news {
+	left:					634px;
+	width:					95px;
+}
+.nav-contact {
+	left:					781px;
+	width:					94px;
+}
+.nav-home a:hover, .nav-home .selected {
+	background:				transparent url(../images/interface/bg-nav.gif) -21px -40px no-repeat;
+}
+.nav-about a:hover, .link2 .selected {
+	background:				transparent url(../images/interface/bg-nav.gif) -168px -40px no-repeat;
+}
+.nav-gallery a:hover, .nav-gallery .selected {
+	background:				transparent url(../images/interface/bg-nav.gif) -335px -40px no-repeat;
+}
+.nav-products a:hover, .nav-products .selected {
+	background:				transparent url(../images/interface/bg-nav.gif) -484px -40px no-repeat;
+}
+.nav-news a:hover, .nav-news .selected {
+	background:				transparent url(../images/interface/bg-nav.gif) -634px -40px no-repeat;
+}
+.nav-contact a:hover, .nav-contact .selected {
+	background:				transparent url(../images/interface/bg-nav.gif) -781px -40px no-repeat;
+}
+/*-------------- Nav Dropdowns ---------- */
+#nav li ul {
+	width:					200px;
+	height:					auto;
+	display:				none;
+	position:				absolute;
+	top:					40px;
+	left:					0px;
+	z-index:				50;
+}
+
+#nav li ul li {
+	background:				url(../images/interface/drop-down-bg.png);
+	position:				relative;
+	float:					left;
+	left:					0;
+	text-align:				center;
+}
+#nav li ul li a {
+	height:					15px;
+	width: 					180px;
+	background:				none;
+	padding:                5px 10px;
+	display: 				block;
+	color: 					#FFF;
+	text-decoration: 		none;
+	text-align:				left;
+}
+#nav li ul li a:hover {
+	height:					15px;
+	background:				url(../images/interface/drop-down-bg.png);
+	color:					#FFF;
+}
+#nav li:hover ul, #nav li.over ul {
+	display: 				block;
+}
+#nav li:hover ul, li.over ul {
+	display: 				block;
+}
+
+#nav li ul .bottom-nav {
+	height:					15px;
+	width:					200px;
+	/*background:				url(../images/interface/drop-down-bottom.png);*/
+	border: 				none;
+	/* Rounded corners (native in Safari, Firefox and Chrome) */
+	-moz-border-radius-bottomleft: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+}
+/* Third Level Nav
+--------------------------------------------------------------------------------------- */
+#nav li ul li ul {
+	height: 				auto;
+	width:					200px;
+	display:				none !important;
+	position:				absolute;
+	top:					0px;
+	left:					190px;
+	z-index:				50px;
+}
+#nav li ul li ul li{
+	height: auto;
+	background:				url(../images/interface/drop-down-bg.png);
+	float: left;
+	z-index: 500;
+}
+#nav li ul li ul .bottom-nav {
+	height:					11px;
+	width:					200px;
+	background:				url(../images/interface/drop-down-bottom.png);
+	border: 				none;
+}
+
+#nav li ul li ul li a {
+	height:					15px;
+	width: 					180px;
+	background:				none;
+	padding:                5px 10px;
+	display: 				block;
+	z-index:				500;
+	color: 					#FFF;
+	text-decoration: 		none;
+	text-align:				left;
+}
+#nav li ul li ul li a:hover {
+	height:					15px;
+	background:				url(../images/interface/drop-down-bg.png);
+	color:					#FFF;
+}
+
+#nav li ul li:hover ul, #nav li ul li.over ul {
+	display: 				block !important;
+}
+#nav li ul li:hover ul, li ul li.over ul {
+	display: 				block !important;
+}
+/*-------------- Content ---------------- */
+/*----- Structure ------*/
+.aside {
+	min-height:	            500px;
+  	height:                 auto !important;
+  	height:                 500px;
+	width:					260px;/*300px - 20px Padding Right - 20px Padding Left = 260px*/
+	background:				#786f5d;
+	padding:                20px 20px;
+	/* Rounded corners (native in Safari, Firefox and Chrome) */
+	-moz-border-radius: 	5px;
+    -webkit-border-radius: 	5px;
+	/* Box Shadow (native in Safari, Firefox and Chrome) */
+	-webkit-box-shadow: 0px 0px 3px #363636;
+	-moz-box-shadow: 0px 0px 3px #363636;
+	box-shadow: 0px 0px 3px #363636;
+	z-index:				20;
+}
+#container{
+	min-height:	            500px;
+  	height:                 auto !important;
+  	height:                 500px;
+	width:					560px;/*600px - 20px Padding Right - 20px Padding Left = 560px*/
+	padding:                0px 20px;
+	position:				relative;
+	z-index:				20;
+}
+.section{
+    z-index:        		20;
+}
+/*----- News Aside ------*/
+#news-aside {
+	min-height:	            300px;
+  	height:                 auto !important;
+  	height:                 300px;
+}
+/*----- Gallery ------*/
+.gallery {
+	margin:					0px 0px 0px 0px;
+	padding: 	            0px 0px 0px 0px;
+	list-style:             none;
+}
+.gallery li {
+	height:                 175px;
+	width:                  212px;
+	margin:                 15px;
+	padding:                0;
+	position:               relative;
+	float:                  left;
+}
+.gallery a {
+	color:                  #666;
+	text-decoration:        none;
+}
+.gallery a:hover {
+	color:                  #000;
+	text-decoration:        underline;
+}
+.gallery img {
+	padding:                20px 0 0 21px;
+}
+.gallery em {
+	height:                 30px;
+	width:                  212px;
+	background:             url(../images/interface/picture-frame.png) no-repeat;
+	padding-top:            145px;
+	display:                block;
+	position:               absolute;
+	text-align:             center;
+}
+/*-------------- Footer ----------------- */
+#footer {
+	height:					30px;
+	width:					860px;
+	background:				#786f5d;
+	margin:					20px auto 0px auto;
+	padding:                10px 20px 0px 20px;
+	/* Rounded corners (native in Safari, Firefox and Chrome) */
+	-moz-border-radius: 	5px;
+    -webkit-border-radius: 	5px;
+	/* Box Shadow (native in Safari, Firefox and Chrome) */
+	-webkit-box-shadow: 0px 0px 3px #363636;
+	-moz-box-shadow: 0px 0px 3px #363636;
+	box-shadow: 0px 0px 3px #363636;
+	position:				relative;
+	z-index:				20;
+}

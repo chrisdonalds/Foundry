@@ -1,0 +1,16 @@
+#name:         Image Editor
+#ver:          1.0
+#author:       Chris Donalds, parts based on the Jcrop plugin by Kelly Hallman @khallman@gmail.com
+#descr:        Image editor (cropping, scaling, rotation, flipping) utility.  Works in conjunction with and requires FileUploader
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       admin
+#incl:         imgedit
+#initfile:     imgedit.core.php
+#headerfunc:   imgedit_headerprep
+#depends:      fileuploader
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

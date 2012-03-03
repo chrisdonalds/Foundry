@@ -1,0 +1,4 @@
+To do upgrades:
+    - 3.0.0: add field 'lineage varchar 255' to pages
+
+

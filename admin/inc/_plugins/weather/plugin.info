@@ -1,0 +1,17 @@
+#name:         WeatherNet
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        WeatherNet adds a weather widget to webpages via feeds from The Weather Network or Environment Canada.
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       front
+#incl:         weather
+#initfile:     weather.core.php
+#headerfunc:
+#settingsfunc:
+#depends:
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

@@ -1,0 +1,13 @@
+# Standard robots.txt
+# System folders
+User-agent: *
+Disallow: /admin/
+Disallow: /inc/
+Disallow: /inc/_plugins/
+Disallow: /inc/_core/
+Disallow: /inc/_custom/
+Disallow: /inc/_js/
+# End of System folders
+		
+User-agent: Googlebot
+Disallow: /folders/

@@ -1,0 +1,22 @@
+
+//update xml file
+$gallarray = array(	"table" => "data_galleries as pg",
+					"flds" => "*",
+					"crit" => "published = 1 and archived = 0",
+					"order" => "rank",
+					"limit" => "");
+$photoarray = array("table" => "data_photos as p",
+					"flds" => "*",
+					"crit" => "published = 1 and archived = 0",
+					"order" => "rank",
+					"limit" => "");
+$gflds = array("id" => "id", "code" => "code", "title" => "name", "descr" => "description", "thumb" => "(SELECT thumb FROM data_photos WHERE gallery_def = 1 AND gallery_id = pg.id) AS thumb");
+$pflds = array("file" => "image", "title" => "title", "caption" => "title");
+updateGalleryXML("images-new.xml", $gallarray, $photoarray, "cat_id=id", IMG_UPLOAD_FOLDER."data_photos/", THM_UPLOAD_FOLDER."data_photos/", $gflds, $pflds);
+
+
+rec -> parent (photo -> gallery)
+
+- 
+
+rec -> children (product_cat -> products)

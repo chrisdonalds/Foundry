@@ -1,0 +1,17 @@
+#name:         My Plugin
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        First plugin
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       admin
+#incl:         myplugin
+#initfile:     myplugin.core.php
+#headerfunc:   myplugin_headerprep
+#settingsfunc: myplugin_settings
+#depends:      jquery
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

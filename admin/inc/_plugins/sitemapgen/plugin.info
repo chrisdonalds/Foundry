@@ -1,0 +1,16 @@
+#name:         Sitemap Generator
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        Generates Google-compatible sitemap XML and content inclusion file.  Processes files and/or database records
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         sitemap
+#initfile:     xmlsitemapgen.php
+#settingsfunc: sitemapgen_settings
+#depends:
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

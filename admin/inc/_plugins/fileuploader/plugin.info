@@ -1,0 +1,16 @@
+#name:         File Uploader
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        File upload, and thumbnail generator utility
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         fileuploader
+#initfile:     fileuploader.core.php
+#headerfunc:   fileuploader_headerprep
+#depends:      jquery
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

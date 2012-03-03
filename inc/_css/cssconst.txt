@@ -1,0 +1,12 @@
+/* CSS Constants (works in IE6+, FF2+, Opera, Safari and CSS1+)
+ * ------------------------------------------------------------
+ * Variables like: $variable = 'value';
+ * Import this css as:
+ * <style type="text/css">
+ *		@import '{path-to-cssconst.php}cssconst.php?c={path-to-this-css-file}&{var1}={value1}...';
+ * </style>
+ * Comment out constants: replace $ with #
+
+#colour2 = '#2f9a9e';
+
+*/

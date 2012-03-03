@@ -1,0 +1,18 @@
+#name:         jQuery Mobile
+#ver:          1.0
+#author:       The jQuery Project
+#descr:        A unified user interface system that works seamlessly across all popular mobile device platforms, built on the rock-solid jQuery and jQuery UI foundation.
+#website:      www.jquerymobile.com
+#created:      Dec 1, 2011
+#revised:      Dec 1, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         jquerymobile
+#initfile:     jquerymobile.core.php
+#headerfunc:   jquerymobile_headerprep
+#settingsfunc: jquerymobile_settings
+#depends:      jquery
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+//#active:       yes

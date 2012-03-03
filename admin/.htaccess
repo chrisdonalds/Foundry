@@ -1,0 +1,18 @@
+# ----- Turn on Rewrite Engine
+Options +FollowSymLinks
+RewriteEngine On
+
+# ----- JS/CSS Combinator
+#RewriteRule ^(.+)/(.*\.css) inc/_core/combinator.php?type=css&dir=$1&files=$2
+#RewriteRule ^(.+)/(.*\.js) inc/_core/combinator.php?type=javascript&dir=$1&files=$2
+
+#php_value auto_prepend_file ".:/inc/_core/loader.php"
+
+<ifmodule mod_expires.c>
+<filesmatch "\.(jpg|gif|png|css|js|ico)$">
+ExpiresActive on
+ExpiresDefault "access plus 1 year"
+</filesmatch>
+</ifmodule>
+
+FileETag MTime Size

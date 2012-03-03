@@ -1,0 +1,15 @@
+#name:         Mobile Device Detector
+#ver:          1.0
+#author:       Anthony Hand
+#descr:        Detects various information about the user agent (browser)
+#created:      June 04, 2011
+#revised:      June 04, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         mobidetector
+#initfile:     detect.class.php
+#depends:
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

@@ -1,0 +1,17 @@
+#name:         CD-Cal
+#ver:          2.0
+#author:       Chris Donalds
+#descr:        Drop-in events calendar with popup link support.
+#website:      www.navigatormultimedia.com
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       2.6
+#usedin:       both
+#incl:         cdcal
+#initfile:     cdcal.core.php
+#headerfunc:   cdcal_headerprep
+#depends:      jquery
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+//#active:       yes

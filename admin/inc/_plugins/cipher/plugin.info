@@ -1,0 +1,16 @@
+#name:         Cipher
+#ver:          1.5
+#author:       Chris Donalds (orig: Peter Hanneman SecureCube)
+#descr:        2-way encryption tool using 320-bit private SHA-1/256-bit-public MD5 encryption
+#website:      www.navigatormultimedia.com
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       2.6
+#usedin:       both
+#incl:         cipher
+#initfile:     cipherlib.php
+#depends:      
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+//#active:       yes

@@ -1,0 +1,16 @@
+#name:         ShrinkURL
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        Minifies URLs to the host site, similar to TinyURL.
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         shrinkurl
+#initfile:     shrinkurl.core.php
+#settingsfunc: shrinkurl_settings
+#depends:      jquery
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

@@ -1,0 +1,27 @@
+@charset "utf-8";
+/* -----------------------------------------
+Title:			Gloabal Style Sheet
+Author: 		Chris Donalds
+Updated: 		Dec.3.2010
+Updated By: 	Chris Donalds
+--------------------------------------------
+TABLE OF CONTENTS
+--------------------------------------------
+General:
+--------------------------------------------
+*/
+
+.adm_hover {
+    border: 1px dashed white;
+}
+#adm_label {
+    top: 0px;
+    left: 0px;
+    display: none;
+    position: absolute;
+    padding: 2px;
+    border: 1px solid black;
+    background-color: #fcefa1;
+    font-family: Arial, helvetica, verdana;
+    font-size: 9pt;
+}

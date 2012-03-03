@@ -1,0 +1,15 @@
+#name:         Imageset Marker
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        Adds the imageset marker feature and button to CKEditor
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       admin
+#incl:         imagesetmarker
+#initfile:     imageset.php
+#depends:      ckeditor
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

@@ -1,0 +1,23 @@
+<!-- CKEDITOR -->
+<script type="text/javascript" language="javascript" src="http://joannabisleydesigns.navigatorpreview.com/ckeditor/ckeditor.js"></script>
+<!-- JQUERY -->
+<script type="text/javascript" language="javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+<!-- UICORE -->
+<script type="text/javascript" language="javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.js"></script>
+<link href="http://joannabisleydesigns.navigatorpreview.com/admin/inc/_js/ui/ui.theme.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" language="javascript" src="http://joannabisleydesigns.navigatorpreview.com/admin/inc/_js/ui/ui.script.js"></script>
+<!-- IMGEDIT -->
+<script type="text/javascript" language="javascript" src="http://joannabisleydesigns.navigatorpreview.com/admin/inc/_plugins/imgedit/js/jquery.imgedit.js"></script>
+<script type="text/javascript" language="javascript" src="http://joannabisleydesigns.navigatorpreview.com/admin/inc/_plugins/imgedit/js/imgedit.ajax.js"></script>
+<link href="http://joannabisleydesigns.navigatorpreview.com/admin/inc/_plugins/imgedit/css/jquery.imgedit.css" rel="stylesheet" type="text/css" media="screen" />
+<!-- FILEUPLOADER -->
+<link href="http://joannabisleydesigns.navigatorpreview.com/admin/inc/_plugins/fileuploader/client/fileuploader.css" rel="stylesheet" type="text/css" media="screen" />
+<!-- VALIDATOR -->
+<script type="text/javascript" language="javascript" src="http://joannabisleydesigns.navigatorpreview.com/admin/inc/_plugins/jquery.validator/jquery.validate.pack.js"></script>
+<!-- UPLOADPROGRESSBAR -->
+<link href="http://joannabisleydesigns.navigatorpreview.com/admin/inc/_js/uploadprogressbar/uploadprogressbar.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" language="javascript" src="http://joannabisleydesigns.navigatorpreview.com/admin/inc/_js/uploadprogressbar/uploadprogressbar.js"></script>
+<!-- BASIC -->
+<link href="http://joannabisleydesigns.navigatorpreview.com/admin/inc/_css/admin.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" language="javascript" src="http://joannabisleydesigns.navigatorpreview.com/admin/inc/_js/scripts.js"></script>
+<script type="text/javascript" language="javascript" src="http://joannabisleydesigns.navigatorpreview.com/admin/inc/_js/validator.js"></script>

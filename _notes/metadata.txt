@@ -1,0 +1,20 @@
+1) show tables
+2) compare list of tables against reqd_tables array.  In loop:
+	2a) table not in reqd_tables? 
+		y: create table based on json_decoded reqd_table structure array* stored in Foundry code for the subject version and continue with next table (#2)
+		
+3) get description of table
+4) compare table fields with json-decoded reqd_table structure array*.  In loop:
+	4a) table field not in reqd_table fields?
+		y: mark field for removal and continue with next field (#4)
+	4b) table field not same structure as same reqd_table field?
+		y: mark field for alteration and continue with next field (#4)
+5) compare reqd_table fields with table structure array**. In loop:
+	5a) reqd_table field not in table fields?
+		y: mark for addition and continue with next field (#5)
+		
+execute table field removals
+execute table field alterations
+execute table field additions
+
+

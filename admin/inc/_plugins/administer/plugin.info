@@ -1,0 +1,16 @@
+#name:         Administer
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        Foundry admin access bar
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         administer
+#initfile:     administer.core.php
+#headerfunc:   administer_headerprep
+#depends:      jquery
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

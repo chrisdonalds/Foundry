@@ -1,0 +1,15 @@
+#name:         CRON-Lib
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        Manages scheduled tasks (simulated CRON) for site.
+#website:      www.navigatormultimedia.com
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         cron
+#initfile:     cron.core.php
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+//#active:       yes

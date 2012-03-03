@@ -1,0 +1,16 @@
+#name:         Lightbox for Foundry
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        The Foundry version of the popular Lightbox addon.  * Foundry plugin compatibility not part of original authored code.
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         lightbox
+#initfile:     lightbox.core.php
+#headerfunc:   lightbox_headerprep
+#depends:      jquery
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

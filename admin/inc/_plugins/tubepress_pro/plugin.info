@@ -1,0 +1,17 @@
+#name:         TubePress Pro for Foundry
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        The Foundry version of the popular TubePress Pro tool.
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       front
+#incl:         tubepresspro
+#initfile:     tubepress.php
+#headerfunc:
+#settingsfunc:
+#depends:
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

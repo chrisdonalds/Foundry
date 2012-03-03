@@ -1,0 +1,15 @@
+#name:         ePaypal
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        PayPal ecommerce Direct Payment API
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         paypal
+#initfile:     paypal.core.php
+#settingsfunc: paypal_settings
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

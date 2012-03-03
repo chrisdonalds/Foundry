@@ -1,0 +1,65 @@
+@charset "utf-8";
+/* -----------------------------------------
+Title:			Typography Style Sheet
+Author: 		Chris Satterthwaite
+Updated: 		May.13.2010
+Updated By: 	Chris Satterthwaite
+--------------------------------------------
+----------------------------------------- */
+body, pre {
+    font-size:				12px;
+    line-height:			15px;
+    font-family:            Arial, Helvetica, Verdana, "sans-serif";
+}
+/* ----------------------------------------- */
+H1 {
+	font-size:				24px;
+	font-family: 			Arial, Helvetica, Verdana, "sans-serif";
+	margin-bottom: 			15px;
+	line-height:			30px;
+}
+H2 {
+	font-size:				18px;
+	margin-bottom: 			15px;
+}
+H3 {
+	font-size:				14px;
+	margin-bottom: 			15px;
+}
+H4 {
+	font-size:				12px;
+	margin-bottom: 			10px;
+}
+blockquote {
+	font-size: 				14px;
+}
+p {
+    font-size: 				12px;
+    margin-bottom: 			15px;
+}
+input {
+    font-size: 				12px;
+}
+/* ----------------------------------------- */
+#nav ul{
+	font-size:				12px;
+	color:					#000;
+}
+/* ----------------------------------------- */
+#footer{
+	font-size:				12px;
+	color:					#FFF;
+}
+#footer a{
+	font-size:				12px;
+	color:					#FFF;
+	text-decoration:		none;
+}
+/* ----------------------------------------- */
+#news-aside h4 {
+	font-size:				12px;
+	margin-bottom: 			10px;
+}
+#news-aside a {
+	margin-bottom: 			10px;
+}

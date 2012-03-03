@@ -1,0 +1,17 @@
+#name:         Auto-Complete
+#ver:          1.0
+#author:       Chris Donalds (orig: JQuery team, Jörn Zaefferer)
+#descr:        Adds JQuery autocomplete functionality to select menus
+#website:      www.navigatormultimedia.com
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       both
+#incl:         autocomplete
+#initfile:     autocomplete.core.php
+#headerfunc:   autocomplete_headerprep
+#depends:      jquery
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+//#active:       yes

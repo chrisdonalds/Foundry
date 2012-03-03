@@ -1,0 +1,2 @@
+
+--------------- REMEMBER TO CHANGE THE BASEURL ON LINE 57 OF CONFIG.PHP --------------

@@ -1,0 +1,17 @@
+#name:         LiveClock
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        Analog/digital clock widget with customizable faces
+#website:      www.navigatormultimedia.com
+#created:      June 5, 2011
+#revised:      June 5, 2011
+#sysver:       3.0
+#usedin:       front
+#incl:         liveclock
+#initfile:     liveclock.core.php
+#headerfunc:   liveclock_headerprep
+#depends:      
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+//#active:       yes

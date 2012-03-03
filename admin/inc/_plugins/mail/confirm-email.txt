@@ -1,0 +1,10 @@
+<html>
+<head>
+<title>New newsletter subscriber</title>
+</head>
+<body>
+<h2>New Subscriber</h2>
+<p>ff<email> has requested to become a new subscriber of your newsletter.</p>
+<p>To view their subscription status, go to: <a href=""></a></p>
+</body>
+</html>

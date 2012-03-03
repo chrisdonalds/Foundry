@@ -1,0 +1,16 @@
+#name:         Upload Progressbar
+#ver:          1.0
+#author:       Chris Donalds
+#descr:        Progressbar addon
+#created:      Apr 14, 2011
+#revised:      Apr 15, 2011
+#sysver:       3.0
+#usedin:       admin
+#incl:         uploadprogressbar
+#initfile:     uploadprogressbar.php
+#headerfunc:   uploadprogressbar_headerprep
+#depends:
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes

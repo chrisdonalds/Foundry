@@ -1,0 +1,40 @@
+$sections = array(		"pages"			=> "\dPages",
+						"events"		=> "Events",
+						"photos"		=> "\cPhoto Gallery",
+                        "projects"      => "Projects",
+						"whatsnew"		=> "What's New",
+						);
+
+// Sub nav bar sections: "main database table" => "table" or array("table" => "Name"...)
+$subsections = array(	"photos" 		=> array ( "photos_cat" => "Galleries" ),
+						);
+
+// sub nav bar: "database table" => "main database table"
+$altsections = array(   "pages"			=> "pages",
+						"userpage"		=> "pages",
+						"meta"			=> "pages",
+						"products"		=> "products",
+                        "projects"      => "projects",
+						"events"		=> "events",
+						"photos"		=> "photos",
+						"photos_cat"	=> "photos",
+						);
+
+						
+Top level:	pages=>Pages, 	events=>Events, 	photos(_cat)=>Photo Gallery, 	projects=>Projects, 	whatsnew=>What's New
+Sub Level:										photos=>photos_cat=>Galleries
+
+Top Level:  table, title, tocategory, file alias, topage
+Sub Level:  parenttable, table, title, file alias
+
+<ul id="navigation">
+	<li class="unchosen" id="menu_pages"><a href="http://localhost/chrisd/admin/pages/list-pages.php">Pages</a></li>
+	<li class="unchosen" id="menu_events"><a href="http://localhost/chrisd/admin/events/list-events.php">Events</a></li>
+	<li class="unchosen" id="menu_photos"><a href="http://localhost/chrisd/admin/photos/list-photos_cat.php">Photo Gallery</a></li>
+	<li class="unchosen" id="menu_projects"><a href="http://localhost/chrisd/admin/projects/list-projects.php">Projects</a></li>
+	<li class="unchosen" id="menu_whatsnew"><a href="http://localhost/chrisd/admin/whatsnew/list-whatsnew.php">What's New</a></li>
+</ul>
+
+<ul id="subnavigation">
+	<li class="chosen" id="submenu_photos_cat"><a href="http://localhost/chrisd/admin/photos/list-photos_cat.php">Galleries</a></li>
+</ul>

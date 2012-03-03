@@ -1,0 +1,17 @@
+/* 
+    CD-CAL CSS
+
+    Document   : In-file CSS for section dimensions
+    Created on : May 3, 2010, 12:18:35 PM
+    Author     : Chris Donalds
+*/
+
+.width_tblcells { width: 30px; }
+.width_tablebody {width: 220px; }
+.width_tblcellmonthhdr { width: 100px; }
+.height_tblrowmonth { height: 15px; }
+.height_tblrowweekday { height: 15px; }
+.height_tblcellweeknum { height: 50px; }
+.height_tblcells { height: 25px; }
+.height_tblcellhdr { height: 24px; }
+.height_tblcellevent { height: 23px; }

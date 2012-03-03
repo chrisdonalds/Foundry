@@ -1,0 +1,17 @@
+#name:         Jquery Validator
+#ver:          1.7
+#author:       Jörn Zaefferer
+#descr:        Adds jQuery-powered form field validation to forms
+#website:      http://docs.jquery.com/Plugins/Validation
+#created:      June 17, 2009
+#revised:      June 17, 2009
+#sysver:       3.0
+#usedin:       both
+#incl:         validator
+#initfile:     validator.core.php
+#headerfunc:   validator_headerprep
+#depends:      jquery
+#nodelete:     no
+#nodisable:    no
+#builtin:      no
+#active:       yes
