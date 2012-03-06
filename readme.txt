@@ -1,6 +1,67 @@
-Web Template 3.0
-Chris Donalds <chrisd@navigatormm.com>
-========================================
+--------------------------------------------------------------------------------------------------
+                                        F O U N D R Y
+                                   PHP/HTML Web Framework
+--------------------------------------------------------------------------------------------------
+
+Author: Chris Donalds, cdonalds01@gmail.com
+Current Stable Version: 3.9.5
+Copyright (C) 2012, Navigator Multimedia, Inc.
+
+Foundry is a robust website content management system built on PHP and using MySQL.
+It crafts a fine balance between ease of implementation so that non-technical users
+can get started quickly, and feature richness and an unfettered PHP framework ideally
+suited for the most advanced programmer.
+
+Foundry leverages several web technologies such as jQuery and CKEditor to provide an
+environment that smoothly presents content, while not bogging developers down with
+bloated, cumbersome structure and rules that only increases programming time.
+
+It:
+- includes possibly the fastest database configuration and startup tool online
+- is fully portable... because most professional sites are developed and deployed on
+    different servers, it doesn't restrict you to one domain or configuration
+- is built to grow with a dynamic plugin and framework installation system
+- allows for quick frontend page creation.  Start a page with less than 10 lines of code
+    (if you want to code)
+- understands RSS, Atom, Analytics, mod rewrites, multiple editors, XML, SEO,
+    track and pingbacks, mobile detection and more...
+- can present page content via SEO-friendly URLs (called aliases), controllers (a la
+    Code Igniter model), rewrite rule managed URLs, or direct file access
+- understands the need for security with six user types and 66 different permissions
+    covering just about every aspect of the admin system
+- comes ready to implement a dozen scripting frameworks from jQuery to Script.aculo.us.
+    Activate them with one click.
+- is not a blog system so there is no such thing as a pre-established "post"
+    structure.  Add the Foundry Blog plugin and it quickly becomes one.
+- does not limit how database tables are structured like most platforms
+- has a very small file footprint: about 5Mb loaded
+- plays well with popular browsers and readers (this version supports IE 7+, Firefox 4+,
+    Chrome, Opera, CSS 3, HTML 5)
+- allows for multiple themes for *both* the front and back ends, and multiple text
+    editors (CKEditor is set as the default)
+
+Special thanks to the staff of Navigator Multimedia for ongoing help with coding and
+styling roadblocks and being general guinea pigs.  This software contains several
+modules and supplied plugins, of which I give credit to, some of which are:
+
+- JQuery Validator Pack (Jörn Zaefferer)
+- ImgEdit/Jcrop Plugin (Kelly Hallman)
+- Browser Detector (Anthony Hand)
+
+Individual plugins (/admin/inc/_plugins) may contain their own licenses and/or
+requirements.
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+Get the full text of the GPL here: http://www.gnu.org/licenses/gpl.txt
+
+--------------------------------------------------------------------------------------------------
 
 --------------------------- PAGE BUILDING -----------------------------------
 

@@ -1,6 +1,10 @@
 /images/data_photos/
 /images/data_galleries/
+<<<<<<< HEAD
 /_notes/
 thumbs.db
 error.log
 /admin/inc/_cache/
+=======
+/_notes/
+>>>>>>> Update: New readme documentation
