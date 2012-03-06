@@ -8,6 +8,7 @@
 //
 // ---------------------------
 
+define("IN_AJAX", true);
 define("VALID_LOAD", true);
 define("BASIC_GETINC", true);
 define("VHOST", substr(str_replace("\\", "/", realpath(__DIR__."/../../../")), strlen($_SERVER['DOCUMENT_ROOT']))."/");
@@ -98,6 +99,24 @@ switch($op){
 		$html = getThemePaletteBox();
 		echo $html;
 		break;
+
+    // MENUS
+
+    case 'updateadminmenulayout':
+        if($val != '') {
+            $ok = updateAdminMenusLayout($val);
+            exitAjax($ok, '');
+        }else{
+            exitAjax(false, '');
+        }
+        break;
+    case 'getadminmenueditorhtml':
+        $level = getRequestVar('level');
+        if($val != '' && $level != '') {
+            $html = getAdminMenuEditorHTML($val, $level);
+            echo $html;
+        }
+        break;
 
 	// PLUGINS
 
@@ -540,7 +559,7 @@ switch($op){
 		$user_id = intval(getRequestVar('id'));
 		if($user_id > 0){
 			$rtn = deleteRec("admin_accts", "id='{$user_id}'");
-			exitAjax($rtn, "");
+			exitAjax($rtn, '');
 		}
 		break;
 	case 'addnewuser':
@@ -590,7 +609,7 @@ EOT;
 		}
 		chmod(SITE_PATH."robots.txt", 0644);
 		}
-		exitAjax($success, "");
+		exitAjax($success, '');
 		break;
 
     // DATA ALIASES
@@ -604,7 +623,7 @@ EOT;
                 exitAjax(false, $error.'...');
             }
         }else{
-            exitAjax(true, "");
+            exitAjax(true, '');
         }
         break;
 
@@ -885,7 +904,7 @@ exit;
 
 /*------------------------------------------------------------------------------------------*/
 
-function exitAjax($success, $rtndata){
+function exitAjax($success, $rtndata = null){
 	echo json_encode(array('success' => $success, 'rtndata' => $rtndata));
 	exit;
 }

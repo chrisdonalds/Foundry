@@ -429,16 +429,25 @@ function showSettingsMenusforAdmin(){
     foreach($menus as $key => $menu){
         $chosen = (($toplevel == "") ? "chosen" : "unchosen");
         if($sublevel == "" && $toplevel == "" && !is_null($menu['childmenus'])){
-            $sublevel .= "<li class=\"{$chosen}\" id=\"setsubmenu_".key($menu['childmenus'])."\"><a href=\"#\" title=\"Click to edit; drag to re-order\">{$menu['childmenus']['title']}</a></li>\n";
+            $sublevel .= "<li class=\"{$chosen}\" id=\"setsubmenu_".key($menu['childmenus'])."\"><a href=\"#\" class=\"adminmenu_subelem\" rel=\"{$key}\" title=\"Click to edit; drag to re-order\">{$menu['childmenus']['title']}</a></li>\n";
         }
-        $toplevel .= "<li class=\"{$chosen}\" id=\"setmenu_{$key}\"><a href=\"#\" title=\"Click to edit; drag to re-order\">{$menu['title']}</a></li>\n";
+        $toplevel .= "<li class=\"{$chosen}\" id=\"setmenu_{$key}\"><a href=\"#\" class=\"adminmenu_topelem\" rel=\"{$key}\" title=\"Click to edit; drag to re-order\">{$menu['title']}</a></li>\n";
     }
     $toplevel = "<ul id=\"adminmenu_navigation\">$toplevel</ul>\n";
     $sublevel = "<ul id=\"adminmenu_subnavigation\">$sublevel</ul>\n";
-
+    reset($menus);
     ?>
-    <div id="adminmenu_sample"><?=$toplevel.$sublevel?></div>
-    <div id="adminmenu_atts">test</div>
+    <div id="adminmenu_sample">
+        <?=$toplevel?>
+        <div class="adminmenu_actions">
+            <a href="#" id="adminmenu_addtop" title="Add new menu to top level"><span>+</span></a>
+        </div>
+        <?=$sublevel?>
+        <div class="adminmenu_actions">
+            <a href="#" id="adminmenu_addsub" title="Add new menu to sub level"><span>+</span></a>
+        </div>
+    </div>
+    <div id="adminmenu_editor"><?=getAdminMenuEditorHTML(key($menus), "top")?></div>
     <?
 }
 
@@ -460,7 +469,7 @@ function showSettingsAliases($readonly = ""){
 
 	<?
 	$aliases = $_system->dataaliases;
-    $data_tables = getDataTables();
+    $data_tables = $_system->datatables;
     // replace the standard alternate key with the table name
     foreach($aliases as $key => $arry){
         $tkey = DB_TABLE_PREFIX.$arry['db_table'];
@@ -468,8 +477,8 @@ function showSettingsAliases($readonly = ""){
         $aliases[$tkey] = $arry;
     }
     ?>
-    <div class="setlabel"><strong>Table</strong></div>
-    <div class="setdata"><strong>Alias Meta</strong></div>
+    <div class="setlabel"><h3 class="header">Table</h3></div>
+    <div class="setdata"><h3 class="header">Alias Meta</h3></div>
     <?
 	foreach($data_tables as $table){
         $t = str_replace(DB_TABLE_PREFIX, "", $table);

@@ -14,9 +14,10 @@ class SystemClass {
 	// overloaded data
 	private $_system = array();
 	private $_keys = array( "plugins", "pluginsincl", "pluginsprob", "frameworks", "dataaliases",
-							"incl", "currentexecplugin", "get", "post", "filesys");
+							"incl", "currentexecplugin", "get", "post", "filesys"
+                            );
 	private $_arykeys = array("info");
-	private $_subkeys = array();
+	private $_subkeys = array("datatables");
 	protected static $_instance = null;
 
 	private function __construct() {
@@ -53,7 +54,7 @@ class SystemClass {
 		}elseif(in_array($name, $this->_arykeys)){
 			// return array
 			return getIfSet($this->_system[$name]);
-		}elseif(in_array($name, $this->_subKeys)){
+		}elseif(in_array($name, $this->_subkeys)){
 			// return subarray value
 			return getIfSet($this->_system['subkeys'][$name]);
 		}else{
@@ -69,7 +70,7 @@ class SystemClass {
 		}elseif(in_array($name, $this->_arykeys)){
 			// set array
 			$this->_system[$name][] = $value;
-		}elseif(in_array($name, $this->_subKeys)){
+		}elseif(in_array($name, $this->_subkeys)){
 			// set subarray value
 			$this->_system['subkeys'][$name] = $value;
 		}else{

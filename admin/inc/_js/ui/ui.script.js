@@ -40,8 +40,6 @@ jQuery(function($) {
 	$("#tabs-plugins").tabs();
 	$("#tabs-adv").tabs();
 	$("#cfgdiv").tabs();
-    $("#adminmenu_navigation").sortable();
-    $("#adminmenu_subnavigation").sortable({opacity: 0.8, revert: true, placeholder: 'adminmenu_ui_placeholder', forcePlaceholderSize: true});
 
 	$('body').append('<div id="hovertip_div"></div>');
 });
@@ -207,6 +205,8 @@ jQuery(function($){
 	        resizable: false
 	    });
 
+        // Themes
+
 	    $("#chgtheme").click(function(){
 	        var root = $("#themebody").attr("rel");
 	        var val = $("#themechgsel").val();
@@ -282,6 +282,46 @@ jQuery(function($){
 	        }
 	        return false;
 	    });
+
+        // Menus
+
+        $('#adminmenu_subnavigation').sortable({
+            opacity: 0.8
+        });
+
+        $('#adminmenu_navigation').sortable({
+            opacity: 0.8,
+            stop: function(){
+                var newmenus = [];
+                $('#adminmenu_navigation li').each(function(){
+                    newmenus.push($(this).attr('id').substring(8));
+                });
+                $.ajax({
+                    type: "POST",
+                    url: admin_url+"ajaxwrapper.php",
+                    data: "op=updateadminmenulayout&val="+newmenus,
+                    success: function(){
+                    }
+                });
+            }
+        });
+
+        $('.adminmenu_topelem').click(function(e){
+            e.preventDefault();
+            var rel = $(this).attr('rel');
+            var mnu = $(this).parent();
+            $('#adminmenu_navigation li').each(function(){
+               $(this).removeClass('chosen').addClass('unchosen');
+            });
+            mnu.addClass('chosen');
+  	        $.post(
+	            admin_url+"ajaxwrapper.php",
+	            {op:'getadminmenueditorhtml', val:rel, level:'top'},
+	            function(html){
+                    $('#adminmenu_editor').html(html);
+	            }
+            );
+        });
 
 	    // Plugins
 

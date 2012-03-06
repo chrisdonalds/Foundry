@@ -28,8 +28,19 @@ class StatsClass {
 		return $s;
 	}
 
-	public function showProperties(){
-		printr(array_merge($this->_keys, $this->_arykeys, $this->_subkeys));
+	public function show_properties(){
+        foreach($this->_keys as $k) print "[$k] = ".getIfSet($this->_system[$k])."<br>";
+        foreach($this->_arykeys as $k)
+            if(isset($this->_system[$k])) print "[$k] = <pre>".printr($this->_system[$k])."</pre><br/>";
+        foreach($this->_subkeys as $k){
+            if(isset($this->_system['subkeys'][$k])) {
+                print "[$k] = ";
+                if(is_array($this->_system['subkeys'][$k]))
+                    print "<pre>".print_r($this->_system['subkeys'][$k], true)."</pre><br/>";
+                else
+                    print $this->_system['subkeys'][$k]."<br/>";
+            }
+        }
 	}
 
 	public function __get($name){
@@ -39,7 +50,7 @@ class StatsClass {
 		}elseif(in_array($name, $this->_arykeys)){
 			// return array
 			return getIfSet($this->_system[$name]);
-		}elseif(in_array($name, $this->_subKeys)){
+		}elseif(in_array($name, $this->_subkeys)){
 			// return subarray value
 			return getIfSet($this->_system['subkeys'][$name]);
 		}else{
@@ -55,7 +66,7 @@ class StatsClass {
 		}elseif(in_array($name, $this->_arykeys)){
 			// set array
 			$this->_system[$name][] = $value;
-		}elseif(in_array($name, $this->_subKeys)){
+		}elseif(in_array($name, $this->_subkeys)){
 			// set subarray value
 			$this->_system['subkeys'][$name] = $value;
 		}else{

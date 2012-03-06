@@ -65,6 +65,7 @@ if(isset($_SESSION['curpage'])) $_SESSION['prevpage'] = $_SESSION['curpage'];
 $_SESSION['curpage'] = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 $info = array("referer" => $_SESSION['prevpage'], "curpage" => $_SESSION['curpage'], "prevpage" => $_SESSION['prevpage']);
 $_system->info = $info;
+$_system->datatables = getDataTables();
 
 //*****************************************************************************
 //   USER-CLASS PREPARATION
@@ -104,7 +105,6 @@ if(isset($_SESSION[$_page->uri]['page'])){
 }
 $_page->limit = LIST_ROWLIMIT;
 $_page->offset = ($_page->pagenum - 1) * LIST_ROWLIMIT;
-
 $_page->savebuttonpressed = (getRequestVar('_savebuttonpressed') != '');
 
 //*****************************************************************************
@@ -175,6 +175,7 @@ if(!defined("BASIC_GETINC")){
 	$menu['altsections'] = $altsections;
 
 	$_page->menu = $menu;
+    $_page->menus = getAdminMenus();
 }else{
 
 	initPluginsandFrameworks();

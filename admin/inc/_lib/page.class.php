@@ -15,7 +15,7 @@
 class PageClass {
 	// overloaded data
 	private $_page = array();
-	private $_keys = array("header", "footer", "menu", "help", "sectionid");
+	private $_keys = array("header", "footer", "menu", "menus", "help", "sectionid");
 	private $_arykeys= array("headlines");
 	private $_subkeys = array(
 							"search_list", "search_text",
@@ -57,7 +57,7 @@ class PageClass {
             }
         }
 	}
-	
+
 	public function showProperties(){
 		printr(array_merge($this->_keys, $this->_arykeys, $this->_subkeys));
 	}
