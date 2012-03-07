@@ -74,6 +74,9 @@ if(!SITEOFFLINE){
     }elseif(setupPageController()){
         //... EC04: call the applicable controller class method
         exit;
+    }elseif(setupRSSData()){
+        //... EC05: call the RSS handler
+        exit;
     }
 
     if(!$_page->found){

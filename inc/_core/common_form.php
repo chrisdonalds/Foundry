@@ -17,6 +17,7 @@ if(!defined("VALID_LOAD")) die("This file cannot be accessed directly!");
 include (SITE_PATH.ADMIN_FOLDER.LIB_FOLDER."front.class.php");
 $_page  = PageClass::init();
 $_data  = DataClass::init();
+$_rss   = RPCClass::init();
 
 define('FRM_ERR_NODATA', 'Dataset empty');
 define('FRM_ERR_PATHNOTFOUND', 'URI path not found.');
@@ -292,6 +293,26 @@ function setupPageData(){
  */
 function setupPageController(){
 
+}
+
+/**
+ * Core: Start of the Data Alias mechanism.
+ * Prepares the $_data object with record data.
+ * @return boolean
+ * @todo hook here
+ */
+function setupRSSData(){
+	global $_page, $_rss, $_system;
+
+    $_rss->found = false;
+    $err = '';
+	if($_page->name != "") {
+        // first, break URI at / to get the table segment
+        $uri = ltrim(strtolower($_page->name), "/");
+        $url_parts = explode("/", $uri);
+        //printr($url_parts);
+    }
+    return $_rss->found;
 }
 
 // ----------- PAGE FUNCTIONS ---------------
