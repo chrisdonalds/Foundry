@@ -447,7 +447,7 @@ function showSettingsMenusforAdmin(){
             <a href="#" id="adminmenu_addsub" title="Add new menu to sub level"><span>+</span></a>
         </div>
     </div>
-    <div id="adminmenu_editor"><?=getAdminMenuEditorHTML(key($menus), "top")?></div>
+    <div id="adminmenu_editor"><?=getAdminMenuEditorHTML(key($menus), "", "top")?></div>
     <?
 }
 

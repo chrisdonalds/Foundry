@@ -127,7 +127,7 @@ h4 {
 }
 
 .blue {
-    color: #aa0000;
+    color: #0000aa;
 }
 
 .redtext {
@@ -1725,6 +1725,15 @@ label {
 	display: block;
 	vertical-align: middle;
 }
+
+#adminmenu_navigation .selected a,
+#adminmenu_subnavigation .selected a,
+#adminmenu_navigation .selected a:visited,
+#adminmenu_subnavigation .selected a:visited {
+    background-color: #ddddff;
+    color: #fff;
+}
+
 
 /* PLUGINS */
 

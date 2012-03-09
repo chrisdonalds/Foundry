@@ -685,7 +685,7 @@ function showListDataRows($recset, $cols, $colsize, $totalcols, $colattr,
 						$is_gallerydef = (getIntValIfSet($rec['gallery_def']) > 0);
 						switch ($label) {
 							case DEF_ACTION_ADD:
-								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>Add ".(($alias == "") ? "" : $alias)."</a>";
+								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">Add ".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_EDIT:
 								if(!$is_deleted) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">Edit".(($alias == "") ? "" : $alias)."</span></a>";
@@ -694,61 +694,61 @@ function showListDataRows($recset, $cols, $colsize, $totalcols, $colattr,
 								if(!$is_deleted) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">Edit".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_EDITMETA:
-								if(!$is_deleted) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>Edit ".(($alias == "") ? "Meta-Data" : $alias)."</a>";
+								if(!$is_deleted) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">Edit ".(($alias == "") ? "Meta-Data" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_DELETE:
 								if(!$is_deleted && !$is_locked && !$is_protected && ALLOW_DELETE) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"red\">Delete".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_UNDELETE:
-								if($is_deleted && !$is_locked && ALLOW_DELETE) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>Un-Delete".(($alias == "") ? "" : $alias)."</a>";
+								if($is_deleted && !$is_locked && ALLOW_DELETE) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">Un-Delete".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_PUBLISH:
-								if(!$is_published && !$is_deleted && !$is_archived && ALLOW_PUBLISH) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"bold\">Publish".(($alias == "") ? "" : $alias)."</span></a>";
+								if(!$is_published && !$is_deleted && !$is_archived && ALLOW_PUBLISH) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue bold\">Publish".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_UNPUBLISH:
-								if($is_published && !$is_deleted && !$is_archived && ALLOW_PUBLISH) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"bold\">Un-Publish".(($alias == "") ? "" : $alias)."</span></a>";
+								if($is_published && !$is_deleted && !$is_archived && ALLOW_PUBLISH) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue bold\">Un-Publish".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_ACTIVATE:
-								if(!$is_activated && !$is_deleted && !$is_archived && ALLOW_PUBLISH) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"bold\">Activate".(($alias == "") ? "" : $alias)."</span></a>";
+								if(!$is_activated && !$is_deleted && !$is_archived && ALLOW_PUBLISH) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue bold\">Activate".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_DEACTIVATE:
-								if($is_activated && !$is_deleted && !$is_archived && ALLOW_PUBLISH) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"bold\">Deactivate".(($alias == "") ? "" : $alias)."</span></a>";
+								if($is_activated && !$is_deleted && !$is_archived && ALLOW_PUBLISH) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue bold\">Deactivate".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_ARCHIVE:
-								if(!$is_archived && !$is_deleted && ALLOW_ARCHIVE) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>Archive".(($alias == "") ? "" : $alias)."</a>";
+								if(!$is_archived && !$is_deleted && ALLOW_ARCHIVE) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">Archive".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_UNARCHIVE:
-								if($is_archived && !$is_deleted && ALLOW_ARCHIVE) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>Un-Arc".(($alias == "") ? "" : $alias)."</a>";
+								if($is_archived && !$is_deleted && ALLOW_ARCHIVE) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">Un-Arc".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_SUBSCRIBE:
-								if(!$is_subscribed && !$is_deleted) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"bold\">Subscribe".(($alias == "") ? "" : $alias)."</span></a>";
+								if(!$is_subscribed && !$is_deleted) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue bold\">Subscribe".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_UNSUBSCRIBE:
-								if($is_subscribed && !$is_deleted) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"bold\">Un-Subscribe".(($alias == "") ? "" : $alias)."</span></a>";
+								if($is_subscribed && !$is_deleted) $stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue bold\">Un-Subscribe".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_VIEW:
-								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>View ";
+								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">View ";
 								$stub .= (!isBlank($butlabelstr[1])) ? $butlabelstr[1] : (($alias == "") ? "" : $alias);
 								$stub.= "</a>";
 								break;
 							case DEF_ACTION_VIEWRECS:
-								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>View ";
+								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">View ";
 								$stub .= (!isBlank($butlabelstr[1])) ? $butlabelstr[1] : (($alias == "") ? "List" : $alias);
-								$stub.= "</a>";
+								$stub.= "</span></a>";
 								break;
 							case DEF_ACTION_VIEWPAGES:
-								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>View ";
+								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">View ";
 								$stub .= (!isBlank($butlabelstr[1])) ? $butlabelstr[1] : (($alias == "") ? "Pages" : $alias);
-								$stub.= "</a>";
+								$stub.= "</span></a>";
 								break;
 							case DEF_ACTION_OPEN:
-								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>Switch To".(($alias == "") ? "" : $alias)."</a>";
+								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">Switch To".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_REPLY:
 								if(!$is_replied) {
-									$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>".(($alias == "") ? "View/Reply" : $alias)."</a>";
+									$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">".(($alias == "") ? "View/Reply" : $alias)."</span></a>";
 								}else{
-									$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>".(($alias == "") ? "View" : $alias)."</a>";
+									$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">".(($alias == "") ? "View" : $alias)."</span></a>";
 								}
 								break;
 							case DEF_ACTION_SEND:
@@ -762,15 +762,15 @@ function showListDataRows($recset, $cols, $colsize, $totalcols, $colattr,
 								break;
 							case DEF_ACTION_CLONE:
 								$tag = " tag=\"".str_replace(array("&#34;","&#39;"), array("", ""), $rec[$pagedata->titlefld])."\"";
-								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>Clone</a>";
+								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">Clone</span></a>";
 								break;
 							case DEF_ACTION_EXPORT:
-								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>Export".(($alias == "") ? "" : $alias)."</a>";
+								$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">Export".(($alias == "") ? "" : $alias)."</span></a>";
 								break;
 							case DEF_ACTION_DEFAULT:
 								if($is_published && !$is_deleted) {
 									if(!$is_gallerydef) {
-										$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}>Set as ".(($alias == "") ? " Default" : $alias)."</a>";
+										$stub = "<a href=\"#\" class=\"action_$label\"{$rel}{$tag}><span class=\"blue\">Set as ".(($alias == "") ? " Default" : $alias)."</span></a>";
 									}else{
 										$stub = "<b>Is ".(($alias == "") ? "Default" : $alias)."</b>";
 									}
@@ -1470,37 +1470,54 @@ function updateAdminMenusLayout($newlayout){
 }
 
 /**
- * Return HTML form fields
+ * Return Admin Menu Editor HTML form fields
  * @global type $_system
  * @global type $_page
  * @param type $menukey
  * @param type $level
  * @return string
  */
-function getAdminMenuEditorHTML($menukey, $level){
+function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
     global $_system, $_page;
 
     $outp = '';
     if(!isblank($menukey) && in_array($level, array("top", "sub"))){
         if(defined('IN_AJAX')) {
-            $menu = getAdminMenus($menukey);
+            $menus = getAdminMenus();
         }else{
             $menus = $_page->menus;
-            $menu = getIfSet($menus[$menukey]);
         }
-        if(!isBlank($menu)){
+        if(!isBlank($menus)){
             // prepare fields from saved data
+            $menutables = array();
+            foreach($menus as $tkey => $topmenu){
+                if($tkey != $menukey) $menutables[] = $topmenu['table'];
+                if(is_array($topmenu['childmenus'])){
+                    foreach($topmenu['childmenus'] as $skey => $submenu){
+                        if($skey != $menukey) $menutables[] = $submenu['table'];
+                    }
+                }
+            }
+            $datatables = array("pages") + $_system->datatables;
+            $datatables = array_diff($datatables, $menutables);
+            array_unshift($datatables, '- Unknown -');
+
+            if($level == "top"){
+                $menu = getIfSet($menus[$menukey]);
+            }else{
+                $menu = getIfSet($menus[$parentmenukey]['childmenus'][$menukey]);
+            }
+            if(count($menu) == 0) $menu = array("title" => "", "table" => "", "filealias" => "", "tocategory" => 0, "topage" => 0);
+
             if($level == "top"){
                 // table, title, tocategory, file alias, topage
                 $outp = '<h3 class="header">Edit Top-Level Menu</h3>'.PHP_EOL;
-                $outp.= '<div class="setlabel">Menu Title:</div><div class="setdata"><input type="text" id="adminmenu_title" name="adminmenu_title" value="'.$menu['title'].'" /></div>'.PHP_EOL;
-                $outp.= '<div class="setlabel">Menu Code:</div><div class="setdata"><input type="text" id="adminmenu_code" name="adminmenu_code" value="'.$menukey.'" /></div>'.PHP_EOL;
-                $outp.= '<div class="setlabel">File Alias:</div><div class="setdata"><input type="text" id="adminmenu_filealias" name="adminmenu_filealias" value="'.getIfSet($menu['filealias']).'" /></div>'.PHP_EOL;
-                $outp.= '<div class="setlabel">Table this Menu is Bound to:</div><div class="setdata">';
+                $outp.= '<div class="setlabel">Menu Title: <span class="hovertip" alt="The unique text displayed on the menu bar">[?]</span></div><div class="setdata">';
+                $outp.= '<input type="text" id="adminmenu_title" name="adminmenu_title" value="'.$menu['title'].'" /><input type="hidden" id="adminmenu_code" name="adminmenu_code" value="'.$menukey.'" />';
+                $outp.= '</div>'.PHP_EOL;
 
                 if($menu['table'] != 'pages') {
-                    $datatables = $_system->datatables;
-                    array_unshift($datatables, '- Unknown -', 'pages');
+                    $outp.= '<div class="setlabel">Table this Menu is Bound to<span class="red">*</span>: <span class="hovertip" alt="These are the available data tables">[?]</span></div><div class="setdata">';
                     $outp .= '<select id="adminmenu_table" name="adminmenu_table">'.PHP_EOL;
                     foreach($datatables as $table){
                         $sel = (($table == $menu['table']) ? ' selected="selected"' : '');
@@ -1508,14 +1525,35 @@ function getAdminMenuEditorHTML($menukey, $level){
                         $outp.= '<option value="'.$table.'"'.$sel.'>'.$table.'</option>'.PHP_EOL;
                     }
                     $outp.= '</select></div>'.PHP_EOL;
-                    $outp.= '<div class="setlabel">Menu links to Category Data?:</div><div class="setdata"><input type="checkbox" id="adminmenu_tocategory" name="adminmenu_tocategory" value="1"'.(($menu['tocategory'] == 1) ? ' checked="checked"' : '').' /> Yes, the target lists only category data.</div>'.PHP_EOL;
-                    $outp.= '<div class="setlabel">Menu goes to an Edit Page?:</div><div class="setdata"><input type="checkbox" id="adminmenu_topage" name="adminmenu_topage" value="1"'.(($menu['topage'] == 1) ? ' checked="checked"' : '').' /> Yes, the target is an edit rather than a list page.</div>'.PHP_EOL;
+                    $outp.= '<div class="setlabel">File Alias: <span class="hovertip" alt="A file alias allows you to specify an alternate target URL for the menu">[?]</span></div><div class="setdata"><input type="text" id="adminmenu_filealias" name="adminmenu_filealias" value="'.getIfSet($menu['filealias']).'" /></div>'.PHP_EOL;
+                    $outp.= '<div class="setlabel">Menu Target Type: <span class="hovertip" alt="Choose whether clicking a menu goes to a data list, category list, or edit page">[?]</span></div><div class="setdata"><select id="adminmenu_target" name="adminmenu_target">'.PHP_EOL;
+                    $outp.= '<option value=""'.(($menu['tocategory'] == 0 && $menu['topage'] == 0) ? ' selected="selected"' : '').'>To a data list [default]</option>'.PHP_EOL;
+                    $outp.= '<option value="tocategory"'.(($menu['tocategory'] != 0) ? ' selected="selected"' : '').'>To a category list</option>'.PHP_EOL;
+                    $outp.= '<option value="topage"'.(($menu['topage'] != 0) ? ' selected="selected"' : '').'>To an edit page</option>'.PHP_EOL;
+                    $outp.= '</select></div>'.PHP_EOL;
                 }else{
+                    $outp.= '<div class="setlabel">Table this Menu is Bound to: <span class="hovertip" alt="The \'Page\' menu is always bound to the \'pages\' table">[?]</span></div><div class="setdata">';
                     $outp .= $menu['table'].'</div>'.PHP_EOL;
                 }
-                $outp.= '<div class="setlabel">Derived Menu Target Path:</div><div class="setdata" class="adminmenu_targeturl">'.$menu['target'].'</div>'.PHP_EOL;
+                $outp.= '<div class="setlabel">Derived Menu Target Path: <span class="hovertip" alt="This is the target URL based on the bound table, file alias, and target type settings">[?]</span></div><div class="setdata" class="adminmenu_targeturl">'.$menu['target'].'</div>'.PHP_EOL;
+                $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savetop" value="Save Changes" /></div>'.PHP_EOL;
             }else{
                 // parenttable, table, title, file alias
+                $outp = '<h3 class="header">Edit Sub-Level Menu</h3>'.PHP_EOL;
+                $outp.= '<div class="setlabel">Menu Title: <span class="hovertip" alt="The unique text displayed on the menu bar">[?]</span></div><div class="setdata">';
+                $outp.= '<input type="text" id="adminmenu_title" name="adminmenu_title" value="'.$menu['title'].'" /><input type="hidden" id="adminmenu_code" name="adminmenu_code" value="'.$menukey.'" /><input type="hidden" id="adminmenu_parent" name="adminmenu_parent" value="'.$parentmenukey.'" />';
+                $outp.= '</div>'.PHP_EOL;
+                $outp.= '<div class="setlabel">Table this Menu is Bound to<span class="red">*</span>: <span class="hovertip" alt="These are the available data tables">[?]</span></div><div class="setdata">';
+                $outp .= '<select id="adminmenu_table" name="adminmenu_table">'.PHP_EOL;
+                foreach($datatables as $table){
+                    $sel = (($table == $menu['table']) ? ' selected="selected"' : '');
+                    $key = (($table != '- Unknown -') ? $table : '');
+                    $outp.= '<option value="'.$table.'"'.$sel.'>'.$table.'</option>'.PHP_EOL;
+                }
+                $outp.= '</select></div>'.PHP_EOL;
+                $outp.= '<div class="setlabel">File Alias: <span class="hovertip" alt="A file alias allows you to specify an alternate target URL for the menu">[?]</span></div><div class="setdata"><input type="text" id="adminmenu_filealias" name="adminmenu_filealias" value="'.getIfSet($menu['filealias']).'" /></div>'.PHP_EOL;
+                $outp.= '<div class="setlabel">Derived Menu Target Path: <span class="hovertip" alt="This is the target URL based on the bound table, file alias, and target type settings">[?]</span></div><div class="setdata" class="adminmenu_targeturl">'.$menu['target'].'</div>'.PHP_EOL;
+                $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savetop" value="Save Changes" /></div>'.PHP_EOL;
             }
         }else{
             // prepare fields with no data
@@ -1524,4 +1562,34 @@ function getAdminMenuEditorHTML($menukey, $level){
     return $outp;
 }
 
+/**
+ * Return the sub-level menu listitems for a top-level menu
+ * @param string $menukey
+ * @return string
+ */
+function getAdminMenuEditorSubMenu($menukey){
+    global $_system, $_page;
+
+    $outp = '';
+    if(!isblank($menukey)){
+        if(defined('IN_AJAX')) {
+            $menu = getAdminMenus($menukey);
+        }else{
+            $menus = $_page->menus;
+            $menu = getIfSet($menus[$menukey]);
+        }
+        if(!isBlank($menu['childmenus'])){
+            $outp = "";
+            foreach($menu['childmenus'] as $key => $submenu){
+                $chosen = (($outp == "") ? "chosen" : "unchosen");
+                $outp .= "<li class=\"{$chosen}\" id=\"setsubmenu_".$key."\"><a href=\"#\" class=\"adminmenu_subelem\" rel=\"{$menukey}:{$key}\" title=\"Click to edit; drag to re-order\">{$submenu['title']}</a></li>\n";
+            }
+        }
+    }
+    return $outp;
+}
+
+function saveAdminMenu($level, $key, $table, $target, $alias){
+
+}
 ?>

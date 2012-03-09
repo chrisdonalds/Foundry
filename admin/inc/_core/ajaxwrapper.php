@@ -113,8 +113,24 @@ switch($op){
     case 'getadminmenueditorhtml':
         $level = getRequestVar('level');
         if($val != '' && $level != '') {
-            $html = getAdminMenuEditorHTML($val, $level);
+            if($level == 'top'){
+                $html = getAdminMenuEditorHTML($val, "", $level);
+                $html.= "||".getAdminMenuEditorSubMenu($val);
+            }else{
+                $vals = explode(":", $val);
+                $html = getAdminMenuEditorHTML($vals[1], $vals[0], $level);
+            }
             echo $html;
+        }
+        break;
+    case 'saveadmintopmenu':
+        extractVariables($_REQUEST);
+        if($key == 'pages'){
+            $table = 'pages';
+            $target = '';
+        }
+        if($key != '' && $table != '' && $target != ''){
+            saveAdminMenu("top", $key, $table, $target, $alias);
         }
         break;
 

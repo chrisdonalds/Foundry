@@ -47,7 +47,8 @@ jQuery(function($) {
 jQuery(function($){
 	$(document).ready(function(){
 		var base_url = $('#base_url').val();
-	    var admin_url = $('#admin_folder').val();
+	    var admin_core_url = $('#admin_folder').val();
+        if(admin_core_url == undefined) admin_core_url = base_url + 'inc/_core/';
 
 	    $("#helpdialog").dialog({
 			autoOpen: false,
@@ -136,7 +137,7 @@ jQuery(function($){
         $('#help_phpcfg_link').click(function(e){
             e.preventDefault();
             $.post(
-                admin_url+"ajaxwrapper.php",
+                admin_core_url+"ajaxwrapper.php",
                 {'op':'getphpinfo'},
                 function(html){
                     if(html != ''){
@@ -150,7 +151,7 @@ jQuery(function($){
         $('#aboutbtn').click(function(e){
             e.preventDefault();
             $('#helpdialog').load(
-                admin_url + '../../aboutdialog.php',
+                base_url + 'aboutdialog.php',
                 function(){
                     $('#helpdialog').dialog('open');
                 });
@@ -298,7 +299,7 @@ jQuery(function($){
                 });
                 $.ajax({
                     type: "POST",
-                    url: admin_url+"ajaxwrapper.php",
+                    url: admin_core_url+"ajaxwrapper.php",
                     data: "op=updateadminmenulayout&val="+newmenus,
                     success: function(){
                     }
@@ -311,16 +312,90 @@ jQuery(function($){
             var rel = $(this).attr('rel');
             var mnu = $(this).parent();
             $('#adminmenu_navigation li').each(function(){
-               $(this).removeClass('chosen').addClass('unchosen');
+               $(this).removeClass('chosen selected').addClass('unchosen');
             });
-            mnu.addClass('chosen');
+            mnu.removeClass('unchosen').addClass('chosen selected');
   	        $.post(
-	            admin_url+"ajaxwrapper.php",
+	            admin_core_url+"ajaxwrapper.php",
 	            {op:'getadminmenueditorhtml', val:rel, level:'top'},
+	            function(html){
+                    var html_parts = html.split("||");
+                    $('#adminmenu_editor').html(html_parts[0]);
+                    $('#adminmenu_subnavigation').html(html_parts[1]);
+	            }
+            );
+        });
+
+        $('ul').delegate('.adminmenu_subelem', 'click', function(e){
+            e.preventDefault();
+            var rel = $(this).attr('rel');
+            var mnu = $(this).parent();
+            $('#adminmenu_subnavigation li').each(function(){
+               $(this).removeClass('chosen selected').addClass('unchosen');
+            });
+            mnu.removeClass('unchosen').addClass('chosen selected');
+            $('#adminmenu_navigation li.selected').removeClass('selected');
+  	        $.post(
+	            admin_core_url+"ajaxwrapper.php",
+	            {op:'getadminmenueditorhtml', val:rel, level:'sub'},
 	            function(html){
                     $('#adminmenu_editor').html(html);
 	            }
             );
+        });
+
+        $('div').delegate('#adminmenu_savetop', 'click', function(e){
+            e.preventDefault();
+            var key   = $('#adminmenu_code').val();
+            var title = $('#adminmenu_title').val().replace(/(\|)/g, '');
+            var table = $('#adminmenu_table').val();
+            var alias = $('#adminmenu_filealias').val().replace(/([^a-z0-9_\-])/ig, '');
+            var target= $('#adminmenu_target').val();
+
+            var errmsg= '';
+            if(table == '- Unknown -' && key != 'pages') errmsg = 'The table is required';
+            $('#adminmenu_navigation .unchosen a').each(function(){
+                if($(this).text().toLowerCase() == title.toLowerCase()) errmsg = 'The menu title must be unique';
+            });
+            if(title == '') errmsg = 'The menu title is required.';
+            if(errmsg != '') {
+                alert(errmsg);
+            }else{
+                $.post(
+                    admin_core_url+"ajaxwrapper.php",
+                    {op:'saveadmintopmenu', key:key, title:title, table:table, alias:alias, target:target, level:'top'},
+                    function(jsondata){
+                    }
+                );
+            }
+            return false;
+        });
+
+        $('div').delegate('#adminmenu_savesub', 'click', function(e){
+            e.preventDefault();
+            var key   = $('#adminmenu_code').val();
+            var parent= $('#adminmenu_parent').val();
+            var title = $('#adminmenu_title').val().replace(/(\|)/g, '');
+            var table = $('#adminmenu_table').val();
+            var alias = $('#adminmenu_filealias').val().replace(/([^a-z0-9_\-])/ig, '');
+
+            var errmsg= '';
+            if(table == '- Unknown -') errmsg = 'The table is required';
+            $('#adminmenu_subnavigation .unchosen a').each(function(){
+                if($(this).text().toLowerCase() == title.toLowerCase()) errmsg = 'The menu title must be unique';
+            });
+            if(title == '') errmsg = 'The menu title is required.';
+            if(errmsg != '') {
+                alert(errmsg);
+            }else{
+                $.post(
+                    admin_core_url+"ajaxwrapper.php",
+                    {op:'saveadmintsubmenu', key:key, title:title, table:table, alias:alias, level:'sub'},
+                    function(jsondata){
+                    }
+                );
+            }
+            return false;
         });
 
 	    // Plugins
@@ -348,7 +423,7 @@ jQuery(function($){
 	        var tostate = 0;
 	        if(elem.text() == 'Activate') tostate = 1;
 	        $.post(
-	            admin_url+"ajaxwrapper.php",
+	            admin_core_url+"ajaxwrapper.php",
 	            {op:'setpluginactivestate', val:tostate, id:p_id},
 	            function(jsondata){
 	                if(jsondata.success){
@@ -378,14 +453,14 @@ jQuery(function($){
 	        var p_slug = p_row.find('.plugin_slug').val();
 	        if(confirm("Do you want to delete the plugin '" + p_name + "'?")){
 	            $.post(
-	                admin_url+"ajaxwrapper.php",
+	                admin_core_url+"ajaxwrapper.php",
 	                {op:'deleteplugin', val:'', id:p_id},
 	                function(jsondata){
 	                    var lead = '<br/>&nbsp;&nbsp;&bull;&nbsp;';
 	                    if(jsondata.success){
 	                        $('#plugin_problem').append(jsondata.rtndata.row);
 	                        if(jsondata.rtndata.setting != '') $('#plugin_setting_'+jsondata.rtndata.setting).remove();
-	                        p_row.hide("blind", { direction: "vertical" }, 300)
+	                        p_row.hide("blind", {direction: "vertical"}, 300)
 	                        p_row.remove();
 	                    }else{
 	                        $('#issue-plugins').removeClass('disabled');
@@ -405,14 +480,14 @@ jQuery(function($){
 	        var p_id = p_row.find('.plugin_id').val();
 	        var p_slug = p_row.find('.plugin_slug').val();
 	        $.post(
-	            admin_url+"ajaxwrapper.php",
+	            admin_core_url+"ajaxwrapper.php",
 	            {op:'undeleteplugin', val:'', id:p_id},
 	            function(jsondata){
 	                if(jsondata.success){
 	                    alert('The plugin has been restored.');
 	                    $('#plugin_installed').append(jsondata.rtndata.row);
 	                    if(jsondata.rtndata.setting != '') $('#plugin_settings').append(jsondata.rtndata.setting);
-	                    p_row.hide("blind", { direction: "vertical" }, 300)
+	                    p_row.hide("blind", {direction: "vertical"}, 300)
 	                    p_row.remove();
 	                }else{
 	                    alert('The plugin could not be restored.');
@@ -431,12 +506,12 @@ jQuery(function($){
 	        var p_name = p_row.find('.plugin_title').val();
 	        if(confirm("Do you want to permanently scrap the plugin '" + p_name + "'?")){
 	            $.post(
-	                admin_url+"ajaxwrapper.php",
+	                admin_core_url+"ajaxwrapper.php",
 	                {op:'scrapplugin', val:'', id:p_id},
 	                function(jsondata){
 	                    var lead = '<br/>&nbsp;&nbsp;&bull;&nbsp;';
 	                    if(jsondata.success){
-	                    	p_row.effect("pulsate", {times: 2}, 200, function(){ p_row.remove(); });
+	                    	p_row.effect("pulsate", {times: 2}, 200, function(){p_row.remove();});
 	                    }else{
 	                        $('#issue-plugins').removeClass('disabled');
 	                        $('#issue-plugins').append(lead + jsondata.rtndata);
@@ -455,7 +530,7 @@ jQuery(function($){
 	        var p_row = elem.closest('.plugin_row');
 	        var p_id = p_row.find('.plugin_id').val();
 	        $('#genpanel3').load(
-	            admin_url+"ajaxwrapper.php",
+	            admin_core_url+"ajaxwrapper.php",
 	            {op:'getpluginrepairform', id:p_id},
 	            function(){
 	                $('#genpanel3').dialog('open');
@@ -474,7 +549,7 @@ jQuery(function($){
 	        var form_data = $('#plugin_repair_form').serialize();
 	        if(!e.isPropagationStopped()){
 		        $.post(
-		            admin_url+"ajaxwrapper.php",
+		            admin_core_url+"ajaxwrapper.php",
 		            {op:'repairplugincfg', val:form_data},
 		            function(jsondata){
 		                if(jsondata.success){
@@ -507,7 +582,7 @@ jQuery(function($){
 	            // show
 	            var p_id = p_row.find('.plugin_id').val();
 	            $.post(
-	                admin_url+"ajaxwrapper.php",
+	                admin_core_url+"ajaxwrapper.php",
 	                {op:'getplugindata', val:is_prob, id:p_id},
 	                function(jsondata){
 	                    if(jsondata.success){
@@ -531,7 +606,7 @@ jQuery(function($){
             var val = elem.val();
             if(val != ''){
 	            $.post(
-	                admin_url+"ajaxwrapper.php",
+	                admin_core_url+"ajaxwrapper.php",
 	                {op:'updateplugindata', val:val, rel:rel},
 	                function(jsondata){
 	                    if(jsondata.success){
@@ -550,7 +625,7 @@ jQuery(function($){
 	        var settingsfunc = $(this).attr('rel');
 	        if(settingsfunc != ''){
 		        $.post(
-		            admin_url+"ajaxwrapper.php",
+		            admin_core_url+"ajaxwrapper.php",
 		            {op:'runpluginsettingsfunc', val:settingsfunc},
 		            function(jsondata){
 		                if(jsondata.contents != ''){
@@ -576,7 +651,7 @@ jQuery(function($){
             var settingsdata = $('#pluginsettingsform').serialize();
 	        if(settingsfunc != '' && !e.isPropagationStopped()){
 	            $.post(
-	                admin_url+"ajaxwrapper.php",
+	                admin_core_url+"ajaxwrapper.php",
 	                {op:'runpluginsettingsaction', val:settingsfunc, action:'1', data:settingsdata},
 	                function(jsondata){
 	                    if(jsondata.success){
@@ -600,7 +675,7 @@ jQuery(function($){
 	        if(settingsfunc != '' && !e.isPropagationStopped()){
 	        	elem.attr('rel', '');
 	        	$.post(
-	                admin_url+"ajaxwrapper.php",
+	                admin_core_url+"ajaxwrapper.php",
 	                {op:'runpluginsettingsaction', val:settingsfunc, action:'2'},
 	                function(jsondata){
 	                    if(jsondata.success){
@@ -623,7 +698,7 @@ jQuery(function($){
 	        var p_id = p_row.find('.plugin_id').val();
 	        var p_name = p_row.find('.plugin_title').val();
 	        $.post(
-	                admin_url+"ajaxwrapper.php",
+	                admin_core_url+"ajaxwrapper.php",
 	                {op:'getsettingshelpfile', val:helpfile},
 	                function(html){
 	                	$('#genpanel3').html(html);
@@ -674,7 +749,7 @@ jQuery(function($){
 	            alert('This user is the last active admin and cannot be deactivated.');
 	        }else{
 		        $.post(
-		            admin_url+"ajaxwrapper.php",
+		            admin_core_url+"ajaxwrapper.php",
 		            {op:'setuseractivestate', val:tostate, id:u_id},
 		            function(jsondata){
 		                if(jsondata.success){
@@ -716,13 +791,13 @@ jQuery(function($){
 	        if(confirm("Delete the user '" + u_name + "'?\n\nThis cannot be undone.")){
 	            if(u_id > 0){
 	                $.post(
-	                    admin_url+"ajaxwrapper.php",
+	                    admin_core_url+"ajaxwrapper.php",
 	                    {op:'deleteuserdata', val:'', id:u_id},
 	                    function(jsondata){
 	                        if(jsondata.success){
 	                            $('users_count').val(u_count--);
 	                            $('#issue-users').html('User "' + u_name + '" has been deleted.').removeClass('disabled');
-                                u_row.effect("pulsate", {times: 2}, 200, function(){ u_row.remove(); });
+                                u_row.effect("pulsate", {times: 2}, 200, function(){u_row.remove();});
 	                        }else{
 	                            $('#issue-users').html(jsondata.rtndata).removeClass('disabled');
 	                        }
@@ -749,7 +824,7 @@ jQuery(function($){
 	        e.preventDefault();
 	        var u_count = parseInt($('#users_count').val());
 	        $.post(
-	            admin_url+"ajaxwrapper.php",
+	            admin_core_url+"ajaxwrapper.php",
 	            {op:'addnewuser', val:u_count},
 	            function(data){
 	                $('#tabs-users').append(data);
@@ -790,7 +865,7 @@ jQuery(function($){
             var elem = $(this);
             var meta = elem.val();
             $.post(
-                admin_url+"ajaxwrapper.php",
+                admin_core_url+"ajaxwrapper.php",
                 {'op':'validatedataaliasmeta', 'val':meta},
                 function(jsondata){
                     var notice = elem.siblings('.dataalias_notice');
@@ -887,10 +962,10 @@ jQuery(function($){
 	    $("#robots_revision").click(function(e){
 	    	e.preventDefault();
 	    	var file = $("#robots_revfile").val();
-	        $.get(admin_url+file, function(data){
+	        $.get(admin_core_url+file, function(data){
 	        	if(confirm("The selected file's contents are:\n\n"+data+"\nIs this the one you want?")){
 	                $.post(
-	                    admin_url+"ajaxwrapper.php",
+	                    admin_core_url+"ajaxwrapper.php",
 	                    {op:'revertrobotfile', val:file},
 	                    function(jsondata){
 	                    	if(jsondata.success){
@@ -922,7 +997,7 @@ jQuery(function($){
 	    $(document).delegate('.colorpicker_button', 'click', function(){
 	        if($('#settingscolorpicker').html() == ''){
 		        $.post(
-                    admin_url+"ajaxwrapper.php",
+                    admin_core_url+"ajaxwrapper.php",
                     {op:'getcolorpickercontents', val:''},
                     function(html){
                         $('#settingscolorpicker').html(html);
