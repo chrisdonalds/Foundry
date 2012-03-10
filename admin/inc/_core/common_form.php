@@ -1427,8 +1427,8 @@ function setupAdminMenusTargets($menus){
         $folder = preg_replace("/(^".DB_TABLE_PREFIX."|_cat)/i", "", $menu['table']);
         $filesuffix = preg_replace("/^".DB_TABLE_PREFIX."/i", "", $menu['table']);
         $fileprefix = 'list-';
-        if(isset($menu['filealias'])) $filesuffix = $menu['filealias'];
-        //if(getIfSet($menu['tocategory']) == true) $filesuffix .= '_cat';
+        if(getIfSet($menu['tocategory']) == true && !preg_match("/_cat$/i", $menu['table'])) $filesuffix .= '_cat';
+        if(!isblank($menu['alias'])) $filesuffix = $menu['alias'];
         if(getIfSet($menu['topage']) == true) $fileprefix = 'edit-';
         $menus[$key]['target'] = $folder."/".$fileprefix.$filesuffix.".php";
         if(!isblank($menu['childmenus'])){
@@ -1498,7 +1498,8 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
                     }
                 }
             }
-            $datatables = array("pages") + $_system->datatables;
+            $datatables = $_system->datatables;
+            array_unshift($datatables, 'pages');
             $datatables = array_diff($datatables, $menutables);
             array_unshift($datatables, '- Unknown -');
 
@@ -1507,7 +1508,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
             }else{
                 $menu = getIfSet($menus[$parentmenukey]['childmenus'][$menukey]);
             }
-            if(count($menu) == 0) $menu = array("title" => "", "table" => "", "filealias" => "", "tocategory" => 0, "topage" => 0);
+            if(count($menu) == 0) $menu = array("title" => "", "table" => "", "alias" => "", "tocategory" => 0, "topage" => 0);
 
             if($level == "top"){
                 // table, title, tocategory, file alias, topage
@@ -1525,7 +1526,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
                         $outp.= '<option value="'.$table.'"'.$sel.'>'.$table.'</option>'.PHP_EOL;
                     }
                     $outp.= '</select></div>'.PHP_EOL;
-                    $outp.= '<div class="setlabel">File Alias: <span class="hovertip" alt="A file alias allows you to specify an alternate target URL for the menu">[?]</span></div><div class="setdata"><input type="text" id="adminmenu_filealias" name="adminmenu_filealias" value="'.getIfSet($menu['filealias']).'" /></div>'.PHP_EOL;
+                    $outp.= '<div class="setlabel">File Alias: <span class="hovertip" alt="The optional file alias allows you to specify an alternate target URL for the menu.  If left blank, the system will use the data table to determine the target URL.<br/><br/>Just remember to leave off the \'list-\', \'edit-\', \'add-\', and \'_cat\' parts.">[?]</span></div><div class="setdata"><input type="text" id="adminmenu_filealias" name="adminmenu_filealias" value="'.getIfSet($menu['alias']).'" /></div>'.PHP_EOL;
                     $outp.= '<div class="setlabel">Menu Target Type: <span class="hovertip" alt="Choose whether clicking a menu goes to a data list, category list, or edit page">[?]</span></div><div class="setdata"><select id="adminmenu_target" name="adminmenu_target">'.PHP_EOL;
                     $outp.= '<option value=""'.(($menu['tocategory'] == 0 && $menu['topage'] == 0) ? ' selected="selected"' : '').'>To a data list [default]</option>'.PHP_EOL;
                     $outp.= '<option value="tocategory"'.(($menu['tocategory'] != 0) ? ' selected="selected"' : '').'>To a category list</option>'.PHP_EOL;
@@ -1551,9 +1552,9 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
                     $outp.= '<option value="'.$table.'"'.$sel.'>'.$table.'</option>'.PHP_EOL;
                 }
                 $outp.= '</select></div>'.PHP_EOL;
-                $outp.= '<div class="setlabel">File Alias: <span class="hovertip" alt="A file alias allows you to specify an alternate target URL for the menu">[?]</span></div><div class="setdata"><input type="text" id="adminmenu_filealias" name="adminmenu_filealias" value="'.getIfSet($menu['filealias']).'" /></div>'.PHP_EOL;
+                $outp.= '<div class="setlabel">File Alias: <span class="hovertip" alt="The optional file alias allows you to specify an alternate target URL for the menu.  If left blank, the system will use the data table to determine the target URL.<br/><br/>Just remember to leave off the \'list-\', \'edit-\', \'add-\', and \'_cat\' parts.">[?]</span></div><div class="setdata"><input type="text" id="adminmenu_filealias" name="adminmenu_filealias" value="'.getIfSet($menu['alias']).'" /></div>'.PHP_EOL;
                 $outp.= '<div class="setlabel">Derived Menu Target Path: <span class="hovertip" alt="This is the target URL based on the bound table, file alias, and target type settings">[?]</span></div><div class="setdata" class="adminmenu_targeturl">'.$menu['target'].'</div>'.PHP_EOL;
-                $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savetop" value="Save Changes" /></div>'.PHP_EOL;
+                $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savesub" value="Save Changes" /></div>'.PHP_EOL;
             }
         }else{
             // prepare fields with no data
@@ -1589,7 +1590,57 @@ function getAdminMenuEditorSubMenu($menukey){
     return $outp;
 }
 
-function saveAdminMenu($level, $key, $table, $target, $alias){
+/**
+ * Save menu data to database
+ * @param string $level
+ * @param string $key
+ * @param string $parent
+ * @param string $title
+ * @param string $table
+ * @param string $target
+ * @param string $alias
+ * @return boolean
+ */
+function saveAdminMenu($level, $key, $parent, $title, $table, $targettype, $alias){
+    global $_system, $_page;
 
+    $ok = false;
+    if(!isblank($level) && !isblank($key) && !isblank($table) && !isblank($title)){
+        if(defined('IN_AJAX')) {
+            $menus = getAdminMenus();
+        }else{
+            $menus = $_page->menus;
+        }
+
+        if($level == "top"){
+            if(isset($menus[$key])){
+                $childmenus = $menus[$key]['childmenus'];
+                $target = $menus[$key]['target'];
+                $menus[$key] = array(
+                    "table" => $table,
+                    "title" => $title,
+                    "tocategory" => ($targettype == "tocategory"),
+                    "topage" => ($targettype == "topage"),
+                    "alias" => $alias,
+                    "target" => $target,
+                    "childmenus" => $childmenus
+                );
+            }
+        }elseif(!isblank($parent)){
+            if(isset($menus[$parent]['childmenus'][$key])){
+                $target = $menus[$parent]['childmenus'][$key]['target'];
+                $menus[$parent]['childmenus'][$key] = array(
+                    "table" => $table,
+                    "title" => $title,
+                    "alias" => $alias,
+                    "target" => $target,
+                );
+            }
+        }
+
+        $menus_json = str_replace("'", "\'", json_encode($menus));
+        $ok = updateRec("settings", "`value` = '".$menus_json."'", "`name` = 'ADMIN_MENUS'");
+    }
+    return $ok;
 }
 ?>

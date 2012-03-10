@@ -127,11 +127,21 @@ switch($op){
         extractVariables($_REQUEST);
         if($key == 'pages'){
             $table = 'pages';
-            $target = '';
+            $targettype = '';
         }
-        if($key != '' && $table != '' && $target != ''){
-            saveAdminMenu("top", $key, $table, $target, $alias);
+        $ok = false;
+        if($key != '' && $table != '' && $title != ''){
+            $ok = saveAdminMenu($level, $key, "", $title, $table, $targettype, $alias);
         }
+        exitAjax($ok);
+        break;
+    case 'saveadminsubmenu':
+        extractVariables($_REQUEST);
+        $ok = false;
+        if($parent != '' && $key != '' && $table != '' && $title != ''){
+            $ok = saveAdminMenu($level, $key, $parent, $title, $table, '', $alias);
+        }
+        exitAjax($ok);
         break;
 
 	// PLUGINS

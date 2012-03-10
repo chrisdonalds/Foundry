@@ -349,9 +349,13 @@ jQuery(function($){
             var key   = $('#adminmenu_code').val();
             var title = $('#adminmenu_title').val().replace(/(\|)/g, '');
             var table = $('#adminmenu_table').val();
-            var alias = $('#adminmenu_filealias').val().replace(/([^a-z0-9_\-])/ig, '');
-            var target= $('#adminmenu_target').val();
-
+            if(key != 'pages'){
+                var alias = $('#adminmenu_filealias').val().replace(/([^a-z0-9_\-])/ig, '');
+                var targettype= $('#adminmenu_target').val();
+            }else{
+                var alias = '';
+                var targettype = '';
+            }
             var errmsg= '';
             if(table == '- Unknown -' && key != 'pages') errmsg = 'The table is required';
             $('#adminmenu_navigation .unchosen a').each(function(){
@@ -363,9 +367,16 @@ jQuery(function($){
             }else{
                 $.post(
                     admin_core_url+"ajaxwrapper.php",
-                    {op:'saveadmintopmenu', key:key, title:title, table:table, alias:alias, target:target, level:'top'},
+                    {op:'saveadmintopmenu', key:key, title:title, table:table, alias:alias, targettype:targettype, level:'top'},
                     function(jsondata){
-                    }
+                        if(jsondata.success){
+                            alert('The menu changes have been saved.');
+                            $('#adminmenu_navigation .chosen a').text(title);
+                        }else{
+                            alert('There was a problem saving the menu changes.');
+                        }
+                    },
+                    "json"
                 );
             }
             return false;
@@ -390,9 +401,16 @@ jQuery(function($){
             }else{
                 $.post(
                     admin_core_url+"ajaxwrapper.php",
-                    {op:'saveadmintsubmenu', key:key, title:title, table:table, alias:alias, level:'sub'},
+                    {op:'saveadminsubmenu', key:key, parent:parent, title:title, table:table, alias:alias, level:'sub'},
                     function(jsondata){
-                    }
+                        if(jsondata.success){
+                            alert('The menu changes have been saved.');
+                            $('#adminmenu_subnavigation .chosen a').text(title);
+                        }else{
+                            alert('There was a problem saving the menu changes.');
+                        }
+                     },
+                    "json"
                 );
             }
             return false;
