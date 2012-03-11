@@ -80,11 +80,15 @@ function convertCodeVer2Dec($ver){
  * @param integer $secs
  */
 function purgeLoginSessions($days, $hrs, $mins, $secs) {
+    global $_users, $db;
+
 	deleteRec("session_login", "logged_in_date < '".date("Y-m-d H:i:s", mktime(date("H")-$hrs, date("i")-$mins, date("s")-$secs, date("m"), date("d")-$days, date("Y")))."'");
+    //echo univGetAffectedRows()." purged<br>";
 	if (!isUserLoggedin()) {
         unset($_SESSION['admlogin']);
         unset($_SESSION['admuserid']);
         unset($_SESSION['admuserlevel']);
+        $_users->isloggedin = false;
     }
 }
 

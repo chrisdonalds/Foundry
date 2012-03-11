@@ -4,7 +4,7 @@
 
 /**
  * DB_WRAPPER
- * Performs database operations
+ * Performs database operations (MySQL engine 3.3+)
  * - table
  * - child_table
  * - parent_table

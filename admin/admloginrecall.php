@@ -23,8 +23,9 @@ if (getRequestVar('admrequest') != ""){
                     $header = "From: ".ADMIN_EMAIL."\n";
                     $header.= "Reply-to: noreply@".$_SERVER['HTTP_HOST']."\n";
                     $msg = "Hello,\n\n";
-                    $msg.= "We were pleased to help you reset your ".SITE_NAME." Admin account password. Follow the instructions below to set a new password.\n";
-                    $msg.= "If you did not initiate this reset request, please disregard this email.\n\n";
+                    $msg.= "We hear that you are having problems recalling your password.\n\n";
+                    $msg.= "Let's help you reset your ".SITE_NAME." Admin account password. Please follow the instructions below to set a new password.\n\n";
+                    $msg.= "If you did not initiate this reset request, please disregard and/or delete this email and your password will not be changed.\n\n";
                     $msg.= "Click the following link to set a new password:\n\n";
                     $msg.= $link."\n\n";
                     $msg.= "If clicking the link doesn't work you can copy it into your browser's address bar or type it there directly.\n\n";
@@ -145,7 +146,7 @@ showHeadlines(true);
             </div>
 
 <?
-if (getIfSet($_SESSION['admlogin']) != true || $admerr != ""){
+if (!$_users->isloggedin || $admerr != ""){
 ?>
             <script type="text/javascript" language="javascript">
 	            jQuery('#admuser').focus();

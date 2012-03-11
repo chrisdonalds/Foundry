@@ -17,7 +17,7 @@ if(!defined('VALID_LOAD')){
 }
 
 // handle admin system re-login and redirection
-if ((getIfSet($_SESSION['admlogin']) != true) && !isset($rurl)) {
+if ((!$_users->isloggedin) && !isset($rurl)) {
 	gotoPage (WEB_URL.ADMIN_FOLDER."admlogin.php?rurl=".urlencode($_SERVER['REQUEST_URI']));
 }
 
@@ -33,7 +33,7 @@ if ((getIfSet($_SESSION['admlogin']) != true) && !isset($rurl)) {
 <meta name="content-language" content="EN" />
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="-1"/>
-<?php
+<?
 prepHeaderPluginsBlock();
 ?>
 </head>
@@ -48,6 +48,10 @@ prepHeaderPluginsBlock();
             </h1>
         </div>
 
-        <?php include (SITE_PATH.ADMIN_FOLDER."menu.php"); ?>
+        <?
+        include (SITE_PATH.ADMIN_FOLDER."menu.php");
+        showHiddenField("base_url", WEB_URL.ADMIN_FOLDER);
+        showHiddenField("admin_folder", WEB_URL.ADMIN_FOLDER.CORE_FOLDER);
+        ?>
         <div id="content-wrapper">
 

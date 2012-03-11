@@ -11,5 +11,5 @@ include ("header.php");
 <div id="bottomwrapper">
 </div>
 
-<?php showFooter();?>
+<? showFooter();?>
 

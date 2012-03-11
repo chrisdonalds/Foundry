@@ -176,8 +176,8 @@ jQuery(function($){
 	    	if($(this).attr('alt') != ''){
 	    		var hw = $('#hovertip_div').width();
 	    		var hh = $('#hovertip_div').height();
-	    		var ww = $(window).width();
-	    		var wh = $(window).height();
+	    		var ww = $(document).width();
+	    		var wh = $(document).height();
 	    		var px = ((e.pageX + 20 + hw < ww) ? e.pageX + 20 : ww - hw);
 	    		var py = ((e.pageY + 4 + hh < wh) ? e.pageY + 4 : wh - hh);
 		    	$('#hovertip_div').show();
@@ -409,10 +409,23 @@ jQuery(function($){
                         }else{
                             alert('There was a problem saving the menu changes.');
                         }
-                     },
+                    },
                     "json"
                 );
             }
+            return false;
+        });
+
+        $('div').delegate('#adminmenu_table, #adminmenu_filealias, #adminmenu_target', 'blur', function(){
+            var table = $('#adminmenu_table').val();
+            var alias = $('#adminmenu_filealias').val().replace(/([^a-z0-9_\-])/ig, '');
+            var target = $('#adminmenu_target').val();
+            $.post(
+                admin_core_url+"ajaxwrapper.php",
+                {op:'getadminmenutarget', table:table, alias:alias, targettype:target},
+                function(html){
+                    if(html != '') $('.adminmenu_targeturl').html(html);
+                });
             return false;
         });
 
@@ -561,6 +574,7 @@ jQuery(function($){
 	    });
 
 	    $('div').delegate('#plugin_fix_submit', 'click', function(e){
+            alert('1');
 	    	// part 2: try to repair plugin.info file
 	        e.preventDefault();
 	        var p_row = $('#prob_id_'+$('#subj_plugin_id').val());

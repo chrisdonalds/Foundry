@@ -37,26 +37,23 @@ if (getRequestVar('cfgsubmit') != ""){
 					if(intval($value) > 10) $err = "is greater than 10";
 					break;
 				case ($key == "IMG_MAX_WIDTH" || $key == "IMG_MAX_HEIGHT"):
-					if(intval($value) > 1000) $err = "is greater than 1000";
+					if(intval($value) > 2000) $err = "is greater than 2000px";
 					break;
 				case ($key == "IMG_MAX_UPLOAD_SIZE"):
-					if(intval($value) > 10000) $err = "is greater than 10000";
+					if(intval($value) > 10000) $err = "is greater than 10000Kb (10Mb)";
 					break;
 				case ($key == "THM_MAX_WIDTH" || $key == "THM_MAX_HEIGHT" || $key == "ORG_THM_MAX_WIDTH" || $key == "ORG_THM_MAX_HEIGHT"):
-					if(intval($value) > 200) $err = "is greater than 200";
+					if(intval($value) > 200) $err = "is greater than 200px";
 					break;
 				case ($key == "THM_MED_MAX_WIDTH" || $key == "THM_MED_MAX_HEIGHT"):
-					if(intval($value) > 400) $err = "is greater than 400";
+					if(intval($value) > 400) $err = "is greater than 400px";
 					break;
 				case ($key == "THM_MAX_UPLOAD_SIZE"):
-					if(intval($value) > 1000) $err = "is greater than 1000";
+					if(intval($value) > 1000) $err = "is greater than 1000Kb";
 					break;
 				case ($key == "THM_UPLOAD_FOLDER" || $key == "IMG_UPLOAD_FOLDER"):
 					if($value == "" || $value == "/") $err = "is missing";
                     if(preg_match("/[\*\?\|\>\<]/i", $value)) $err = "contains invalid characters.";
-					break;
-				case "MAX_IFRAME_IMGS":
-					if(intval($value) > 20) $err = "is greater than 20";
 					break;
 			}
 			if($err != ""){
@@ -687,9 +684,9 @@ function showSettingsSiteVisibilityArea(){
         <p>The robots.txt file contains a set of rules that dictate which automated search engine scripts, colloquially called 'robots' or 'spiders'
         are allowed to index parts or the entire site.  You can learn more about how to construct the robots.txt file at
         <a href="http://www.outfront.net/tutorials_02/adv_tech/robots.htm" target="_blank">www.outfront.net/tutorials_02/adv_tech/robots.htm</a>.</p>
-        <p>Simply, select an agent (or * for all) and enter the list of folders, one per line, starting and ending with a forward-slash (/), that you do not want the agent to see.  System folders are already blocked.</p>
+        <p>Simply, select an agent (or * for all) and enter the list of folders, one per line, starting and ending with a forward-slash (/), that you <em>do not want</em> the agent to see.  System folders are already blocked.</p>
 		<? if (count($files) > 2){ ?>
-    	<div class="setlabel">Previous Versions</div>
+    	<div class="setlabel"><strong>Previous Versions</strong></div>
     	<div class="setdata">
     		<select id="robots_revfile">
     			<?
@@ -700,8 +697,8 @@ function showSettingsSiteVisibilityArea(){
     	</div>
 		<? } ?>
     <?
-    print "<div class=\"setlabel\"><strong>Agent</strong></div>\n";
-    print "<div class=\"setdata\"><strong>Affected Path (eg. /, /folder/, /events/today/)</strong></div>\n";
+    echo "<div class=\"setlabel\"><strong>Agent</strong> <span class=\"hovertip\" alt=\"List of search crawlers, bots, scrapers, and spiders that you can select\">[?]</span></div>\n";
+    echo "<div class=\"setdata\"><strong>Affected Path (eg. /, /folder/, /events/today/)</strong> <span class=\"hovertip\" alt=\"The path(s) that will be blocked\">[?]</span></div>\n";
     $bots = array(	""=>"",
                     "*" => "All",
                     "AbachoBOT"=>"Abacho",
@@ -795,7 +792,6 @@ function showSettingsSiteVisibilityArea(){
 		<div id="waitoverlay"><br/><p><img src="<?=WEB_URL.ADMIN_FOLDER.ADM_CSS_FOLDER.DEF_ADM_SKIN?>images/loading.gif"/> Please Wait...<br/><br/>Your Settings are Loading</p></div>
 		<div id="title"><?=SYS_NAME?> Settings</div>
 		<form method="post" action="<?=$_SERVER['PHP_SELF'];?>" enctype="multipart/form-data">
-	        <input type="hidden" name="admin_folder" id="admin_folder" value="<?=WEB_URL.ADMIN_FOLDER.CORE_FOLDER?>" />
 	        <p id="issues" class="setissue<? if(getSettingsIssuesCount() == 0) echo ' disabled';?>"><? showSettingsIssues(); ?></p>
 			<div class="setsubmit"><input type="submit" name="cfgsubmit" id="cfgsubmit" value="Save Settings"/></div>
 	        <p style="clear: both;"></p>
@@ -820,33 +816,34 @@ function showSettingsSiteVisibilityArea(){
 	                }
 	                ?>
 	                <h3 class="header">Business</h3>
-					<div class="setlabel">Business Name: <?=REQD_ENTRY?></div>
+					<div class="setlabel">Business Name: <span class="hovertip" alt="The name of the business (may be the same as the website name)">[?]</span><?=REQD_ENTRY?></div>
 						<div class="setdata"><input<?=$readonly?> type="text" id="BUSINESS" name="newcfg[BUSINESS]" size="30" value="<?=$configs['BUSINESS']?>"/> <? showResetLink('BUSINESS')?></div>
-					<div class="setlabel">Website Name: <?=REQD_ENTRY?></div>
+					<div class="setlabel">Website Name: <span class="hovertip" alt="The name of the site">[?]</span><?=REQD_ENTRY?></div>
 						<div class="setdata"><input<?=$readonly?> type="text" id="SITE_NAME" name="newcfg[SITE_NAME]" size="30" value="<?=$configs['SITE_NAME']?>"/> <? showResetLink('SITE_NAME')?></div>
-					<div class="setlabel">Owner's Email: <?=REQD_ENTRY?></div>
+					<div class="setlabel">Owner's Email: <span class="hovertip" alt="The main public email of the business or site owner">[?]</span><?=REQD_ENTRY?></div>
 						<div class="setdata"><input<?=$readonly?> type="text" id="OWNER_EMAIL" name="newcfg[OWNER_EMAIL]" size="30" value="<?=$configs['OWNER_EMAIL']?>"/> <? showResetLink('OWNER_EMAIL')?></div>
-					<div class="setlabel">Administrator Email: <?=REQD_ENTRY?></div>
+					<div class="setlabel">Administrator Email: <span class="hovertip" alt="The email used to issue system or critical alerts and messages">[?]</span><?=REQD_ENTRY?></div>
 						<div class="setdata"><input<?=$readonly?> type="text" id="ADMIN_EMAIL" name="newcfg[ADMIN_EMAIL]" size="30" value="<?=$configs['ADMIN_EMAIL']?>"/> <? showResetLink('ADMIN_EMAIL')?></div>
-					<div class="setlabel">Business Address:<br/><span style="font-size: 8pt; padding: 5px; display: block;">This information is shown on the contact page and in the footer.  If the Pages section includes an editor for the Contact Page, consult that editor as well for more contact details.</span></div>
+					<div class="setlabel">Business Address: <span class="hovertip" alt="This information can be shown on the contact page and in the footer">[?]</span></div>
 						<div class="setdata"><textarea<?=$readonly?> id="BUS_ADDRESS" name="newcfg[BUS_ADDRESS]" cols="42" rows="6"><?=$configs['BUS_ADDRESS']?></textarea> <? showResetLink('BUS_ADDRESS')?></div>
 					<div class="setlabel">Business Phone:</div>
 						<div class="setdata"><input<?=$readonly?> type="text" id="BUS_PHONE" name="newcfg[BUS_PHONE]" size="30" value="<?=$configs['BUS_PHONE']?>"/> <? showResetLink('BUS_PHONE')?></div>
 					<div class="setlabel">Business Fax:</div>
 						<div class="setdata"><input<?=$readonly?> type="text" id="BUS_FAX" name="newcfg[BUS_FAX]" size="30" value="<?=$configs['BUS_FAX']?>"/> <? showResetLink('BUS_FAX')?></div>
 	                <h3 class="header">Date and Time</h3>
-					<div class="setlabel">Date Format:</div>
+					<div class="setlabel">Date Format: <span class="hovertip" alt="The date format is more than cosmetic.  It may affect time-sensitive features of the site">[?]</span></div>
 						<div class="setdata">
 							<select name="newcfg[PHP_DATE_FORMAT]" id="PHP_DATE_FORMAT" size="1"<?=$readonly?>>
-							<? $df = array("Y-m-d", "m-d-Y", "d-m-Y");
+							<? $df = array("Y-m-d", "m-d-Y", "d-m-Y", "Y/m/d", "m/d/y", "d/m/Y");
 							foreach($df as $d){
 								$sel = (($d == $configs['PHP_DATE_FORMAT']) ? ' selected="selected"' : '');
-								echo '<option value="'.$d.'"'.$sel.'>'.$d.'</option>'.PHP_EOL;
+								echo '<option value="'.$d.'"'.$sel.'>'.$d.(($d == 'Y-m-d') ? ' [default]' : '').'</option>'.PHP_EOL;
 							}
 							?>
-							</select> <i>Y-m-d is the standard format</i>
+							</select>
+                            </br>The date looks like this: <?=date($configs['PHP_DATE_FORMAT'])?>
 						</div>
-					<div class="setlabel">Timezone:</div>
+					<div class="setlabel">Timezone: <span class="hovertip" alt="The timezone setting affects the login timer, garbage collection, simcron tasks, and any other time-sensitive functions">[?]</span></div>
 	                    <div class="setdata">
 	                        <? showSettingsTimeZoneData($readonly); ?>
 	                    </div>
@@ -864,28 +861,26 @@ function showSettingsSiteVisibilityArea(){
 	                }
 	                ?>
 	                <h3 class="header">Images</h3>
-	 				<div class="setlabel">Full-Size Image Dimensions: <?=REQD_ENTRY?><br/>(in Pixels, up to 1000x1000)</div>
+	 				<div class="setlabel">Full-Size Image Dimensions: <span class="hovertip" alt="The standard image dimension that images will be reduced to if larger">[?]</span><?=REQD_ENTRY?><br/>(in Pixels, up to 2000 x 2000)</div>
 						<div class="setdata">Max Width <input<?=$readonly?> type="text" id="IMG_MAX_WIDTH" name="newcfg[IMG_MAX_WIDTH]" maxlength="4" size="5" value="<?=$configs['IMG_MAX_WIDTH']?>"/>, Max Height <input type="text" id="IMG_MAX_HEIGHT" name="newcfg[IMG_MAX_HEIGHT]" size="5" value="<?=$configs['IMG_MAX_HEIGHT']?>"/> <? showResetLink('IMG_MAX_WIDTH', 'IMG_MAX_HEIGHT')?></div>
-					<div class="setlabel">Maximum Image File Size: <?=REQD_ENTRY?><br/>(up to 10MB)</div>
+					<div class="setlabel">Maximum Image File Size: <span class="hovertip" alt="The maximum image file size that can be uploaded">[?]</span><?=REQD_ENTRY?><br/>(up to 10MB)</div>
 						<div class="setdata"><input<?=$readonly?> type="text" id="IMG_MAX_UPLOAD_SIZE" name="newcfg[IMG_MAX_UPLOAD_SIZE]" maxlength="5" size="5" value="<?=$configs['IMG_MAX_UPLOAD_SIZE']?>"/> KB <? showResetLink('IMG_MAX_UPLOAD_SIZE')?></div>
-					<div class="setlabel">Maximum Images Handled in IFRAME: <?=REQD_ENTRY?><br/>(up to 10)</div>
-						<div class="setdata"><input<?=$readonly?> type="text" id="MAX_IFRAME_IMGS" name="newcfg[MAX_IFRAME_IMGS]" maxlength="3" size="5" value="<?=$configs['MAX_IFRAME_IMGS']?>"/> <? showResetLink('MAX_IFRAME_IMGS')?></div>
-					<div class="setlabel">Images Folder: <?=REQD_ENTRY?><br/>(default 'images/')</div>
+					<div class="setlabel">Images Folder: <span class="hovertip" alt="The path, from document root, to the images folder">[?]</span><?=REQD_ENTRY?><br/>(default 'images/')</div>
 						<div class="setdata"><input<?=$readonly?> type="text" id="IMG_UPLOAD_FOLDER" name="newcfg[IMG_UPLOAD_FOLDER]" maxlength="64" size="20" value="<?=$configs['IMG_UPLOAD_FOLDER']?>"/> <? showResetLink('IMG_UPLOAD_FOLDER')?></div>
 	                <h3 class="header">Thumbnails</h3>
-					<div class="setlabel">Thumbnail Image Dimensions: <?=REQD_ENTRY?><br/>(in Pixels, up to 200x200)</div>
+					<div class="setlabel">Thumbnail Image Dimensions: <span class="hovertip" alt="The thumbnail dimension for standard thumbnail images generated by the system">[?]</span><?=REQD_ENTRY?><br/>(in Pixels, up to 200 x 200)</div>
 						<div class="setdata">Width <input<?=$readonly?> type="text" id="THM_MAX_WIDTH" name="newcfg[THM_MAX_WIDTH]" maxlength="3" size="5" value="<?=$configs['THM_MAX_WIDTH']?>"/>, Height <input type="text" id="THM_MAX_HEIGHT" name="newcfg[THM_MAX_HEIGHT]" size="5" value="<?=$configs['THM_MAX_HEIGHT']?>"/> <? showResetLink('THM_MAX_WIDTH','THM_MAX_HEIGHT')?></div>
-					<div class="setlabel">Medium Image Dimensions: <?=REQD_ENTRY?><br/>(in Pixels, up to 400x400)</div>
+					<div class="setlabel">Medium Image Dimensions: <span class="hovertip" alt="The dimensions for medium thumbnail images (pocket images) generated by the system">[?]</span><?=REQD_ENTRY?><br/>(in Pixels, up to 400 x 400)</div>
 						<div class="setdata">Width <input<?=$readonly?> type="text" id="THM_MED_MAX_WIDTH" name="newcfg[THM_MED_MAX_WIDTH]" maxlength="3" size="5" value="<?=$configs['THM_MED_MAX_WIDTH']?>"/>, Height <input type="text" id="THM_MED_MAX_HEIGHT" name="newcfg[THM_MED_MAX_HEIGHT]" size="5" value="<?=$configs['THM_MED_MAX_HEIGHT']?>"/> <? showResetLink('THM_MED_MAX_WIDTH','THM_MED_MAX_HEIGHT')?></div>
-					<div class="setlabel">Maximum Thumbnail File Size: <?=REQD_ENTRY?><br/>(up to 1MB)</div>
+					<div class="setlabel">Maximum Thumbnail File Size: <span class="hovertip" alt="The maximum thumbnail file size that can be uploaded.  Generated thumbnails will automatically comply with this setting">[?]</span><?=REQD_ENTRY?><br/>(up to 1MB)</div>
 						<div class="setdata"><input<?=$readonly?> type="text" id="THM_MAX_UPLOAD_SIZE" name="newcfg[THM_MAX_UPLOAD_SIZE]" maxlength="4" size="5" value="<?=$configs['THM_MAX_UPLOAD_SIZE']?>"/> KB <? showResetLink('THM_MAX_UPLOAD_SIZE')?></div>
-					<div class="setlabel">Thumbnails Folder: <?=REQD_ENTRY?><br/>(default 'thumbs/')</div>
+					<div class="setlabel">Thumbnails Folder: <span class="hovertip" alt="The path, from document root, to the thumbnails folder.  It can be the same as the images folder, if you wish">[?]</span><?=REQD_ENTRY?><br/>(default 'thumbs/')</div>
 						<div class="setdata"><input<?=$readonly?> type="text" id="THM_UPLOAD_FOLDER" name="newcfg[THM_UPLOAD_FOLDER]" maxlength="64" size="20" value="<?=$configs['THM_UPLOAD_FOLDER']?>"/> <? showResetLink('THM_UPLOAD_FOLDER')?></div>
 	                <h3 class="header">Organizer Tool</h3>
-					<div class="setlabel">Organizer Thumbnail Dimensions: <?=REQD_ENTRY?><br/>(in Pixels, up to 200x200)</div>
+					<div class="setlabel">Organizer Thumbnail Dimensions: <span class="hovertip" alt="The dimensions of thumbnails generated for use with the Organizer">[?]</span><?=REQD_ENTRY?><br/>(in Pixels, up to 200 x 200)</div>
 						<div class="setdata">Width <input<?=$readonly?> type="text" id="ORG_THM_MAX_WIDTH" name="newcfg[ORG_THM_MAX_WIDTH]" maxlength="3" size="5" value="<?=$configs['ORG_THM_MAX_WIDTH']?>"/>, Height <input type="text" id="ORG_THM_MAX_HEIGHT" name="newcfg[ORG_THM_MAX_HEIGHT]" maxlength="3" size="5" value="<?=$configs['ORG_THM_MAX_HEIGHT']?>"/> <? showResetLink('ORG_THM_MAX_WIDTH','ORG_THM_MAX_HEIGHT')?></div>
 	                <h3 class="header">Logos</h3>
-					<div class="setlabel">Admin System Logo Image: <br/>(in Pixels, up to 250x100)</div>
+					<div class="setlabel">Admin System Logo Image: <span class="hovertip" alt="An optional logo to display on the login page">[?]</span><br/>(in Pixels, up to 250x100)</div>
 						<div class="setdata"><input<?=$readonly?> type="file" id="IMG_LOGIN_LOGO" name="newcfg[IMG_LOGIN_LOGO]" size="40"/></div>
 				</div>
 				<? }
@@ -1047,7 +1042,7 @@ function showSettingsSiteVisibilityArea(){
 	                if(userIsAllowedTo('manage_visibility')) { ?>
 	                <div id="adv_visibility">
         				<h3 class="header">Site Presence</h3>
-	                    <div class="setlabel">Site is Online:</div>
+	                    <div class="setlabel">Is Site Online?: <span class="hovertip" alt="Set to 'no' to temporarily turn the site off and remove page access.">[?]</span></div>
 							<div class="setdata">
 								<input type="radio" id="SITEOFFLINE_off" name="newcfg[SITEOFFLINE]" value="0"<?=(($configs['SITEOFFLINE'] == 0) ? ' checked="checked"' : '')?> /> Yes
 								<input type="radio" id="SITEOFFLINE_on" name="newcfg[SITEOFFLINE]" value="1"<?=(($configs['SITEOFFLINE'] == 1) ? ' checked="checked"' : '')?> /> No
@@ -1071,7 +1066,7 @@ function showSettingsSiteVisibilityArea(){
 	                        <div class="setdata"><?=DBPASS?></div>
 	                    <div class="setlabel"><strong>Database Port:</strong></div>
 	                        <div class="setdata"><?=((DBPORT != 0) ? DBPORT : 'Default (3306)') ?></div>
-						<div class="setlabel"><strong>Data Tables Prefix:</strong></div>
+						<div class="setlabel"><strong>Data Tables Prefix:</strong> <span class="hovertip" alt="Although you can create any table for use in <?=SYS_NAME?>, ones starting with this prefix will be included in the Data Alias structure, Admin Menus, and other subsystems.">[?]</span></div>
 							<div class="setdata"><input type="text" id="DB_TABLE_PREFIX" name="newcfg[DB_TABLE_PREFIX]" maxlength="10" size="10" value="<?=$configs['DB_TABLE_PREFIX']?>"/> <? showResetLink('DB_TABLE_PREFIX')?></div>
 	                    <p style="clear: both; float: right">Launch the <a href="<?=WEB_URL.ADMIN_FOLDER?>loader.php?f=settings&fc=configDB&fp=100">Database Manager...</a></p>
 	                </div>
@@ -1080,7 +1075,7 @@ function showSettingsSiteVisibilityArea(){
 	                if(userIsAllowedTo('manage_debugger')) { ?>
 	                <div id="adv_debugger">
 	                	<p><?=SYS_NAME?> is equipped with a fully articulated error handling and debugger system.  It can be customized to respond to different levels of errors, and output a variety of diagnostic data to the console, browser, a file or an email.</p>
-	                    <div class="setlabel">Error Handler Sensitivity:</div>
+	                    <div class="setlabel">Error Handler Sensitivity: <span class="hovertip" alt="What type of error(s) the system will trap">[?]</span></div>
 	                        <div class="setdata">
 								<select name="newcfg[ERROR_SENSITIVITY]" id="ERROR_SENSITIVITY" size="1">
 								<?
@@ -1092,7 +1087,7 @@ function showSettingsSiteVisibilityArea(){
 								?>
 								</select>
 	                        </div>
-	                    <div class="setlabel">Error Logging:</div>
+	                    <div class="setlabel">Error Logging: <span class="hovertip" alt="What to do if an error is encountered">[?]</span></div>
 	                        <div class="setdata">
 								<select name="newcfg[ERROR_LOG_TYPE]" id="ERROR_LOG_TYPE" size="1">
 								<?
@@ -1104,7 +1099,7 @@ function showSettingsSiteVisibilityArea(){
 								?>
 								</select>
 	                        </div>
-						<div class="setlabel">Error Log Email Recipient:</div>
+						<div class="setlabel">Error Log Email Recipient: <span class="hovertip" alt="The recipient to whom error messages will be sent">[?]</span></div>
 							<div class="setdata"><input type="text" id="ERROR_LOG_TO_EMAIL" name="newcfg[ERROR_LOG_TO_EMAIL]" size="30" value="<?=$configs['ERROR_LOG_TO_EMAIL']?>"/> <? showResetLink('ERROR_LOG_TO_EMAIL')?></div>
 						<div class="setlabel">Error Log File Name:</div>
 							<div class="setdata"><input type="text" id="ERROR_LOG_TO_FILE" name="newcfg[ERROR_LOG_TO_FILE]" size="30" value="<?=$configs['ERROR_LOG_TO_FILE']?>"/> <? showResetLink('ERROR_LOG_TO_FILE')?></div>
@@ -1113,7 +1108,7 @@ function showSettingsSiteVisibilityArea(){
 								<input type="radio" id="ALLOW_DEBUGGING_on" name="newcfg[ALLOW_DEBUGGING]" value="1"<?=(($configs['ALLOW_DEBUGGING'] == 1) ? ' checked="checked"' : '')?> /> Yes
 								<input type="radio" id="ALLOW_DEBUGGING_off" name="newcfg[ALLOW_DEBUGGING]" value="0"<?=(($configs['ALLOW_DEBUGGING'] == 0) ? ' checked="checked"' : '')?> /> No (Debugger messages will not be displayed)
 							</div>
-                        <div class="setlabel">PHP Error Configuration</div>
+                        <div class="setlabel">PHP Error Configuration:</div>
                             <div class="setdata">
                                 Display_errors = <?=ini_get('display_errors')?><br/>
                                 Display_startup_errors = <?=ini_get('display_startup_errors')?><br/>

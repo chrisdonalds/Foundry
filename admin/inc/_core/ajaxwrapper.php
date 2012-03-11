@@ -130,7 +130,7 @@ switch($op){
             $targettype = '';
         }
         $ok = false;
-        if($key != '' && $table != '' && $title != ''){
+        if(!isblank($key) && !isblank($table) && !isblank($title)){
             $ok = saveAdminMenu($level, $key, "", $title, $table, $targettype, $alias);
         }
         exitAjax($ok);
@@ -138,10 +138,18 @@ switch($op){
     case 'saveadminsubmenu':
         extractVariables($_REQUEST);
         $ok = false;
-        if($parent != '' && $key != '' && $table != '' && $title != ''){
+        if(!isblank($parent) && !isblank($key) && !isblank($table) && !isblank($title)){
             $ok = saveAdminMenu($level, $key, $parent, $title, $table, '', $alias);
         }
         exitAjax($ok);
+        break;
+    case 'getadminmenutarget':
+        extractVariables($_REQUEST);
+        $html = '';
+        if(!isblank($table) && $table != '- Unknown -'){
+            $html = getAdminMenuTarget($table, $alias, getIfSet($targettype));
+        }
+        echo $html;
         break;
 
 	// PLUGINS

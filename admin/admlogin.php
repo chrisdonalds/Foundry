@@ -2,10 +2,6 @@
 $rurl = urldecode((isset($_REQUEST['rurl']) ? $_REQUEST['rurl'] : ''));
 include("loader.php");
 
-preg_match("/([a-z0-9\._]*)@([a-z0-9]*)\.([a-z0-9\.]*)/", ADMIN_EMAIL, $emailarray);
-$s_email = "javascript: parse_email('".$emailarray[1]."', '".$emailarray[2]."', '".$emailarray[3]."', 'Request Password Reset', 'Reset password for ADMIN.  Requester: ".$_SERVER["REMOTE_ADDR"]."')";
-$admacct = getRec("admin_accts", "", "", "", "1");
-
 // admin login
 $admerr = "";
 if(VHOST != "/") $rurl = str_replace(VHOST, "", $rurl);
@@ -18,13 +14,13 @@ if (getRequestVar('admsubmit') == "Enter"){
     if($pwd != "" && $user != ""){
         $pwd = md5($pwd);
         $acct = getRec("admin_accts", "*", "username = '$user' AND password = '$pwd'", "", "1", "", true);
-        if (count($acct) > 0){
+        if(count($acct) > 0){
             if($acct['activated'] == 1){
                 // log user into system
                 $_SESSION['admlogin'] = true;
                 $_SESSION['admuserid'] = $acct['id'];
                 $_SESSION['admuserlevel'] = $acct['level'];
-                setcookie('admlogin', date("Y-m-d H:i:s"), time()+3600*24*(2), '/');
+                setcookie('admlogin', date("Y-m-d H:i:s"), time()+3600*24*2, '/');
 
                 // set user persistence data
                 $_SESSION['timestamp'] = time();
@@ -60,6 +56,7 @@ if (getRequestVar('admsubmit') == "Enter"){
 }elseif (getRequestVar('admsubmit') == "Logout"){
     // log user out of system
 	unset($_SESSION['admlogin']);
+    $_users->isloggedin = false;
 	setcookie('admlogin', '', time()+3600*24*(-100), '/');
 	deleteRec("session_login", "ip_hash = '$remoteip' AND section = 'admin'");
 	$admerr = "You are now logged out.";

@@ -132,7 +132,6 @@ function startPageForm($formid, $action = "", $method = "post", $enctype = false
 	print "<form name=\"{$formid}\" id=\"{$formid}\" action=\"{$action}\" method=\"{$method}\"{$enctype_code}>\n";
 	showHiddenField('_n', $_page->nonce);
 	showHiddenField("page", $_page->pagenum);
-	showHiddenField("base_url", WEB_URL.ADMIN_FOLDER);
 	showHiddenField("page_url", $_SERVER['REQUEST_URI']);
 	showHiddenField("page_subject", $_page->subject);
 	showHiddenField("page_childsubject", $_page->childsubject);
@@ -1439,6 +1438,27 @@ function setupAdminMenusTargets($menus){
 }
 
 /**
+ * Return the target URL for the specified menu
+ * @param string $table
+ * @param string $alias
+ * @param string $targettype
+ * @return string
+ */
+function getAdminMenuTarget($table, $alias, $targettype){
+    if($table != ''){
+        $folder = preg_replace("/(^".DB_TABLE_PREFIX."|_cat)/i", "", $table);
+        $filesuffix = preg_replace("/^".DB_TABLE_PREFIX."/i", "", $table);
+        $fileprefix = 'list-';
+        if($targettype == 'tocategory' && !preg_match("/_cat$/i", $table)) $filesuffix .= '_cat';
+        if(!isblank($alias)) $filesuffix = $alias;
+        if($targettype == 'topage') $fileprefix = 'edit-';
+        return $folder."/".$fileprefix.$filesuffix.".php";
+    }else{
+        return '';
+    }
+}
+
+/**
  * Save admin menus layout and settings to database (triggered by menu sorting)
  * @param string $newlayout
  * @return boolean
@@ -1536,7 +1556,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
                     $outp.= '<div class="setlabel">Table this Menu is Bound to: <span class="hovertip" alt="The \'Page\' menu is always bound to the \'pages\' table">[?]</span></div><div class="setdata">';
                     $outp .= $menu['table'].'</div>'.PHP_EOL;
                 }
-                $outp.= '<div class="setlabel">Derived Menu Target Path: <span class="hovertip" alt="This is the target URL based on the bound table, file alias, and target type settings">[?]</span></div><div class="setdata" class="adminmenu_targeturl">'.$menu['target'].'</div>'.PHP_EOL;
+                $outp.= '<div class="setlabel">Derived Menu Target Path: <span class="hovertip" alt="This is the target URL based on the bound table, file alias, and target type settings">[?]</span></div><div class="setdata adminmenu_targeturl">'.$menu['target'].'</div>'.PHP_EOL;
                 $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savetop" value="Save Changes" /></div>'.PHP_EOL;
             }else{
                 // parenttable, table, title, file alias
@@ -1553,7 +1573,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
                 }
                 $outp.= '</select></div>'.PHP_EOL;
                 $outp.= '<div class="setlabel">File Alias: <span class="hovertip" alt="The optional file alias allows you to specify an alternate target URL for the menu.  If left blank, the system will use the data table to determine the target URL.<br/><br/>Just remember to leave off the \'list-\', \'edit-\', \'add-\', and \'_cat\' parts.">[?]</span></div><div class="setdata"><input type="text" id="adminmenu_filealias" name="adminmenu_filealias" value="'.getIfSet($menu['alias']).'" /></div>'.PHP_EOL;
-                $outp.= '<div class="setlabel">Derived Menu Target Path: <span class="hovertip" alt="This is the target URL based on the bound table, file alias, and target type settings">[?]</span></div><div class="setdata" class="adminmenu_targeturl">'.$menu['target'].'</div>'.PHP_EOL;
+                $outp.= '<div class="setlabel">Derived Menu Target Path: <span class="hovertip" alt="This is the target URL based on the bound table, file alias, and target type settings">[?]</span></div><div class="setdata adminmenu_targeturl">'.$menu['target'].'</div>'.PHP_EOL;
                 $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savesub" value="Save Changes" /></div>'.PHP_EOL;
             }
         }else{

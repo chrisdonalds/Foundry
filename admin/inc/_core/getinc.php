@@ -60,8 +60,7 @@ session_name('admin');
 session_start();
 initErrorMsg();
 
-$_SESSION['prevpage'] = '';
-if(isset($_SESSION['curpage'])) $_SESSION['prevpage'] = $_SESSION['curpage'];
+$_SESSION['prevpage'] = getIfSet($_SESSION['curpage']);
 $_SESSION['curpage'] = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 $info = array("referer" => $_SESSION['prevpage'], "curpage" => $_SESSION['curpage'], "prevpage" => $_SESSION['prevpage']);
 $_system->info = $info;
@@ -135,7 +134,7 @@ if(!defined("BASIC_GETINC")){
 	//   RESETS
 	//*****************************************************************************
 
-	purgeLoginSessions(0, 0, 30, 0);
+	purgeLoginSessions(0, 1, 0, 0);
 	prepareSessionElements();
 	dequeueAllFunctions(array(TF_CONTENTMACRO, TF_LISTACTION));
 
