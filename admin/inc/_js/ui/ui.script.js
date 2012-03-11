@@ -349,6 +349,7 @@ jQuery(function($){
             var key   = $('#adminmenu_code').val();
             var title = $('#adminmenu_title').val().replace(/(\|)/g, '');
             var table = $('#adminmenu_table').val();
+            var restr = (($('#adminmenu_restricted').is(':checked')) ? 1 : 0);
             if(key != 'pages'){
                 var alias = $('#adminmenu_filealias').val().replace(/([^a-z0-9_\-])/ig, '');
                 var targettype= $('#adminmenu_target').val();
@@ -367,9 +368,10 @@ jQuery(function($){
             }else{
                 $.post(
                     admin_core_url+"ajaxwrapper.php",
-                    {op:'saveadmintopmenu', key:key, title:title, table:table, alias:alias, targettype:targettype, level:'top'},
+                    {op:'saveadmintopmenu', key:key, title:title, table:table, alias:alias, targettype:targettype, restricted:restr, level:'top'},
                     function(jsondata){
                         if(jsondata.success){
+                            if(restr) title = '['+title+']';
                             alert('The menu changes have been saved.');
                             $('#adminmenu_navigation .chosen a').text(title);
                         }else{
@@ -389,6 +391,7 @@ jQuery(function($){
             var title = $('#adminmenu_title').val().replace(/(\|)/g, '');
             var table = $('#adminmenu_table').val();
             var alias = $('#adminmenu_filealias').val().replace(/([^a-z0-9_\-])/ig, '');
+            var restr = (($('#adminmenu_restricted').is(':checked')) ? 1 : 0);
 
             var errmsg= '';
             if(table == '- Unknown -') errmsg = 'The table is required';
@@ -401,9 +404,10 @@ jQuery(function($){
             }else{
                 $.post(
                     admin_core_url+"ajaxwrapper.php",
-                    {op:'saveadminsubmenu', key:key, parent:parent, title:title, table:table, alias:alias, level:'sub'},
+                    {op:'saveadminsubmenu', key:key, parent:parent, title:title, table:table, alias:alias, restricted:restr, level:'sub'},
                     function(jsondata){
                         if(jsondata.success){
+                            if(restr) title = '['+title+']';
                             alert('The menu changes have been saved.');
                             $('#adminmenu_subnavigation .chosen a').text(title);
                         }else{

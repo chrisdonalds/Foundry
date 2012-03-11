@@ -36,6 +36,33 @@ if($rootvar != ""){
 $menuscroller = array();
 (isset($_COOKIE['menu_scr_start'])) ? $menuscroller['start'] = $_COOKIE['menu_scr_start'] : $menuscroller['start'] = 0;
 
+// top and sub navigation menus
+$menus = getAdminMenus();
+
+$toplevel = "";
+$sublevel = "";
+$p = parse_url($_SERVER['REQUEST_URI']);
+$filebase = preg_replace("/(^list-|^edit-)/i", "", basename($p['path'], ".php"));
+foreach($menus as $key => $menu){
+    if(userIsAllowedTo("view_locked_menus") || !$menu['restricted']){
+        $chosen = (($_page->menu['section'] == $key) ? "chosen" : "unchosen");
+        $toplevel .= "<li class=\"{$chosen}\" id=\"menu_{$key}\"><a href=\"".WEB_URL.ADMIN_FOLDER.$menu['target']."\">{$menu['title']}</a></li>\n";
+        if(is_array($menu['childmenus']) && $chosen == "chosen"){
+            foreach($menu['childmenus'] as $skey => $smenu){
+                if(userIsAllowedTo("view_locked_menus") || !$smenu['restricted']){
+                    $schosen = (($filebase == $skey) ? "chosen" : "unchosen");
+                    $sublevel .= "<li class=\"{$schosen}\" id=\"submenu_".$skey."\"><a href=\"".WEB_URL.ADMIN_FOLDER.$smenu['target']."\">{$smenu['title']}</a></li>\n";
+                }
+            }
+        }
+    }
+}
+$toplevel = "<ul id=\"navigation\">$toplevel</ul>\n";
+if($sublevel != "") $sublevel = "<ul id=\"subnavigation\">$sublevel</ul>\n";
+echo $toplevel;
+echo $sublevel;
+
+/*
 // top navigation bar
 print "<ul id=\"navigation\">";
 foreach($_page->menu['sections'] as $key => $value) {
@@ -130,6 +157,7 @@ if(isset($_page->menu['subsections'][$section])){
 		print "</ul>\n\n";
 	}
 }
+ */
 ?>
 
 <div id="display_core_msg"></div>

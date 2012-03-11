@@ -426,9 +426,14 @@ function showSettingsMenusforAdmin(){
     foreach($menus as $key => $menu){
         $chosen = (($toplevel == "") ? "chosen" : "unchosen");
         if($sublevel == "" && $toplevel == "" && !is_null($menu['childmenus'])){
-            $sublevel .= "<li class=\"{$chosen}\" id=\"setsubmenu_".key($menu['childmenus'])."\"><a href=\"#\" class=\"adminmenu_subelem\" rel=\"{$key}\" title=\"Click to edit; drag to re-order\">{$menu['childmenus']['title']}</a></li>\n";
+            $menutitle = $menu['childmenus']['title'];
+            if($menu['childmenus']['restricted']) $menutitle = '['.$menutitle.']';
+            if($menu['childmenus']['restricted'] == 1) $menutitle = "[".$menutitle."]";
+            $sublevel .= "<li class=\"{$chosen}\" id=\"setsubmenu_".key($menu['childmenus'])."\"><a href=\"#\" class=\"adminmenu_subelem\" rel=\"{$key}\" title=\"Click to edit; drag to re-order\">{$menutitle}</a></li>\n";
         }
-        $toplevel .= "<li class=\"{$chosen}\" id=\"setmenu_{$key}\"><a href=\"#\" class=\"adminmenu_topelem\" rel=\"{$key}\" title=\"Click to edit; drag to re-order\">{$menu['title']}</a></li>\n";
+        $menutitle = $menu['title'];
+        if($menu['restricted']) $menutitle = '['.$menutitle.']';
+        $toplevel .= "<li class=\"{$chosen}\" id=\"setmenu_{$key}\"><a href=\"#\" class=\"adminmenu_topelem\" rel=\"{$key}\" title=\"Click to edit; drag to re-order\">{$menutitle}</a></li>\n";
     }
     $toplevel = "<ul id=\"adminmenu_navigation\">$toplevel</ul>\n";
     $sublevel = "<ul id=\"adminmenu_subnavigation\">$sublevel</ul>\n";

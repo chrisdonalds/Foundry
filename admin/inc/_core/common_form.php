@@ -1390,19 +1390,18 @@ function getAdminMenus($menucode = ''){
     $menus_json = getRec("settings", "value", "`name` = 'ADMIN_MENUS'", "", "1", "", true);
     if(isBlank($menus_json['value'])){
         $menus = array(
-            "pages" => array("table" => "pages", "title" => "Pages", "tocategory" => false, "topage" => false, "alias" => "", "childmenus" => null),
-            "events" => array("table" => "data_events", "title" => "Events", "tocategory" => false, "topage" => false, "alias" => "", "childmenus" => null),
-            "photo_gallery" => array("table" => "data_photos_cat", "title" => "Photo Gallery", "tocategory" => true, "topage" => false, "alias" => "", "childmenus" => array(
-                    "photos" => array("table" => "photos", "title" => "Galleries", "tocategory" => true, "topage" => false, "alias" => "")
+            "pages" => array("table" => "pages", "title" => "Pages", "tocategory" => false, "topage" => false, "alias" => "", "restricted" => false, "childmenus" => null),
+            "events" => array("table" => "data_events", "title" => "Events", "tocategory" => false, "topage" => false, "alias" => "", "restricted" => false, "childmenus" => null),
+            "photo_gallery" => array("table" => "data_photos_cat", "title" => "Photo Gallery", "tocategory" => true, "topage" => false, "alias" => "", "restricted" => false, "childmenus" => array(
+                    "photos" => array("table" => "photos", "title" => "Galleries", "tocategory" => true, "topage" => false, "alias" => "", "restricted" => false)
                 )),
-            "projects" => array("table" => "data_projects", "title" => "Projects", "tocategory" => false, "topage" => false, "alias" => "", "childmenus" => null),
-            "whats_new" => array("table" => "data_whatsnew", "title" => "What's New", "tocategory" => false, "topage" => false, "alias" => "", "childmenus" => null)
+            "projects" => array("table" => "data_projects", "title" => "Projects", "tocategory" => false, "topage" => false, "alias" => "", "restricted" => false, "childmenus" => null),
+            "whats_new" => array("table" => "data_whatsnew", "title" => "What's New", "tocategory" => false, "topage" => false, "alias" => "", "restricted" => false, "childmenus" => null)
         );
     }else{
         $menus = json_decode($menus_json['value'], true);
     }
     $menus = setupAdminMenusTargets($menus);
-    //printr($menus);
 
     if($menucode != ''){
         if(isset($menus[$menucode])){
@@ -1494,6 +1493,7 @@ function updateAdminMenusLayout($newlayout){
  * @global type $_system
  * @global type $_page
  * @param type $menukey
+ * @param type $parentmenukey
  * @param type $level
  * @return string
  */
@@ -1528,7 +1528,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
             }else{
                 $menu = getIfSet($menus[$parentmenukey]['childmenus'][$menukey]);
             }
-            if(count($menu) == 0) $menu = array("title" => "", "table" => "", "alias" => "", "tocategory" => 0, "topage" => 0);
+            if(count($menu) == 0) $menu = array("title" => "", "table" => "", "alias" => "", "tocategory" => 0, "topage" => 0, "restricted" => 0);
 
             if($level == "top"){
                 // table, title, tocategory, file alias, topage
@@ -1557,6 +1557,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
                     $outp .= $menu['table'].'</div>'.PHP_EOL;
                 }
                 $outp.= '<div class="setlabel">Derived Menu Target Path: <span class="hovertip" alt="This is the target URL based on the bound table, file alias, and target type settings">[?]</span></div><div class="setdata adminmenu_targeturl">'.$menu['target'].'</div>'.PHP_EOL;
+                $outp.= '<div class="setlabel">Restricted Access?: <span class="hovertip" alt="If set, users must be allowed to \'view restricted menus\' to access it.">[?]</span></div><div class="setdata"><input type="checkbox" id="adminmenu_restricted" name="adminmenu_restricted" value="1"'.((getIfSet($menu['restricted'])) ? ' checked="checked"' : '').' /> Yes, viewable only to users allowed to \'view restricted menus\'</div>'.PHP_EOL;
                 $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savetop" value="Save Changes" /></div>'.PHP_EOL;
             }else{
                 // parenttable, table, title, file alias
@@ -1574,6 +1575,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
                 $outp.= '</select></div>'.PHP_EOL;
                 $outp.= '<div class="setlabel">File Alias: <span class="hovertip" alt="The optional file alias allows you to specify an alternate target URL for the menu.  If left blank, the system will use the data table to determine the target URL.<br/><br/>Just remember to leave off the \'list-\', \'edit-\', \'add-\', and \'_cat\' parts.">[?]</span></div><div class="setdata"><input type="text" id="adminmenu_filealias" name="adminmenu_filealias" value="'.getIfSet($menu['alias']).'" /></div>'.PHP_EOL;
                 $outp.= '<div class="setlabel">Derived Menu Target Path: <span class="hovertip" alt="This is the target URL based on the bound table, file alias, and target type settings">[?]</span></div><div class="setdata adminmenu_targeturl">'.$menu['target'].'</div>'.PHP_EOL;
+                $outp.= '<div class="setlabel">Restricted Access?: <span class="hovertip" alt="If set, users must be allowed to \'view restricted menus\' to access it.">[?]</span></div><div class="setdata"><input type="checkbox" id="adminmenu_restricted" name="adminmenu_restricted" value="1"'.((getIfSet($menu['restricted'])) ? ' checked="checked"' : '').' /> Yes, viewable only to users allowed to \'view restricted menus\'</div>'.PHP_EOL;
                 $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savesub" value="Save Changes" /></div>'.PHP_EOL;
             }
         }else{
@@ -1602,8 +1604,10 @@ function getAdminMenuEditorSubMenu($menukey){
         if(!isBlank($menu['childmenus'])){
             $outp = "";
             foreach($menu['childmenus'] as $key => $submenu){
+                $submenutitle = $submenu['title'];
+                if($submenu['restricted']) $submenutitle = '['.$submenutitle.']';
                 $chosen = (($outp == "") ? "chosen" : "unchosen");
-                $outp .= "<li class=\"{$chosen}\" id=\"setsubmenu_".$key."\"><a href=\"#\" class=\"adminmenu_subelem\" rel=\"{$menukey}:{$key}\" title=\"Click to edit; drag to re-order\">{$submenu['title']}</a></li>\n";
+                $outp .= "<li class=\"{$chosen}\" id=\"setsubmenu_".$key."\"><a href=\"#\" class=\"adminmenu_subelem\" rel=\"{$menukey}:{$key}\" title=\"Click to edit; drag to re-order\">{$submenutitle}</a></li>\n";
             }
         }
     }
@@ -1621,7 +1625,7 @@ function getAdminMenuEditorSubMenu($menukey){
  * @param string $alias
  * @return boolean
  */
-function saveAdminMenu($level, $key, $parent, $title, $table, $targettype, $alias){
+function saveAdminMenu($level, $key, $parent, $title, $table, $targettype, $alias, $resticted){
     global $_system, $_page;
 
     $ok = false;
@@ -1643,6 +1647,7 @@ function saveAdminMenu($level, $key, $parent, $title, $table, $targettype, $alia
                     "topage" => ($targettype == "topage"),
                     "alias" => $alias,
                     "target" => $target,
+                    "restricted" => (bool)$resticted,
                     "childmenus" => $childmenus
                 );
             }
@@ -1654,6 +1659,7 @@ function saveAdminMenu($level, $key, $parent, $title, $table, $targettype, $alia
                     "title" => $title,
                     "alias" => $alias,
                     "target" => $target,
+                    "restricted" => (bool)$resticted
                 );
             }
         }

@@ -131,7 +131,7 @@ switch($op){
         }
         $ok = false;
         if(!isblank($key) && !isblank($table) && !isblank($title)){
-            $ok = saveAdminMenu($level, $key, "", $title, $table, $targettype, $alias);
+            $ok = saveAdminMenu($level, $key, "", $title, $table, $targettype, $alias, $restricted);
         }
         exitAjax($ok);
         break;
@@ -139,7 +139,7 @@ switch($op){
         extractVariables($_REQUEST);
         $ok = false;
         if(!isblank($parent) && !isblank($key) && !isblank($table) && !isblank($title)){
-            $ok = saveAdminMenu($level, $key, $parent, $title, $table, '', $alias);
+            $ok = saveAdminMenu($level, $key, $parent, $title, $table, '', $alias, $restricted);
         }
         exitAjax($ok);
         break;
