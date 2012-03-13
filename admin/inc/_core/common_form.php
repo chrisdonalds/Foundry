@@ -1511,13 +1511,19 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
             // prepare fields from saved data
             $menutables = array();
             foreach($menus as $tkey => $topmenu){
-                if($tkey != $menukey) $menutables[] = $topmenu['table'];
+                $menutables[] = $topmenu['table'];
+                if($parentmenukey == '' && $tkey == $menukey) $table = $topmenu['table'];
                 if(is_array($topmenu['childmenus'])){
                     foreach($topmenu['childmenus'] as $skey => $submenu){
-                        if($skey != $menukey) $menutables[] = $submenu['table'];
+                        $menutables[] = $submenu['table'];
+                        if($parentmenukey != '' && $skey == $menukey) $table = $submenu['table'];
                     }
                 }
             }
+            $menutables = array_unique($menutables);
+            $key = array_search($table, $menutables);
+            if($key > 0) unset($menutables[$key]);
+
             $datatables = $_system->datatables;
             array_unshift($datatables, 'pages');
             $datatables = array_diff($datatables, $menutables);

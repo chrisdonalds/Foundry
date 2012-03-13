@@ -15,7 +15,6 @@ define("IN_ADMIN", true);
 
 include_once ($_SERVER['DOCUMENT_ROOT'].VHOST."admin/inc/_config/configs.php");
 if(strpos(SITE_PATH, "/") === false) die("Config Loading Failure: Check path to configs.php in getinc.php");
-include_once (SITE_PATH.ADMIN_FOLDER.CONFIG_FOLDER."adminconfigs.php");
 require_once (SITE_PATH.ADMIN_FOLDER.CORE_FOLDER."common_core.php");
 require_once (SITE_PATH.ADMIN_FOLDER.CORE_FOLDER."common_err.php");
 require_once (SITE_PATH.ADMIN_FOLDER.CORE_FOLDER."common_db.php");
@@ -145,36 +144,6 @@ if(!defined("BASIC_GETINC")){
 	getInstalledPlugins();
 	initPluginsandFrameworks();
 
-	//*****************************************************************************
-	//   MENU PRESETS
-	//*****************************************************************************
-
-	// root
-	$menu = array("root" => null, "rootrec" => null, "sections" => $sections);
-	$menu['rootid'] = getIfSet($_SESSION['rootid']);
-	$menu['rootname'] = getIfSet($_SESSION['rootname']);
-	if(isset($rootvar)){
-		if($rootvar != ""){
-			// root persistence
-			$menu['root'] = getRequestVar('root');
-			$menu['rootrec'] = setRootSession(true);
-		}
-	}
-
-	// menus
-	$menu['section'] = preg_replace("/(^[a-z]*-)|(\.[a-z]*$)/i", "", basename($_SERVER['SCRIPT_FILENAME']));
-	$menu['subsection'] = "";
-	if(isset($altsections[$menu['section']])){
-		if($altsections[$menu['section']] != ""){
-			$menu['subsection'] = $menu['section'];
-			$menu['section'] = $altsections[$menu['section']];
-		}
-	}
-	$menu['subsections'] = $subsections;
-	$menu['altsections'] = $altsections;
-
-	$_page->menu = $menu;
-    $_page->menus = getAdminMenus();
 }else{
 
 	initPluginsandFrameworks();

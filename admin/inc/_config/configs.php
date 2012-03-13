@@ -37,7 +37,7 @@ if($_SERVER['DOCUMENT_ROOT'] == ""){
 }
 
 //*****************************************************************************
-//   FILE SYSTEM FOLDERS
+//   FILE SYSTEM SETTINGS
 //*****************************************************************************
 
 // - site_path: server/path/to/file
@@ -87,6 +87,41 @@ define ("SECURE_SALT", 'btVBFBD|,g%0]g1Vi7@LffNpV}3g/dzbM~0]x2vEBxZ$`&X_?,Wk:Nb8
 define ("SECTIONING", false);                       // Data subdivisioning
 define ("COPYRIGHT_NAME", "Navigator Multimedia");	// System copyright holder
 define ("COPYRIGHT_WEB", "http://www.navigatormm.com/");
+
+//*****************************************************************************
+//   RECORD-KEEPING SETTINGS
+//*****************************************************************************
+
+define ("ALLOW_ARCHIVE", true);		// 'archive' action
+define ("ALLOW_DELETE", true);		// 'delete' action
+define ("FULL_DELETE", true);		// delete record or set 'delete' field
+define ("ALLOW_UNDELETE", true);	// 'undelete' action
+define ("ALLOW_PUBLISH", true);		// 'publish' action and 'save & publish' option
+define ("ALLOW_ACTIVATE", true);	// 'activate' action and 'save & activate' option
+define ("ALLOW_DRAFT", true);		// 'save to draft' option
+define ("ALLOW_UNPUB_SAVE", true);	// 'save' option displayed
+define ("ALLOW_SORT", true);        // column sorting on list page
+define ("ALLOW_SEARCH", true);      // search function on list page
+define ("USE_SECTIONS", false);     // universal divisioning on/off
+define ("ALLOW_ADDPAGE", true);     // shows 'add sub-page' on page list
+define ("ALLOW_METAPAGE", true);    // shows 'edit meta-data' on page list
+define("ROOT_ID", "sectionid");		// session root table id where root data is pulled
+
+if(USE_SECTIONS){
+	$rootvar = "root";					// session root variable name -- passed between webpages
+	$roottable = "sections";			// session root table where root data is pulled
+	$rootdir = "pages";					// page and folder which is displayed by default
+	$rootlink = "?root=";
+}else{
+	$rootvar = "";						// session root variable name -- passed between webpages
+	$roottable = "";					// session root table where root data is pulled
+	$rootdir = "";						// page and folder which is displayed by default
+	$rootlink = "";
+}
+
+define("PAGE_EDITOR", 1);
+define("PAGE_DB", 2);
+define("PAGE_FORM", 3);
 
 //*****************************************************************************
 //   START DATABASE INITIALIZATION
@@ -178,7 +213,7 @@ define ("EXCERPT_CHAR_LIMIT", 40);
 define ("REQD_ENTRY", "<span style=\"color: red\">*</span>");
 
 //*****************************************************************************
-//   CONFIG FUNCTIONS
+//   VALIDATION FUNCTIONS
 //*****************************************************************************
 
 #----------- VALIDATE FOLDER ACCESS --------------
@@ -220,7 +255,7 @@ function testFiles($testfor, $where, $stophere = false){
 }
 
 //*****************************************************************************
-//   SETTINGS FUNCTIONS
+//   SUPPORT FUNCTIONS
 //*****************************************************************************
 
 function checkServerVersions($server){

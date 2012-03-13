@@ -5,16 +5,21 @@
 //
 // ---------------------------
 //
-// Load menu headings from $_page->menu['sections'] array
 
 if(!defined("VALID_LOAD")) die("This file cannot be accessed directly!");
 
 $dir = VHOST.ADMIN_FOLDER;
-$section = $_page->menu['section'];
 
-// root bar
-if($rootvar != ""){
-	print "<ul id=\"roothead\">";
+// root bar (deprecate)
+$menu = array("root" => null, "rootrec" => null);
+$menu['rootid'] = getIfSet($_SESSION['rootid']);
+$menu['rootname'] = getIfSet($_SESSION['rootname']);
+if(!isblank($rootvar)){
+    // root persistence
+    $menu['root'] = getRequestVar('root');
+    $menu['rootrec'] = setRootSession(true);
+
+    print "<ul id=\"roothead\">";
 	if($_SESSION['rootname'] != ""){
 		// display root name and menu
 		$sessionname = $_SESSION['rootname']." ";
@@ -32,12 +37,10 @@ if($rootvar != ""){
 	print "</ul>\n\n";
 }
 
-// top navigation bar scroll controller
-$menuscroller = array();
-(isset($_COOKIE['menu_scr_start'])) ? $menuscroller['start'] = $_COOKIE['menu_scr_start'] : $menuscroller['start'] = 0;
-
 // top and sub navigation menus
 $menus = getAdminMenus();
+$_page->menu = $menu;
+$_page->menus = $menus;
 
 $toplevel = "";
 $sublevel = "";
@@ -61,103 +64,6 @@ $toplevel = "<ul id=\"navigation\">$toplevel</ul>\n";
 if($sublevel != "") $sublevel = "<ul id=\"subnavigation\">$sublevel</ul>\n";
 echo $toplevel;
 echo $sublevel;
-
-/*
-// top navigation bar
-print "<ul id=\"navigation\">";
-foreach($_page->menu['sections'] as $key => $value) {
-	if(substr($value, 0, 2) == "\d" && !userIsAtleast(ADMLEVEL_DEVELOPER)){
-		continue;
-	}else{
-		$value = str_replace("\\d", "", $value);
-		$excl_pos = strpos($key, "!");
-		$oktodisplay = true;
-		if($excl_pos > 0){
-			// sections that do not display this menu item
-			$excl = substr($key, $excl_pos + 1);
-			$key = substr($key, 0, $excl_pos);
-			if(strpos($excl, ",") > 0){
-				$items = split("\,", $excl);
-				$oktodisplay = !in_array($_SESSION['rootid'], $items);
-			}else{
-				$items = $excl;
-				$oktodisplay = ($excl != $_SESSION['rootid']);
-			}
-		}
-
-		if($oktodisplay){
-			$popupmenu = "";
-			$skey = $key;
-			$spage = $key;
-			$js = "";
-			switch(substr($value, 0, 2)){
-				case "\p":
-					$pageroot = "edit-";
-					$pagesuffix = "";
-					$value = str_replace("\\p", "", $value);
-					break;
-				case "\c":
-					$pageroot = "list-";
-					$pagesuffix = "_cat";
-					$value = str_replace("\\c", "", $value);
-					break;
-                case "\a":
-                    $pageroot = "list-";
-                    $joinedvalue = explode("|", $value);
-                    $value = $joinedvalue[1];
-                    $spage = substr($joinedvalue[0], 3);
-				default:
-					$pageroot = "list-";
-					$pagesuffix = "";
-					break;
-			}
-			$value = preg_replace("/{div}/i", $_page->menu['rootname'], $value);
-
-			if(strtolower($value) == strtolower($roottable) || $rootvar == "" || ($rootvar != "" && $_page->menu['root'] != "")) {
-				// display if menu is roottable, or rootvar is not used, or rootvar and session exist
-				$link = WEB_URL.ADMIN_FOLDER.$skey."/".$pageroot.$spage.$pagesuffix.".php".$rootlink;
-				if($section == $skey) {
-					print "<li id=\"menu_{$key}\" class=\"chosen\"$js><a href=\"$link\">$value</a>";
-					if(is_array($popupmenu)) foreach($popupmenu as $value) print $value;
-					print "</li>";
-				}else{
-					print "<li id=\"menu_{$key}\" class=\"unchosen\"$js><a href=\"$link\">$value</a>";
-					if(is_array($popupmenu)) foreach($popupmenu as $value) print $value;
-					print "</li>";
-				}
-			}
-		}
-	}
-}
-print "</ul>\n\n";
-
-// sub-navigation bar
-if(isset($_page->menu['subsections'][$section])){
-	if(is_array($_page->menu['subsections'][$section])) {
-		print "<ul id=\"subnavigation\">";
-		foreach($_page->menu['subsections'][$section] as $skey=>$value) {
-			if($value != "") {
-				switch(substr($value, 0, 2)){
-					case "\p":
-						$pageroot = "edit-";
-						$value = str_replace("\\p", "", $value);
-						break;
-					default:
-						$pageroot = "list-";
-						break;
-				}
-				$link = WEB_URL.ADMIN_FOLDER.$section."/".$pageroot.$skey.".php".$rootlink;
-				if($_page->menu['subsection'] == $skey) {
-					print "<li id=\"submenu_{$skey}\" class=\"chosen\"><a href=\"$link\">$value</a></li>";
-				}else{
-					print "<li id=\"submenu_{$skey}\" class=\"unchosen\"><a href=\"$link\">$value</a></li>";
-				}
-			}
-		}
-		print "</ul>\n\n";
-	}
-}
- */
 ?>
 
 <div id="display_core_msg"></div>
