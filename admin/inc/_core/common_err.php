@@ -190,40 +190,63 @@ function _sendErrorTo($message){
 function customErrorHandler($errno, $errstr, $errfile, $errline){
 	global $_err;
 
-	echo "<div style=\"clear: both; position: relative; border: 1px solid black; background: white; padding: 2px;\">\n";
+    $terminate = false;
+    $outp = "";
     switch ($errno) {
         case E_COMPILE_ERROR:
         case E_RECOVERABLE_ERROR:
 		case E_USER_ERROR:
         case E_STRICT:
 		case E_ERROR:
-			echo "<b>CRITICAL ERROR</b> [$errno] $errstr. ";
-			echo "  Critical error on line $errline in file $errfile\n";
-			echo "Aborting...<br/>\n";
-			exit(1);
+			$outp .= "<b>CRITICAL ERROR</b> [$errno] $errstr. ";
+			$outp .= "  Critical error on line $errline in file $errfile\n";
+			$outp .= "Aborting...<br/>\n";
+            $terminate = true;
 			break;
 
 		case E_USER_WARNING:
 		case E_WARNING:
-			echo "<b>WARNING</b> [$errno] $errstr. ";
-			echo "  Warning on line $errline in file $errfile<br/>\n";
+			$outp .= "<b>WARNING</b> [$errno] $errstr. ";
+			$outp .= "  Warning on line $errline in file $errfile<br/>\n";
 			break;
 
 		case E_USER_NOTICE:
 		case E_NOTICE:
-			echo "<b>NOTICE</b> [$errno] $errstr. ";
-			echo "  Notice on line $errline in file $errfile<br/>\n";
+			$outp .= "<b>NOTICE</b> [$errno] $errstr. ";
+			$outp .= "  Notice on line $errline in file $errfile<br/>\n";
 			break;
 
 		default:
-			echo "<b>UNKNOWN error type</b>: [$errno] $errstr. ";
-			echo "  Error on line $errline in file $errfile<br/>\n";
+			$outp .= "<b>UNKNOWN error type</b>: [$errno] $errstr. ";
+			$outp .= "  Error on line $errline in file $errfile<br/>\n";
 			break;
 	}
-	echo "</div>\n";
+    echo "<div style=\"clear: both; position: relative; border: 1px solid black; background: white; padding: 2px;\">\n";
+    echo $outp."</div>\n";
 
-	/* Don't execute PHP's internal error handler */
-    return true;
+    submitErrorLog($outp);
+    if($terminate){
+        exit(1);
+    }else{
+        /* Don't execute PHP's internal error handler */
+        return true;
+    }
+}
+
+/**
+ * Submit error log message to either file or email
+ * @param string $msg
+ */
+function submitErrorLog($msg){
+    $msg = date("Y-m-d h:i:s")." - ".str_replace("<br/>", PHP_EOL, $msg);
+    if(ERROR_LOG_TYPE == 1){
+        // to email
+        error_log($msg, 1, ADMIN_EMAIL);
+    }elseif(ERROR_LOG_TYPE == 3){
+        // to file
+        $file = SITE_PATH.ADMIN_FOLDER.INC_FOLDER."_cache/error.log";
+        error_log($msg, 3, $file);
+    }
 }
 
 /**

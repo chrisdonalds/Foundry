@@ -662,6 +662,7 @@ EOT;
         break;
 
 	// DB MANAGER
+    // -- DB Manager operations require the database controller to be disabled
 
 	case 'trytoaccessdb':
 		$domain  = getRequestVar('d');
@@ -671,13 +672,12 @@ EOT;
 		$db_pass = getRequestVar('p');
 		$db_name = getRequestVar('n');
 		$db_port = intval(getRequestVar('r'));
-		$gmap_key= getRequestVar('g');
-		if($db_host != '' && $db_user != '' && $db_name != ''){
+		if($db_host != '' && $db_user != '' && $db_name != '' && $db_pass != ''){
 			$db_hostport = (($db_port > 0 && $db_port != 3306) ? $db_host.':'.$db_port : $db_host);
 			$link = @mysql_connect($db_hostport, $db_user, $db_pass);
 			if($link){
 				if(mysql_select_db($db_name)){
-					include(SITE_PATH.ADMIN_FOLDER.CORE_FOLDER."common_db.php");
+					include_once(SITE_PATH.ADMIN_FOLDER.CORE_FOLDER."common_db.php");
 					$dbset = readDBINI();
 					$key = "";
 					// if a key for this domain exists, update the settings
@@ -690,8 +690,7 @@ EOT;
 						$key = $domain;
 					}
 
-					$dbset[$key] = array("GOOGLEMAP_KEY" => $gmap_key,
-										 "DBNAME" => $db_name,
+					$dbset[$key] = array("DBNAME" => $db_name,
 										 "DBHOST" => $db_host,
 										 "DBUSER" => $db_user,
 										 "DBPASS" => $db_pass,

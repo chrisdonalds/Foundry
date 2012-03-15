@@ -1595,27 +1595,39 @@ label {
     display: block;
 }
 
-#adminmenu_sample .adminmenu_actions {
-    float: left;
-    padding: 5px 0 5px 2px;
-}
-
-#adminmenu_addtop {
-    float: left;
-    width: 16px;
-    height: 16px;
-    background: url('images/icons/add.png') no-repeat;
-}
-
-#adminmenu_addsub {
-    float: left;
-    width: 16px;
-    height: 16px;
-    background: url('images/icons/add.png') no-repeat;
-}
-
-#adminmenu_sample .adminmenu_actions span {
+#adminmenu_sample .adminmenu_addtop a span,
+#adminmenu_sample .adminmenu_addsub a span {
     display: none;
+}
+
+#adminmenu_sample .adminmenu_addtop {
+    background-color: #0000aa;
+    border-top: 1px solid #555;
+    float: left;
+    height: 26px;
+    width: 26px;
+}
+
+#adminmenu_sample .adminmenu_addsub {
+    background-color: #000066;
+    border-top: 1px solid #555;
+    float: left;
+    height: 28px;
+    width: 26px;
+}
+
+#adminmenu_sample .adminmenu_addtop a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url('images/icons/add-nav1.png') no-repeat transparent 50% 50%;
+}
+
+#adminmenu_sample .adminmenu_addsub a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url('images/icons/add-nav2.png') no-repeat transparent 50% 50%;
 }
 
 #adminmenu_navigation {
@@ -1628,7 +1640,7 @@ label {
     border-top: 1px solid #555;
 	clear: both;
     float: left;
-    margin-right: 5px;
+    margin-right: 1px;
 }
 
 #adminmenu_navigation ul {
@@ -1708,7 +1720,7 @@ label {
 	background-color: #000066;
 	overflow: hidden;
     border-top: 1px solid #555;
-    margin-right: 5px;
+    margin-right: 1px;
 }
 
 #adminmenu_subnavigation ul {
@@ -1770,7 +1782,10 @@ label {
 .plugin_tile img {
     width: 100px;
     height: 100px;
-    border: 1px solid #ccc;
+    border-right: 1px solid #888;
+    border-bottom: 1px solid #888;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
     margin-bottom: 2px;
 }
 

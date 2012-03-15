@@ -1457,6 +1457,38 @@ function getAdminMenuTarget($table, $alias, $targettype){
     }
 }
 
+function addAdminMenu($level, $parentmenukey){
+    $html = '';
+    if(($level == 'top' && $parentmenukey == '') || ($parentmenukey != '' && $level == 'sub')){
+        if(defined('IN_AJAX')) {
+            $menus = getAdminMenus();
+        }else{
+            $menus = $_page->menus;
+        }
+        if(!isBlank($menus)){
+            if($level == 'top'){
+                foreach($menus as $key => $menu){
+                    $menutitle = $menu['title'];
+                    $html .= "<li class=\"unchosen\" id=\"setmenu_{$key}\"><a href=\"#\" class=\"adminmenu_topelem\" rel=\"{$key}\" title=\"Click to edit; drag to re-order\">{$menutitle}</a></li>\n";
+                }
+                $html .= "<li class=\"chosen\" id=\"setmenu_000\"><a href=\"#\" class=\"adminmenu_topelem\" rel=\"000\" title=\"Click to edit; drag to re-order\">- ... -</a></li>\n";
+            }else{
+                $topmenu = getIfSet($menus[$parentmenukey]);
+                if(is_array($topmenu)){
+                    if(is_array($topmenu['childmenus'])){
+                        foreach($topmenu['childmenus'] as $skey => $menu){
+                            $menutitle = $menu['title'];
+                            $html .= "<li class=\"unchosen\" id=\"setsubmenu_{$skey}\"><a href=\"#\" class=\"adminmenu_subelem\" rel=\"{$skey}\" title=\"Click to edit; drag to re-order\">{$menutitle}</a></li>\n";
+                        }
+                    }
+                    $html .= "<li class=\"unchosen\" id=\"setsubmenu_000\"><a href=\"#\" class=\"adminmenu_subelem\" rel=\"000\" title=\"Click to edit; drag to re-order\">- ... -</a></li>\n";
+                }
+            }
+        }
+    }
+    return $html;
+}
+
 /**
  * Save admin menus layout and settings to database (triggered by menu sorting)
  * @param string $newlayout
@@ -1592,7 +1624,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
 }
 
 /**
- * Return the sub-level menu listitems for a top-level menu
+ * Return the sub-level menu listitems (<ul>...</ul>) for a top-level menu
  * @param string $menukey
  * @return string
  */

@@ -898,12 +898,14 @@ function flattenDBArray($arry, $idfld, $valfld) {
  */
 function getDataTables(){
 	$rtn = array();
-	$tables = univGetQuery("SHOW TABLES WHERE `tables_in_".DBNAME."` LIKE '".DB_TABLE_PREFIX."%'");
-	if(count($tables) > 0){
-		foreach($tables as $table){
-			$rtn[] = $table['Tables_in_'.DBNAME];
-		}
-	}
+    if(defined('DBNAME')){
+        $tables = univGetQuery("SHOW TABLES WHERE `tables_in_".DBNAME."` LIKE '".DB_TABLE_PREFIX."%'");
+        if(count($tables) > 0){
+            foreach($tables as $table){
+                $rtn[] = $table['Tables_in_'.DBNAME];
+            }
+        }
+    }
 	return $rtn;
 }
 

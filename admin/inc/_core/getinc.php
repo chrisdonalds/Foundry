@@ -26,13 +26,17 @@ if(!defined("CORELOADED") || !defined("DBLOADED") || !defined("FORMLOADED") || !
 //   DATABASE SETUP
 //*****************************************************************************
 
-if(DB_VER < 3.34){
-	require_once (SITE_PATH.ADMIN_FOLDER.DB_FOLDER."db_mysql.php");
-}else{
-	require_once (SITE_PATH.ADMIN_FOLDER.DB_FOLDER."db_connection.class.php");
-	require_once (SITE_PATH.ADMIN_FOLDER.DB_FOLDER."db_common.class.php");
-	require_once (SITE_PATH.ADMIN_FOLDER.DB_FOLDER."db_wrapper.class.php");
-	$db = new DB_wrapper();
+if(DB_USED){
+    // the database is active in almost all cases -- except when the database is
+    // being reconfigured, backed up, restored, or is under some sort of conditioning
+    if(DB_VER < 3.34){
+        require_once (SITE_PATH.ADMIN_FOLDER.DB_FOLDER."db_mysql.php");
+    }else{
+        require_once (SITE_PATH.ADMIN_FOLDER.DB_FOLDER."db_connection.class.php");
+        require_once (SITE_PATH.ADMIN_FOLDER.DB_FOLDER."db_common.class.php");
+        require_once (SITE_PATH.ADMIN_FOLDER.DB_FOLDER."db_wrapper.class.php");
+        $db = new DB_wrapper();
+    }
 }
 
 //*****************************************************************************
@@ -80,8 +84,12 @@ $_users->email = getIfSet($_SESSION['userdata']['email']);
 $_users->twitter = getIfSet($_SESSION['userdata']['twitter_link']);
 $_users->googleplus = getIfSet($_SESSION['userdata']['google_plus_link']);
 $_users->facebook = getIfSet($_SESSION['userdata']['facebook_link']);
-$_users->activelist = getRec("admin_accts", "*", "activated=1 AND blocked=0", "username", "");
-initAllowances();
+if(DB_USED){
+    $_users->activelist = getRec("admin_accts", "*", "activated=1 AND blocked=0", "username", "");
+    initAllowances();
+}else{
+    $_users->activelist = null;
+}
 
 //*****************************************************************************
 //   GENERAL PERSISTENCE/PAGE-CLASS PREPARATION
@@ -90,6 +98,7 @@ initAllowances();
 $_page->uri = $_SERVER['REQUEST_URI'];		// uri is used by SESSION to limit values to specific URL
 $_page->sectionid = intval(getIfSet($_SESSION['rootid']));
 $_page->row_id = intval(getRequestVar('row_id'));
+$_page->title = preg_replace("/(^[a-z]*-)|(\.[a-z]*$)/i", "", basename($_SERVER['SCRIPT_FILENAME']));
 $_page->nonce = createNonce();
 $_page->titlefld = 'itemtitle';
 $_page->imagefld = 'image';
@@ -146,7 +155,7 @@ if(!defined("BASIC_GETINC")){
 
 }else{
 
-	initPluginsandFrameworks();
+	if(DB_USED) initPluginsandFrameworks();
 }
 
 ?>

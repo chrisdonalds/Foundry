@@ -100,9 +100,9 @@ function configDB($reason = null, $dbset = null){
                         'db_name' => getIfSet($const['DBNAME']),
                         'db_user' => getIfSet($const['DBUSER']),
                         'db_pass' => getIfSet($const['DBPASS']),
-                        'db_port' => getIfSet($const['DBPORT']),
-                        'googlemap_key' => getIfSet($const['GOOGLEMAP_KEY']));
-    };
+                        'db_port' => getIfSet($const['DBPORT'])
+                    );
+    }
 
     $jumpto = (($reason >= DB_ACT_CONNECT) ? 'jQuery("#cfgdiv").tabs("select", '.($reason - DB_ACT_CONNECT).');' : '');
     $cfgothertabs = (($reason >= DB_ACT_CONNECT) ? '<li><a href="#db_backrest">Backup/Restore</a></li>' : '');
@@ -134,9 +134,8 @@ function configDB($reason = null, $dbset = null){
                 var p = jQuery("#db_pass").val();
                 var n = jQuery("#db_name").val();
                 var r = jQuery("#db_port").val();
-                var g = jQuery("#googlemap_key").val();
                 jQuery.post("{$const['VHOST']}{$const['ADMIN_FOLDER']}{$const['CORE_FOLDER']}ajaxwrapper.php",
-                    { op: 'trytoaccessdb', db_used: 0, d: d, h: h, u: u, p: p, n: n, r: r, g: g },
+                    { op: 'trytoaccessdb', db_used: 0, d: d, h: h, u: u, p: p, n: n, r: r },
                     function(data) {
                         if(data.success){
                             alert(data.rtndata);
@@ -200,9 +199,6 @@ EOT;
                             <span class="cfglabel">Username</span><span class="cfgdata"><input type="text" name="db_user" id="db_user" value="{$dbset['db_user']}"/></span><span class="cfgnote">The username which grants access to this database.</span><br/>
                             <span class="cfglabel">Password</span><span class="cfgdata"><input type="text" name="db_pass" id="db_pass" value="{$dbset['db_pass']}"/></span><span class="cfgnote">The password for that username.</span><br/>
                             <span class="cfglabel">Port</span><span class="cfgdata"><input type="text" name="db_port" id="db_port" value="{$dbset['db_port']}"/></span><span class="cfgnote">Typically set to <b>3306</b>.</span>
-                        </p>
-                        <p class="cfgblock">
-                            <span class="cfglabel">Google Map Key</span><span class="cfgdata"><input type="text" name="googlemap_key" id="googlemap_key" value="{$dbset['googlemap_key']}" size="100"/></span><span class="cfgnote"><a href="http://code.google.com/apis/maps/signup.html" target="_blank">Get a new key now</a> (required to use Google Map plugin).</span>
                         </p>
                         <p class="cfgblock">
                             When ready, ensure that the <strong>db.ini</strong> file is writable (CHMOD 777), and...

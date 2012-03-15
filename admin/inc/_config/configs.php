@@ -169,8 +169,6 @@ $defcfg  = array(	"BUSINESS" => "Business",
 					"ERROR_SENSITIVITY" => E_ERROR | E_WARNING | E_PARSE,
 					"ALLOW_DEBUGGING" => true,
 					"ERROR_LOG_TYPE" => 0,
-					"ERROR_LOG_TO_EMAIL" => '',
-					"ERROR_LOG_TO_FILE" => '',
 					);
 $configs = getCustomConfigVals();
 foreach($configs as $ckey => $cval) define($ckey, $cval);

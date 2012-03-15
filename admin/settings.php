@@ -90,7 +90,7 @@ if (getRequestVar('cfgsubmit') != ""){
         }
 
         // Users
-        include (SITE_PATH.ADMIN_FOLDER.PLUGINS_FOLDER."cipher/cipherlib.php");
+        include_once (SITE_PATH.ADMIN_FOLDER.PLUGINS_FOLDER."cipher/cipherlib.php");
         $user_id_array = $_POST['users_id'];
         $user_name_array = $_POST['users_name'];
         $user_pass_array = $_POST['users_pass'];
@@ -441,12 +441,12 @@ function showSettingsMenusforAdmin(){
     ?>
     <div id="adminmenu_sample">
         <?=$toplevel?>
-        <div class="adminmenu_actions">
-            <a href="#" id="adminmenu_addtop" title="Add new menu to top level"><span>+</span></a>
+        <div class="adminmenu_addtop">
+            <a href="#" title="Add new menu to top level"><span>+</span></a>
         </div>
         <?=$sublevel?>
-        <div class="adminmenu_actions">
-            <a href="#" id="adminmenu_addsub" title="Add new menu to sub level"><span>+</span></a>
+        <div class="adminmenu_addsub">
+            <a href="#" title="Add new menu to sub level"><span>+</span></a>
         </div>
     </div>
     <div id="adminmenu_editor"><?=getAdminMenuEditorHTML(key($menus), "", "top")?></div>
@@ -1096,19 +1096,16 @@ function showSettingsSiteVisibilityArea(){
 	                        <div class="setdata">
 								<select name="newcfg[ERROR_LOG_TYPE]" id="ERROR_LOG_TYPE" size="1">
 								<?
-								$es = array(0 => "Log to system", 1 => "Send email", 3 => "Save to log file");
+								$es = array(0 => "Log to system (default) *", 1 => "Send email (".ADMIN_EMAIL.")", 3 => "Save to log file (".ADMIN_FOLDER.INC_FOLDER."_cache/error.log".")");
 								foreach($es as $key => $er){
 									$sel = (($key == $configs['ERROR_LOG_TYPE']) ? ' selected="selected"' : '');
 									echo '<option value="'.$key.'"'.$sel.'>'.$er.'</option>'.PHP_EOL;
 								}
 								?>
-								</select>
+								</select><br/>
+                                <span style="font-size: 80%">* Depends on an error log mechanism on the server and may not be available on Windows installations.</span>
 	                        </div>
-						<div class="setlabel">Error Log Email Recipient: <span class="hovertip" alt="The recipient to whom error messages will be sent">[?]</span></div>
-							<div class="setdata"><input type="text" id="ERROR_LOG_TO_EMAIL" name="newcfg[ERROR_LOG_TO_EMAIL]" size="30" value="<?=$configs['ERROR_LOG_TO_EMAIL']?>"/> <? showResetLink('ERROR_LOG_TO_EMAIL')?></div>
-						<div class="setlabel">Error Log File Name:</div>
-							<div class="setdata"><input type="text" id="ERROR_LOG_TO_FILE" name="newcfg[ERROR_LOG_TO_FILE]" size="30" value="<?=$configs['ERROR_LOG_TO_FILE']?>"/> <? showResetLink('ERROR_LOG_TO_FILE')?></div>
-	                    <div class="setlabel">Activate the Debugging System?</div>
+	                    <div class="setlabel">Activate the Debug System: <span class="hovertip" alt="Use the primary function 'debugger(true|false)' to start and stop debug output. _e(), _pr(), _vd() and more provide different methods to output debug content.">[?]</span></div>
 							<div class="setdata">
 								<input type="radio" id="ALLOW_DEBUGGING_on" name="newcfg[ALLOW_DEBUGGING]" value="1"<?=(($configs['ALLOW_DEBUGGING'] == 1) ? ' checked="checked"' : '')?> /> Yes
 								<input type="radio" id="ALLOW_DEBUGGING_off" name="newcfg[ALLOW_DEBUGGING]" value="0"<?=(($configs['ALLOW_DEBUGGING'] == 0) ? ' checked="checked"' : '')?> /> No (Debugger messages will not be displayed)

@@ -323,21 +323,23 @@ function executeMacro($triggercode, $args){
  */
 function getDataAliases($table = ""){
 	$aliases = array();
-	$data_tables = getDataTables();
-	$table = str_replace(DB_TABLE_PREFIX, "", $table);
-	$crit = "`type` = 'dataalias' AND `parameters` != '' AND `parameters` IS NOT NULL";
-	if($table != '' && in_array(DB_TABLE_PREFIX.$table, $data_tables)) $crit .= " AND `db_table` = '".$table."'";
+    if(DB_USED){
+        $data_tables = getDataTables();
+        $table = str_replace(DB_TABLE_PREFIX, "", $table);
+        $crit = "`type` = 'dataalias' AND `parameters` != '' AND `parameters` IS NOT NULL";
+        if($table != '' && in_array(DB_TABLE_PREFIX.$table, $data_tables)) $crit .= " AND `db_table` = '".$table."'";
 
-	$rec = getRec("register", "`fileurl` as meta, `db_table`, `db_child_table`, `parameters`", $crit, "`db_table`");
-	if(is_array($rec)){
-		foreach($rec as $row){
-            $meta_parts = explode("/", ltrim(strtolower($row['meta']), "/"));
-			$row['parameters'] = json_decode($row['parameters'], true);
-			list($row['pattern'], $row['error']) = getDataAliasPatternFromMeta($row['meta']);
-            $row['iscategory'] = dataAliasIsCategory($row['meta']);
-			$aliases[$meta_parts[0]] = $row;
-		}
-	}
+        $rec = getRec("register", "`fileurl` as meta, `db_table`, `db_child_table`, `parameters`", $crit, "`db_table`");
+        if(is_array($rec)){
+            foreach($rec as $row){
+                $meta_parts = explode("/", ltrim(strtolower($row['meta']), "/"));
+                $row['parameters'] = json_decode($row['parameters'], true);
+                list($row['pattern'], $row['error']) = getDataAliasPatternFromMeta($row['meta']);
+                $row['iscategory'] = dataAliasIsCategory($row['meta']);
+                $aliases[$meta_parts[0]] = $row;
+            }
+        }
+    }
 	return $aliases;
 }
 

@@ -14,6 +14,7 @@ $dir = VHOST.ADMIN_FOLDER;
 $menu = array("root" => null, "rootrec" => null);
 $menu['rootid'] = getIfSet($_SESSION['rootid']);
 $menu['rootname'] = getIfSet($_SESSION['rootname']);
+$menu['section'] = $_page->title;
 if(!isblank($rootvar)){
     // root persistence
     $menu['root'] = getRequestVar('root');
