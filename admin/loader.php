@@ -7,7 +7,7 @@
 //
 // ---------------------------
 define("VALID_LOAD", true);
-define("VHOST", substr(str_replace("\\", "/", realpath(__DIR__."/../")), strlen($_SERVER['DOCUMENT_ROOT']))."/");
+define("VHOST", substr(str_replace("\\", "/", realpath(dirname(__FILE__)."/../")), strlen(realpath($_SERVER['DOCUMENT_ROOT'])))."/");
 include ($_SERVER['DOCUMENT_ROOT'].VHOST."admin/inc/_core/getinc.php");					// required - starts PHP incls!!!
 
 if(isset($url)){

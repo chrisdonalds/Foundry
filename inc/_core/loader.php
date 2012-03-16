@@ -7,8 +7,7 @@
 // ---------------------------
 if(!defined('VALID_LOAD')){
     define("VALID_LOAD", true);
-    //define("VHOST", "/".((preg_match("/(badger|stonehenge|navigatormultimedia|localhost)/i", $_SERVER['HTTP_HOST'])) ? substr($_SERVER['PHP_SELF'], 1, strpos($_SERVER['PHP_SELF'], "/", 1)) : ""));
-    define("VHOST", substr(str_replace("\\", "/", realpath(__DIR__."/../../")), strlen($_SERVER['DOCUMENT_ROOT']))."/");
+    define("VHOST", substr(str_replace("\\", "/", realpath(dirname(__FILE__)."/../../")), strlen(realpath($_SERVER['DOCUMENT_ROOT'])))."/");
     include ($_SERVER['DOCUMENT_ROOT'].VHOST."inc/_core/getinc.php");					// required - starts PHP incls!!!
 }
 

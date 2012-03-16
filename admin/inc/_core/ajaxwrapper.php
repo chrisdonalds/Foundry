@@ -11,7 +11,7 @@
 define("IN_AJAX", true);
 define("VALID_LOAD", true);
 define("BASIC_GETINC", true);
-define("VHOST", substr(str_replace("\\", "/", realpath(__DIR__."/../../../")), strlen($_SERVER['DOCUMENT_ROOT']))."/");
+define("VHOST", substr(str_replace("\\", "/", realpath(dirname(__FILE__)."/../../../")), strlen(realpath($_SERVER['DOCUMENT_ROOT'])))."/");
 define("DB_USED", ((isset($_REQUEST['db_used'])) ? (bool) $_REQUEST['db_used'] : true));
 
 include ($_SERVER['DOCUMENT_ROOT'].VHOST."admin/inc/_core/getinc.php");				// required - starts PHP incls!!!

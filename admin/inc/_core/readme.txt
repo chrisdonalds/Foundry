@@ -255,7 +255,7 @@ would be one ../)
 
 define("VALID_LOAD", true);			// tells Foundry that this is a valid load process
 define("BASIC_GETINC", true);		// tells Foundry not to run advanced startup tasks
-define("VHOST", substr(str_replace("\\", "/", realpath(__DIR__."/../../")), strlen($_SERVER['DOCUMENT_ROOT']))."/");
+define("VHOST", substr(str_replace("\\", "/", realpath(dirname(__FILE__)."/../../")), strlen(realpath($_SERVER['DOCUMENT_ROOT'])))."/");
 include ($_SERVER['DOCUMENT_ROOT'].VHOST."admin/inc/_core/getinc.php");	// starts Foundry
 
 To start the plugins system, add:
