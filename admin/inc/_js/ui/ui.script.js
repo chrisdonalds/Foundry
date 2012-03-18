@@ -134,15 +134,15 @@ jQuery(function($){
             $('#help a').trigger('click');
         });
 
-        $('#help_phpcfg_link').click(function(e){
+        $(document).delegate('#help_phpcfg_link', 'click', function(e){
             e.preventDefault();
             $.post(
                 admin_core_url+"ajaxwrapper.php",
                 {'op':'getphpinfo'},
                 function(html){
                     if(html != ''){
-                        $('#help_phpcfg').html(html);
-                        $('#help_phpcfg').show();
+                        var w = window.open();
+                        $(w.document.body).html(html);
                     }
                 }
             );
@@ -309,12 +309,19 @@ jQuery(function($){
 
         $('.adminmenu_topelem').click(function(e){
             e.preventDefault();
-            var rel = $(this).attr('rel');
-            var mnu = $(this).parent();
+            $('.hasfocus').blur();
+            if($('#adminmenu_dirty').val() != ''){
+                if(confirm('The current menu has been modified.  Save first?')){
+                    $('#adminmenu_savetop').trigger('click');
+                }
+            }
+            var mnu = $(this);
+            var rel = mnu.attr('rel');
+            var mnu_parent = mnu.parent();
             $('#adminmenu_navigation li').each(function(){
                $(this).removeClass('chosen selected').addClass('unchosen');
             });
-            mnu.removeClass('unchosen').addClass('chosen selected');
+            mnu_parent.removeClass('unchosen').addClass('chosen selected');
   	        $.post(
 	            admin_core_url+"ajaxwrapper.php",
 	            {op:'getadminmenueditorhtml', val:rel, level:'top'},
@@ -328,12 +335,18 @@ jQuery(function($){
 
         $('ul').delegate('.adminmenu_subelem', 'click', function(e){
             e.preventDefault();
-            var rel = $(this).attr('rel');
-            var mnu = $(this).parent();
+            if($('#adminmenu_dirty').val() != ''){
+                if(confirm('The current menu has been modified.  Save first?')){
+                    $('#adminmenu_savesub').trigger('click');
+                }
+            }
+            var mnu = $(this);
+            var rel = mnu.attr('rel');
+            var mnu_parent = mnu.parent();
             $('#adminmenu_subnavigation li').each(function(){
                $(this).removeClass('chosen selected').addClass('unchosen');
             });
-            mnu.removeClass('unchosen').addClass('chosen selected');
+            mnu_parent.removeClass('unchosen').addClass('chosen selected');
             $('#adminmenu_navigation li.selected').removeClass('selected');
   	        $.post(
 	            admin_core_url+"ajaxwrapper.php",
@@ -346,16 +359,16 @@ jQuery(function($){
 
         $('div').delegate('#adminmenu_savetop', 'click', function(e){
             e.preventDefault();
+            var mnu   = $('#adminmenu_navigation .chosen a');
             var key   = $('#adminmenu_code').val();
             var title = $('#adminmenu_title').val().replace(/(\|)/g, '');
             var table = $('#adminmenu_table').val();
             var restr = (($('#adminmenu_restricted').is(':checked')) ? 1 : 0);
+            var alias = '';
+            var targettype = '';
             if(key != 'pages'){
-                var alias = $('#adminmenu_filealias').val().replace(/([^a-z0-9_\-])/ig, '');
-                var targettype= $('#adminmenu_target').val();
-            }else{
-                var alias = '';
-                var targettype = '';
+                alias = $('#adminmenu_filealias').val().replace(/([^a-z0-9_\-])/ig, '');
+                targettype= $('#adminmenu_target').val();
             }
             var errmsg= '';
             if(table == '- Unknown -' && key != 'pages') errmsg = 'The table is required';
@@ -372,8 +385,10 @@ jQuery(function($){
                     function(jsondata){
                         if(jsondata.success){
                             if(restr) title = '['+title+']';
+                            mnu.text(title);
+                            $('#adminmenu_dirty').val('');
                             alert('The menu changes have been saved.');
-                            $('#adminmenu_navigation .chosen a').text(title);
+                            //$('#adminmenu_navigation .chosen a').text(title);
                         }else{
                             alert('There was a problem saving the menu changes.');
                         }
@@ -386,6 +401,7 @@ jQuery(function($){
 
         $('div').delegate('#adminmenu_savesub', 'click', function(e){
             e.preventDefault();
+            var mnu   = $('#adminmenu_subnavigation .chosen a');
             var key   = $('#adminmenu_code').val();
             var parent= $('#adminmenu_parent').val();
             var title = $('#adminmenu_title').val().replace(/(\|)/g, '');
@@ -408,8 +424,9 @@ jQuery(function($){
                     function(jsondata){
                         if(jsondata.success){
                             if(restr) title = '['+title+']';
+                            mnu.text(title);
+                            $('#adminmenu_dirty').val('');
                             alert('The menu changes have been saved.');
-                            $('#adminmenu_subnavigation .chosen a').text(title);
                         }else{
                             alert('There was a problem saving the menu changes.');
                         }
@@ -420,7 +437,16 @@ jQuery(function($){
             return false;
         });
 
-        $('div').delegate('#adminmenu_table, #adminmenu_filealias, #adminmenu_target', 'blur', function(){
+        $('div').delegate('#adminmenu_title, #adminmenu_table, #adminmenu_filealias, #adminmenu_target, #adminmenu_restricted', 'blur', function(){
+            $(this).removeClass('hasfocus');
+        });
+
+        $('div').delegate('#adminmenu_title, #adminmenu_table, #adminmenu_filealias, #adminmenu_target, #adminmenu_restricted', 'focus', function(){
+            $(this).addClass('hasfocus');
+        });
+
+        $('div').delegate('#adminmenu_title, #adminmenu_table, #adminmenu_filealias, #adminmenu_target', 'change', function(){
+            $('#adminmenu_dirty').val('1');
             var table = $('#adminmenu_table').val();
             var alias = $('#adminmenu_filealias').val().replace(/([^a-z0-9_\-])/ig, '');
             var target = $('#adminmenu_target').val();
@@ -431,6 +457,10 @@ jQuery(function($){
                     if(html != '') $('.adminmenu_targeturl').html(html);
                 });
             return false;
+        });
+
+        $('div').delegate('#adminmenu_restricted', 'change', function(){
+            $('#adminmenu_dirty').val('1');
         });
 
 	    // Plugins

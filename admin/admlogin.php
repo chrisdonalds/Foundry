@@ -26,7 +26,7 @@ if (getRequestVar('admsubmit') == "Enter"){
                 $_SESSION['timestamp'] = time();
                 $_SESSION['userdata'] = $acct;
                 insertRec("session_login", "user_id, ip_hash, username, section, logged_in, logged_in_date", "'".$acct['id']."', '$remoteip', '$user', 'admin', 1, '".date("Y-m-d H:i:s")."'");
-                if($_POST['admremember'] == 1){
+                if(getRequestVar('admremember') == 1){
                     setcookie("admuser", getRequestVar('admuser'), time() + 60*60*24*365);
                     setcookie("admpwd", getRequestVar('admpwd'), time() + 60*60*24*365);
                     setcookie("admremember", getRequestVar('admremember'), time() + 60*60*24*365);

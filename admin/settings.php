@@ -1102,8 +1102,9 @@ function showSettingsSiteVisibilityArea(){
 									echo '<option value="'.$key.'"'.$sel.'>'.$er.'</option>'.PHP_EOL;
 								}
 								?>
-								</select><br/>
-                                <span style="font-size: 80%">* Depends on an error log mechanism on the server and may not be available on Windows installations.</span>
+								</select>
+                                <? if(file_exists(SITE_PATH.ADMIN_FOLDER.INC_FOLDER."_cache/error.log")){ ?><p><a href="<?=WEB_URL.ADMIN_FOLDER.INC_FOLDER."_cache/error.log"?>" target="_blank">View <?=SYS_NAME?> error log file</a></p><? } ?>
+                                <p style="font-size: 80%">* Depends on an error log mechanism on the server and may not be available on Windows installations.</p>
 	                        </div>
 	                    <div class="setlabel">Activate the Debug System: <span class="hovertip" alt="Use the primary function 'debugger(true|false)' to start and stop debug output. _e(), _pr(), _vd() and more provide different methods to output debug content.">[?]</span></div>
 							<div class="setdata">
@@ -1114,7 +1115,7 @@ function showSettingsSiteVisibilityArea(){
                             <div class="setdata">
                                 Display_errors = <?=ini_get('display_errors')?><br/>
                                 Display_startup_errors = <?=ini_get('display_startup_errors')?><br/>
-                                Error_log = <?=ini_get('error_log')?><br/>
+                                Error_log (Server) = <?=ini_get('error_log')?><br/>
                                 Html_errors = <?=ini_get('html_errors')?><br/>
                                 Error_append_string = <?=ini_get('error_append_string')?><br/>
                                 Error_prepend_string = <?=ini_get('error_prepend_string')?><br/>

@@ -12,6 +12,95 @@
 define ("USERSLOADED", true);
 if(!defined("VALID_LOAD")) die ("This file cannot be accessed directly!");
 
+// Allowances
+// - Pages
+define("UA_VIEW_PAGES_LIST", "view_pages_list");
+define("UA_EDIT_PAGE", "edit_page");
+define("UA_ADD_PAGE", "add_page");
+define("UA_DELETE_PAGE", "delete_page");
+define("UA_RENAME_PAGE", "rename_page");
+define("UA_VIEW_PAGE", "view_page");
+define("UA_PUBLISH_PAGE", "publish_page");
+define("UA_ACTIVATE_PAGE", "activate_page");
+define("UA_CLONE_PAGE", "clone_page");
+define("UA_EDIT_PAGE_META", "edit_page_meta");
+define("UA_VIEW_LOCKED_PAGES", "view_locked_pages");
+
+// - Users
+define("UA_VIEW_USERS", "view_users");
+define("UA_CREATE_USER", "create_user");
+define("UA_CREATE_LOWER_USER", "create_lower_user");
+define("UA_EDIT_USER", "edit_user");
+define("UA_EDIT_PROFILE", "edit_profile");
+define("UA_DELETE_USER", "delete_user");
+define("UA_DELETE_LOWER_USER", "delete_lower_user");
+define("UA_ACTIVATE_USER", "activate_user");
+define("UA_ACTIVATE_LOWER_USER", "activate_lower_user");
+define("UA_BAN_USER", "ban_user");
+define("UA_BAN_LOWER_USER", "ban_lower_user");
+
+// - Themes
+define("UA_VIEW_THEMES", "view_themes");
+define("UA_INSTALL_WEBSITE_THEME", "install_website_theme");
+define("UA_INSTALL_ADMIN_THEME", "install_admin_theme");
+define("UA_EDIT_WEBSITE_THEME", "edit_website_theme");
+define("UA_EDIT_ADMIN_THEME", "edit_admin_theme");
+define("UA_DELETE_WEBSITE_THEME", "delete_website_theme");
+define("UA_DELETE_ADMIN_THEME", "delete_admin_theme");
+define("UA_ACTIVATE_WEBSITE_THEME", "activate_website_theme");
+define("UA_ACTIVATE_ADMIN_THEME", "activate_admin_theme");
+
+// - Menus
+define("UA_VIEW_MENU_SETTINGS", "view_menu_settings");
+define("UA_EDIT_WEBSITE_MENUS", "edit_website_menus");
+define("UA_EDIT_ADMIN_MENUS", "edit_admin_menus");
+define("UA_VIEW_LOCKED_MENUS", "view_locked_menus");
+
+// - Plugins
+define("UA_VIEW_PLUGINS", "view_plugins");
+define("UA_INSTALL_PLUGINS", "install_plugins");
+define("UA_UPDATE_PLUGINS", "update_plugins");
+define("UA_REPAIR_PLUGINS", "repair_plugins");
+define("UA_DELETE_PLUGINS", "delete_plugins");
+define("UA_ACTIVATE_PLUGINS", "activate_plugins");
+
+// - Frameworks
+define("UA_ACTIVATE_FRAMEWORKS", "activate_frameworks");
+
+// - Media
+define("UA_VIEW_MEDIA_SETTINGS", "view_media_settings");
+define("UA_EDIT_MEDIA_SETTINGS", "edit_media_settings");
+
+// - General
+define("UA_VIEW_GENERAL_SETTINGS", "view_general_settings");
+define("UA_EDIT_GENERAL_SETTINGS", "edit_general_settings");
+
+// - Database
+define("UA_MANAGE_DATABASE", "manage_database");
+
+// - Advanced
+define("UA_VIEW_ADVANCED_SETTINGS", "view_advanced_settings");
+define("UA_EDIT_ADVANCED_SETTINGS", "edit_advanced_settings");
+define("UA_MANAGE_ALIASES", "manage_aliases");
+define("UA_MANAGE_URLS", "manage_urls");
+define("UA_MANAGE_VISIBILITY", "manage_visibility");
+define("UA_MANAGE_DEBUGGER", "manage_debugger");
+
+// - Records and Files
+define("UA_UPLOAD_FILES", "upload_files");
+define("UA_VIEW_LIST", "view_list");
+define("UA_EDIT_RECORD", "edit_record");
+define("UA_ADD_RECORD", "add_record");
+define("UA_DELETE_RECORD", "delete_record");
+define("UA_RENAME_RECORD", "rename_record");
+define("UA_VIEW_RECORD", "view_record");
+define("UA_PUBLISH_RECORD", "publish_record");
+define("UA_ACTIVATE_RECORD", "activate_record");
+define("UA_CLONE_RECORD", "clone_record");
+define("UA_ORGANIZE_RECORDS", "organize_records");
+define("UA_EXPORT_RECORDS", "export_records");
+define("UA_SEND_EMAILS", "send_emails");
+
 /**
  * Check if user (IP) is logged in
  * @return boolean

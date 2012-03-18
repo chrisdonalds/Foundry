@@ -1570,7 +1570,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
 
             if($level == "top"){
                 // table, title, tocategory, file alias, topage
-                $outp = '<h3 class="header">Edit Top-Level Menu</h3>'.PHP_EOL;
+                $outp = '<h3 class="header">Edit Top-Level Menu<input type="text" id="adminmenu_dirty" value="" /></h3>'.PHP_EOL;
                 $outp.= '<div class="setlabel">Menu Title: <span class="hovertip" alt="The unique text displayed on the menu bar">[?]</span></div><div class="setdata">';
                 $outp.= '<input type="text" id="adminmenu_title" name="adminmenu_title" value="'.$menu['title'].'" /><input type="hidden" id="adminmenu_code" name="adminmenu_code" value="'.$menukey.'" />';
                 $outp.= '</div>'.PHP_EOL;
@@ -1599,7 +1599,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
                 $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savetop" value="Save Changes" /></div>'.PHP_EOL;
             }else{
                 // parenttable, table, title, file alias
-                $outp = '<h3 class="header">Edit Sub-Level Menu</h3>'.PHP_EOL;
+                $outp = '<h3 class="header">Edit Sub-Level Menu<input type="text" id="adminmenu_dirty" value="" /></h3>'.PHP_EOL;
                 $outp.= '<div class="setlabel">Menu Title: <span class="hovertip" alt="The unique text displayed on the menu bar">[?]</span></div><div class="setdata">';
                 $outp.= '<input type="text" id="adminmenu_title" name="adminmenu_title" value="'.$menu['title'].'" /><input type="hidden" id="adminmenu_code" name="adminmenu_code" value="'.$menukey.'" /><input type="hidden" id="adminmenu_parent" name="adminmenu_parent" value="'.$parentmenukey.'" />';
                 $outp.= '</div>'.PHP_EOL;

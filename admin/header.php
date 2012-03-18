@@ -10,10 +10,6 @@ if(!defined('VALID_LOAD')){
     //    include('loader.php');
     //    getHeader();
 	define("VALID_LOAD", true);
-    //print "<pre>".print_r($_SERVER, true)."</pre>";
-    //print getcwd()."<br>";
-    //print __DIR__."<br>";
-    //print realpath($_SERVER['DOCUMENT_ROOT'])."<br>";
     define("VHOST", substr(str_replace("\\", "/", realpath(dirname(__FILE__)."/../")), strlen(realpath($_SERVER['DOCUMENT_ROOT'])))."/");
 
 	// required - starts Foundry

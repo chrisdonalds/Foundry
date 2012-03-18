@@ -34,7 +34,7 @@ showHeadLines(true);
         <p style="text-align: left;">
             <span><strong>Installation Environment</strong></span><br/>
             Web Server: <?= apache_get_version()?><br/>
-            PHP Version: <?= phpversion()?> <a href="#" id="help_phpcfg_link">View Config Settings</a><br/>
+            PHP Version: <?= phpversion()?><? if(userIsAllowedTo(UA_VIEW_ADVANCED_SETTINGS)){?> (<a href="#" id="help_phpcfg_link" title="Display PHP Info in new window">View PHP Info</a>)<? } ?><br/>
             MySQL Version: <?= mysql_get_server_info()?><br/>
             Zend Engine Version: <?= zend_version()?><br/>
             Memory Usage: <?= sprintf("%01.3f", memory_get_usage(true) / 1024)?> Kb<br/><br/>
@@ -84,7 +84,6 @@ showHeadLines(true);
             <?=$browser_notes?>
         </p>
         <hr/>
-        <div id="help_phpcfg"></div>
     </div>
 </body>
 </html>
