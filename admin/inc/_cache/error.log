@@ -1,0 +1,28 @@
+2012-03-18 10:05:50 - <b>NOTICE</b> [8] Undefined variable: table.   Notice on line 1556 in file C:\Storage Backup\Web Files\chrisd\admin\inc\_core\common_form.php
+
+2012-03-18 10:05:50 - <b>NOTICE</b> [8] Undefined index: target.   Notice on line 1601 in file C:\Storage Backup\Web Files\chrisd\admin\inc\_core\common_form.php
+
+2012-03-18 10:07:36 - <b>NOTICE</b> [8] Undefined index: target.   Notice on line 1602 in file C:\Storage Backup\Web Files\chrisd\admin\inc\_core\common_form.php
+
+2012-03-18 10:10:51 - <b>NOTICE</b> [8] Undefined index: target.   Notice on line 1603 in file C:\Storage Backup\Web Files\chrisd\admin\inc\_core\common_form.php
+
+2012-03-18 10:11:44 - <b>NOTICE</b> [8] Undefined index: target.   Notice on line 1604 in file C:\Storage Backup\Web Files\chrisd\admin\inc\_core\common_form.php
+
+2012-03-18 10:11:59 - <b>NOTICE</b> [8] Undefined index: target.   Notice on line 1604 in file C:\Storage Backup\Web Files\chrisd\admin\inc\_core\common_form.php
+
+2012-03-20 02:09:19 - <b>NOTICE</b> [8] Use of undefined constant ERROR_SEND_TO_FILE - assumed 'ERROR_SEND_TO_FILE'.   Notice on line 171 in file C:\Storage Backup\Web Files\chrisd\admin\inc\_core\common_err.php
+
+2012-03-20 02:09:19 - <b>NOTICE</b> [8] Use of undefined constant ERROR_SEND_TO_FILE - assumed 'ERROR_SEND_TO_FILE'.   Notice on line 172 in file C:\Storage Backup\Web Files\chrisd\admin\inc\_core\common_err.php
+
+2012-03-20 02:48:57 - <b>NOTICE</b> [8] Undefined index: title.   Notice on line 429 in file C:\Storage Backup\Web Files\chrisd\admin\settings.php
+
+2012-03-20 02:48:57 - <b>NOTICE</b> [8] Undefined index: restricted.   Notice on line 430 in file C:\Storage Backup\Web Files\chrisd\admin\settings.php
+
+2012-03-20 02:48:57 - <b>NOTICE</b> [8] Undefined index: restricted.   Notice on line 431 in file C:\Storage Backup\Web Files\chrisd\admin\settings.php
+
+2012-03-20 02:49:08 - <b>NOTICE</b> [8] Undefined index: title.   Notice on line 429 in file C:\Storage Backup\Web Files\chrisd\admin\settings.php
+
+2012-03-20 02:49:08 - <b>NOTICE</b> [8] Undefined index: restricted.   Notice on line 430 in file C:\Storage Backup\Web Files\chrisd\admin\settings.php
+
+2012-03-20 02:49:08 - <b>NOTICE</b> [8] Undefined index: restricted.   Notice on line 431 in file C:\Storage Backup\Web Files\chrisd\admin\settings.php
+

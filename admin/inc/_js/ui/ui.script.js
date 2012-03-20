@@ -307,7 +307,7 @@ jQuery(function($){
             }
         });
 
-        $('.adminmenu_topelem').click(function(e){
+        $('ul').delegate('.adminmenu_topelem', 'click', function(e){
             e.preventDefault();
             $('.hasfocus').blur();
             if($('#adminmenu_dirty').val() != ''){
@@ -331,6 +331,7 @@ jQuery(function($){
                     $('#adminmenu_subnavigation').html(html_parts[1]);
 	            }
             );
+            return false;
         });
 
         $('ul').delegate('.adminmenu_subelem', 'click', function(e){
@@ -355,6 +356,20 @@ jQuery(function($){
                     $('#adminmenu_editor').html(html);
 	            }
             );
+            return false;
+        });
+
+        $('.adminmenu_addtop a').click(function(e){
+            e.preventDefault();
+            if($('#adminmenu_navigation li:last a').text() != '-New-'){
+                $('#adminmenu_navigation li').each(function(){
+                    $(this).removeClass('chosen selected').addClass('unchosen');
+                });
+                var html = '<li id="setmenu_" class="chosen"><a title="Click to edit; drag to re-order" rel="" class="adminmenu_topelem" href="#">-New-</a></li>';
+                $('#adminmenu_navigation').append(html);
+                $('#adminmenu_navigation .chosen a').trigger('click');
+            }
+            return false;
         });
 
         $('div').delegate('#adminmenu_savetop', 'click', function(e){

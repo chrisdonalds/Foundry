@@ -424,16 +424,12 @@ function showSettingsMenusforAdmin(){
     $toplevel = "";
     $sublevel = "";
     foreach($menus as $key => $menu){
-        $chosen = (($toplevel == "") ? "chosen" : "unchosen");
-        if($sublevel == "" && $toplevel == "" && !is_null($menu['childmenus'])){
-            $menutitle = $menu['childmenus']['title'];
-            if($menu['childmenus']['restricted']) $menutitle = '['.$menutitle.']';
-            if($menu['childmenus']['restricted'] == 1) $menutitle = "[".$menutitle."]";
-            $sublevel .= "<li class=\"{$chosen}\" id=\"setsubmenu_".key($menu['childmenus'])."\"><a href=\"#\" class=\"adminmenu_subelem\" rel=\"{$key}\" title=\"Click to edit; drag to re-order\">{$menutitle}</a></li>\n";
-        }
+        $chosen = (($toplevel == "") ? "chosen selected" : "unchosen");
+        if($chosen != 'unchosen') $sublevel = getAdminMenuEditorSubMenu($key);
         $menutitle = $menu['title'];
         if($menu['restricted']) $menutitle = '['.$menutitle.']';
-        $toplevel .= "<li class=\"{$chosen}\" id=\"setmenu_{$key}\"><a href=\"#\" class=\"adminmenu_topelem\" rel=\"{$key}\" title=\"Click to edit; drag to re-order\">{$menutitle}</a></li>\n";
+        $delbutton = (($key != 'pages') ? "<span class=\"adminmenu_deltop\" title=\"Delete menu\"></span>" : "");
+        $toplevel .= "<li class=\"{$chosen}\" id=\"setmenu_{$key}\"><a href=\"#\" class=\"adminmenu_topelem\" rel=\"{$key}\" title=\"Click to edit; drag to re-order\">{$menutitle}</a>{$delbutton}</li>\n";
     }
     $toplevel = "<ul id=\"adminmenu_navigation\">$toplevel</ul>\n";
     $sublevel = "<ul id=\"adminmenu_subnavigation\">$sublevel</ul>\n";

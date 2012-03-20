@@ -112,7 +112,7 @@ switch($op){
         break;
     case 'getadminmenueditorhtml':
         $level = getRequestVar('level');
-        if($val != '' && $level != '') {
+        if($level != '') {
             if($level == 'top'){
                 $html = getAdminMenuEditorHTML($val, "", $level);
                 $html.= "||".getAdminMenuEditorSubMenu($val);
@@ -130,7 +130,7 @@ switch($op){
             $targettype = '';
         }
         $ok = false;
-        if(!isblank($key) && !isblank($table) && !isblank($title)){
+        if(!isblank($table) && !isblank($title)){
             $ok = saveAdminMenu($level, $key, "", $title, $table, $targettype, $alias, $restricted);
         }
         exitAjax($ok);
@@ -138,7 +138,7 @@ switch($op){
     case 'saveadminsubmenu':
         extractVariables($_REQUEST);
         $ok = false;
-        if(!isblank($parent) && !isblank($key) && !isblank($table) && !isblank($title)){
+        if(!isblank($parent) && !isblank($table) && !isblank($title)){
             $ok = saveAdminMenu($level, $key, $parent, $title, $table, '', $alias, $restricted);
         }
         exitAjax($ok);

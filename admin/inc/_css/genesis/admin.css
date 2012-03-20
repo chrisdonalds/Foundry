@@ -1746,6 +1746,17 @@ label {
     color: #fff;
 }
 
+#adminmenu_navigation .selected .adminmenu_deltop,
+#adminmenu_subnavigation .selected .adminmenu_delsub {
+    position: absolute;
+    display: inline-block;
+    top: 0px;
+    right: 0px;
+    width: 10px;
+    height: 10px;
+    background: url('images/icons/close_10.png') no-repeat transparent;
+    cursor: pointer;
+}
 
 /* PLUGINS */
 

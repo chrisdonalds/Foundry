@@ -1382,7 +1382,7 @@ function getShortContent($content, $length = 20, $url = '', $finish = '...') {
 // ----------- ADMIN MENU FUNCTIONS ---------------
 
 /**
- * Return a specific admin menu array element or all admin menus
+ * Return a specific admin menu array element or all admin menus as a collection array
  * @param string $menucode
  * @return array
  */
@@ -1457,6 +1457,12 @@ function getAdminMenuTarget($table, $alias, $targettype){
     }
 }
 
+/**
+ * Create a new admin menu and return parent menu list HTML
+ * @param string $level
+ * @param string $parentmenukey
+ * @return string HTML output
+ */
 function addAdminMenu($level, $parentmenukey){
     $html = '';
     if(($level == 'top' && $parentmenukey == '') || ($parentmenukey != '' && $level == 'sub')){
@@ -1533,7 +1539,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
     global $_system, $_page;
 
     $outp = '';
-    if(!isblank($menukey) && in_array($level, array("top", "sub"))){
+    if(in_array($level, array("top", "sub"))){
         if(defined('IN_AJAX')) {
             $menus = getAdminMenus();
         }else{
@@ -1542,6 +1548,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
         if(!isBlank($menus)){
             // prepare fields from saved data
             $menutables = array();
+            $table = '';
             foreach($menus as $tkey => $topmenu){
                 $menutables[] = $topmenu['table'];
                 if($parentmenukey == '' && $tkey == $menukey) $table = $topmenu['table'];
@@ -1561,16 +1568,20 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
             $datatables = array_diff($datatables, $menutables);
             array_unshift($datatables, '- Unknown -');
 
-            if($level == "top"){
-                $menu = getIfSet($menus[$menukey]);
+            if(!isblank($menukey)){
+                if($level == "top"){
+                    $menu = getIfSet($menus[$menukey]);
+                }else{
+                    $menu = getIfSet($menus[$parentmenukey]['childmenus'][$menukey]);
+                }
+                if(count($menu) == 0) $menu = array("title" => "", "table" => "", "alias" => "", "tocategory" => 0, "topage" => 0, "restricted" => 0, "target" => "");
             }else{
-                $menu = getIfSet($menus[$parentmenukey]['childmenus'][$menukey]);
+                $menu = array("title" => "", "table" => "", "alias" => "", "tocategory" => 0, "topage" => 0, "restricted" => 0, "target" => "");
             }
-            if(count($menu) == 0) $menu = array("title" => "", "table" => "", "alias" => "", "tocategory" => 0, "topage" => 0, "restricted" => 0);
 
             if($level == "top"){
                 // table, title, tocategory, file alias, topage
-                $outp = '<h3 class="header">Edit Top-Level Menu<input type="text" id="adminmenu_dirty" value="" /></h3>'.PHP_EOL;
+                $outp = '<h3 class="header">Edit Top-Level Menu<input type="hidden" id="adminmenu_dirty" value="" /></h3>'.PHP_EOL;
                 $outp.= '<div class="setlabel">Menu Title: <span class="hovertip" alt="The unique text displayed on the menu bar">[?]</span></div><div class="setdata">';
                 $outp.= '<input type="text" id="adminmenu_title" name="adminmenu_title" value="'.$menu['title'].'" /><input type="hidden" id="adminmenu_code" name="adminmenu_code" value="'.$menukey.'" />';
                 $outp.= '</div>'.PHP_EOL;
@@ -1599,7 +1610,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
                 $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savetop" value="Save Changes" /></div>'.PHP_EOL;
             }else{
                 // parenttable, table, title, file alias
-                $outp = '<h3 class="header">Edit Sub-Level Menu<input type="text" id="adminmenu_dirty" value="" /></h3>'.PHP_EOL;
+                $outp = '<h3 class="header">Edit Sub-Level Menu<input type="hidden" id="adminmenu_dirty" value="" /></h3>'.PHP_EOL;
                 $outp.= '<div class="setlabel">Menu Title: <span class="hovertip" alt="The unique text displayed on the menu bar">[?]</span></div><div class="setdata">';
                 $outp.= '<input type="text" id="adminmenu_title" name="adminmenu_title" value="'.$menu['title'].'" /><input type="hidden" id="adminmenu_code" name="adminmenu_code" value="'.$menukey.'" /><input type="hidden" id="adminmenu_parent" name="adminmenu_parent" value="'.$parentmenukey.'" />';
                 $outp.= '</div>'.PHP_EOL;
@@ -1645,7 +1656,7 @@ function getAdminMenuEditorSubMenu($menukey){
                 $submenutitle = $submenu['title'];
                 if($submenu['restricted']) $submenutitle = '['.$submenutitle.']';
                 $chosen = (($outp == "") ? "chosen" : "unchosen");
-                $outp .= "<li class=\"{$chosen}\" id=\"setsubmenu_".$key."\"><a href=\"#\" class=\"adminmenu_subelem\" rel=\"{$menukey}:{$key}\" title=\"Click to edit; drag to re-order\">{$submenutitle}</a></li>\n";
+                $outp .= "<li class=\"{$chosen}\" id=\"setsubmenu_".$key."\"><a href=\"#\" class=\"adminmenu_subelem\" rel=\"{$menukey}:{$key}\" title=\"Click to edit; drag to re-order\">{$submenutitle}</a><span class=\"adminmenu_delsub\" title=\"Delete menu\"></span></li>\n";
             }
         }
     }
@@ -1659,25 +1670,62 @@ function getAdminMenuEditorSubMenu($menukey){
  * @param string $parent
  * @param string $title
  * @param string $table
- * @param string $target
+ * @param string $targettype
  * @param string $alias
+ * @param boolean $restricted
  * @return boolean
  */
 function saveAdminMenu($level, $key, $parent, $title, $table, $targettype, $alias, $resticted){
     global $_system, $_page;
 
     $ok = false;
-    if(!isblank($level) && !isblank($key) && !isblank($table) && !isblank($title)){
+    if(!isblank($level) && !isblank($table) && !isblank($title)){
         if(defined('IN_AJAX')) {
             $menus = getAdminMenus();
         }else{
             $menus = $_page->menus;
         }
+        $updated = false;
 
-        if($level == "top"){
-            if(isset($menus[$key])){
-                $childmenus = $menus[$key]['childmenus'];
-                $target = $menus[$key]['target'];
+        if(!isblank($key)){
+            if($level == "top"){
+                if(isset($menus[$key])){
+                    $childmenus = $menus[$key]['childmenus'];
+                    $target = $menus[$key]['target'];
+                    $menus[$key] = array(
+                        "table" => $table,
+                        "title" => $title,
+                        "tocategory" => ($targettype == "tocategory"),
+                        "topage" => ($targettype == "topage"),
+                        "alias" => $alias,
+                        "target" => $target,
+                        "restricted" => (bool)$resticted,
+                        "childmenus" => $childmenus
+                    );
+                    $updated = true;
+                }
+            }elseif(!isblank($parent)){
+                if(isset($menus[$parent]['childmenus'][$key])){
+                    $target = $menus[$parent]['childmenus'][$key]['target'];
+                    $menus[$parent]['childmenus'][$key] = array(
+                        "table" => $table,
+                        "title" => $title,
+                        "alias" => $alias,
+                        "target" => $target,
+                        "restricted" => (bool)$resticted
+                    );
+                    $updated = true;
+                }
+            }
+        }else{
+            if($level == "top"){
+                $target = getAdminMenuTarget($table, $alias, $targettype);
+                $key = codify($title);
+                $indx = "";
+                while(isset($menus[$key.$indx])) {
+                    $indx = (($indx == "") ? 1 : $indx + 1);
+                }
+                $key .= $indx;
                 $menus[$key] = array(
                     "table" => $table,
                     "title" => $title,
@@ -1686,24 +1734,34 @@ function saveAdminMenu($level, $key, $parent, $title, $table, $targettype, $alia
                     "alias" => $alias,
                     "target" => $target,
                     "restricted" => (bool)$resticted,
-                    "childmenus" => $childmenus
+                    "childmenus" => null
                 );
-            }
-        }elseif(!isblank($parent)){
-            if(isset($menus[$parent]['childmenus'][$key])){
-                $target = $menus[$parent]['childmenus'][$key]['target'];
-                $menus[$parent]['childmenus'][$key] = array(
-                    "table" => $table,
-                    "title" => $title,
-                    "alias" => $alias,
-                    "target" => $target,
-                    "restricted" => (bool)$resticted
-                );
+                $updated = true;
+            }elseif(!isblank($parent)){
+                if(isset($menus[$parent]['childmenus'][$key])){
+                    $target = getAdminMenuTarget($table, $alias, $targettype);
+                    $key = codify($title);
+                    $indx = "";
+                    while(isset($menus[$key.$indx])) {
+                        $indx = (($indx == "") ? 1 : $indx + 1);
+                    }
+                    $key .= $indx;
+                    $menus[$parent]['childmenus'][$key] = array(
+                        "table" => $table,
+                        "title" => $title,
+                        "alias" => $alias,
+                        "target" => $target,
+                        "restricted" => (bool)$resticted
+                    );
+                    $updated = true;
+                }
             }
         }
 
-        $menus_json = str_replace("'", "\'", json_encode($menus));
-        $ok = updateRec("settings", "`value` = '".$menus_json."'", "`name` = 'ADMIN_MENUS'");
+        if($updated){
+            $menus_json = str_replace("'", "\'", json_encode($menus));
+            $ok = updateRec("settings", "`value` = '".$menus_json."'", "`name` = 'ADMIN_MENUS'");
+        }
     }
     return $ok;
 }
