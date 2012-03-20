@@ -83,7 +83,7 @@ function printr($array, $return = false){
 function _e($text, $is_error_msg = false){
     if($GLOBALS['debugger'] || ($GLOBALS['debugger_on_error'] && $is_error_msg)) {
     	echo $text."<br/>";
-    	_sendErrorTo($text);
+    	_log($text);
     }
 }
 
@@ -94,7 +94,7 @@ function _e($text, $is_error_msg = false){
 function _pr($array){
     if($GLOBALS['debugger'] && is_array($array)) {
     	printr($array);
-    	_sendErrorTo(print_r($array, true));
+    	_log(print_r($array, true));
     }
 }
 
@@ -151,30 +151,27 @@ function _rc_getmethods($class){
  */
 function _db_error(){
     if($GLOBALS['debugger']) {
-    	_sendErrorTo(dbError());
+    	_log(dbError());
         return dbError();
     }
 }
 
-function _sendErrorTo($message){
-	if($message != ''){
+/**
+ * Debugger-aware error log
+ * @param type $message
+ */
+function _log($msg){
+	if($msg != ''){
 		switch (ERROR_LOG_TYPE){
 			case 0:
-				error_log($message, 0);
+				error_log($msg, 0);
 				break;
 			case 1:
-				if(ERROR_SEND_TO_EMAIL != ''){
-					@error_log($message, 1, ERROR_SEND_TO_EMAIL);
-				}
-				break;
-			case 3:
-				if(ERROR_SEND_TO_FILE != ''){
-					@error_log($message, 3, ERROR_SEND_TO_FILE);
-				}
+            case 3:
+    			submitErrorLog($msg);
 				break;
 		}
 	}
-	error_log($message);
 }
 
 // ----------- ERROR-HANDLER FUNCTIONS ---------------
