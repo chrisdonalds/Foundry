@@ -416,7 +416,6 @@ jQuery(function($){
                             if(restr) title = '['+title+']';
                             mnu.text(title);
                             if(key == '') {
-                                mnu.parent().append('<span title="Delete menu" class="adminmenu_deltop"></span>');
                                 mnu.attr('rel', jsondata.rtndata);
                             }
                             $('#adminmenu_dirty').val('');
@@ -459,7 +458,6 @@ jQuery(function($){
                             mnu.text(title);
                             $('#adminmenu_dirty').val('');
                             if(key == '') {
-                                mnu.parent().append('<span title="Delete menu" class="adminmenu_delsub"></span>');
                                 mnu.attr('rel', jsondata.rtndata);
                             }
                             alert('The menu changes have been saved.');
@@ -500,37 +498,49 @@ jQuery(function($){
         });
 
         $('div').delegate('.adminmenu_deltop', 'click', function(){
-            var menu = $(this).siblings('a');
+            $('#adminmenu_dirty').val('');
+            var menu = $('#adminmenu_navigation .selected a');
             var rel = menu.attr('rel');
             if(confirm('Delete the \''+menu.text()+'\' menu and all submenus?')){
-                $.post(
-                    admin_core_url+"ajaxwrapper.php",
-                    {op:'deleteadminmenu', key:rel, level:'top', parentkey:''},
-                    function(jsondata){
-                        if(jsondata.success){
-                            menu.parent().remove();
-                            $('#adminmenu_navigation li:first a').trigger('click');
-                        }
-                    },
-                    'json');
+                if(rel != ''){
+                    $.post(
+                        admin_core_url+"ajaxwrapper.php",
+                        {op:'deleteadminmenu', key:rel, level:'top', parentkey:''},
+                        function(jsondata){
+                            if(jsondata.success){
+                                menu.parent().remove();
+                                $('#adminmenu_navigation li:first a').trigger('click');
+                            }
+                        },
+                        'json');
+                }else{
+                    menu.parent().remove();
+                    $('#adminmenu_navigation li:first a').trigger('click');
+                }
             }
             return false;
         });
 
         $('div').delegate('.adminmenu_delsub', 'click', function(){
-            var menu = $(this).siblings('a');
+            $('#adminmenu_dirty').val('');
+            var menu = $('#adminmenu_subnavigation .selected a');
             var rel = menu.attr('rel').split(':');
             if(confirm('Delete the \''+menu.text()+'\' submenu?')){
-                $.post(
-                    admin_core_url+"ajaxwrapper.php",
-                    {op:'deleteadminmenu', key:rel[1], level:'sub', parentkey:rel[0]},
-                    function(jsondata){
-                        if(jsondata.success){
-                            menu.parent().remove();
-                            $('#adminmenu_navigation li a[rel='+rel[0]+']').trigger('click');
-                        }
-                    },
-                    'json');
+                if(rel[1] != ''){
+                    $.post(
+                        admin_core_url+"ajaxwrapper.php",
+                        {op:'deleteadminmenu', key:rel[1], level:'sub', parentkey:rel[0]},
+                        function(jsondata){
+                            if(jsondata.success){
+                                menu.parent().remove();
+                                $('#adminmenu_navigation li a[rel='+rel[0]+']').trigger('click');
+                            }
+                        },
+                        'json');
+                }else{
+                    menu.parent().remove();
+                    $('#adminmenu_navigation li a[rel='+rel[0]+']').trigger('click');
+                }
             }
             return false;
         });

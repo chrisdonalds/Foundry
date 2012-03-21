@@ -1601,13 +1601,15 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
                     $outp.= '<option value="tocategory"'.(($menu['tocategory'] != 0) ? ' selected="selected"' : '').'>To a category list</option>'.PHP_EOL;
                     $outp.= '<option value="topage"'.(($menu['topage'] != 0) ? ' selected="selected"' : '').'>To an edit page</option>'.PHP_EOL;
                     $outp.= '</select></div>'.PHP_EOL;
+                    $delbtn = '&nbsp;&nbsp;<a href="#" class="adminmenu_deltop">Delete Menu</a>';
                 }else{
                     $outp.= '<div class="setlabel">Table this Menu is Bound to: <span class="hovertip" alt="The \'Page\' menu is always bound to the \'pages\' table">[?]</span></div><div class="setdata">';
                     $outp .= $menu['table'].'</div>'.PHP_EOL;
+                    $delbtn = '';
                 }
                 $outp.= '<div class="setlabel">Derived Menu Target Path: <span class="hovertip" alt="This is the target URL based on the bound table, file alias, and target type settings">[?]</span></div><div class="setdata adminmenu_targeturl">'.$menu['target'].'</div>'.PHP_EOL;
                 $outp.= '<div class="setlabel">Restricted Access?: <span class="hovertip" alt="If set, users must be allowed to \'view restricted menus\' to access it.">[?]</span></div><div class="setdata"><input type="checkbox" id="adminmenu_restricted" name="adminmenu_restricted" value="1"'.((getIfSet($menu['restricted'])) ? ' checked="checked"' : '').' /> Yes, viewable only to users allowed to \'view restricted menus\'</div>'.PHP_EOL;
-                $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savetop" value="Save Changes" /></div>'.PHP_EOL;
+                $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savetop" value="Save Changes" />'.$delbtn.'</div>'.PHP_EOL;
             }else{
                 // parenttable, table, title, file alias
                 $outp = '<h3 class="header">Edit Sub-Level Menu<input type="hidden" id="adminmenu_dirty" value="" /></h3>'.PHP_EOL;
@@ -1625,7 +1627,7 @@ function getAdminMenuEditorHTML($menukey, $parentmenukey, $level){
                 $outp.= '<div class="setlabel">File Alias: <span class="hovertip" alt="The optional file alias allows you to specify an alternate target URL for the menu.  If left blank, the system will use the data table to determine the target URL.<br/><br/>Just remember to leave off the \'list-\', \'edit-\', \'add-\', and \'_cat\' parts.">[?]</span></div><div class="setdata"><input type="text" id="adminmenu_filealias" name="adminmenu_filealias" value="'.getIfSet($menu['alias']).'" /></div>'.PHP_EOL;
                 $outp.= '<div class="setlabel">Derived Menu Target Path: <span class="hovertip" alt="This is the target URL based on the bound table, file alias, and target type settings">[?]</span></div><div class="setdata adminmenu_targeturl">'.$menu['target'].'</div>'.PHP_EOL;
                 $outp.= '<div class="setlabel">Restricted Access?: <span class="hovertip" alt="If set, users must be allowed to \'view restricted menus\' to access it.">[?]</span></div><div class="setdata"><input type="checkbox" id="adminmenu_restricted" name="adminmenu_restricted" value="1"'.((getIfSet($menu['restricted'])) ? ' checked="checked"' : '').' /> Yes, viewable only to users allowed to \'view restricted menus\'</div>'.PHP_EOL;
-                $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savesub" value="Save Changes" /></div>'.PHP_EOL;
+                $outp.= '<div class="setlabel"></div><div class="setdata"><input type="button" id="adminmenu_savesub" value="Save Changes" />&nbsp;&nbsp;<a href="#" class="adminmenu_delsub">Delete Menu</a></div>'.PHP_EOL;
             }
         }else{
             // prepare fields with no data
@@ -1656,7 +1658,7 @@ function getAdminMenuEditorSubMenu($menukey){
                 $submenutitle = $submenu['title'];
                 if($submenu['restricted']) $submenutitle = '['.$submenutitle.']';
                 $chosen = (($outp == "") ? "chosen" : "unchosen");
-                $outp .= "<li class=\"{$chosen}\" id=\"setsubmenu_".$key."\"><a href=\"#\" class=\"adminmenu_subelem\" rel=\"{$menukey}:{$key}\" title=\"Click to edit; drag to re-order\">{$submenutitle}</a><span class=\"adminmenu_delsub\" title=\"Delete menu\"></span></li>\n";
+                $outp .= "<li class=\"{$chosen}\" id=\"setsubmenu_".$key."\"><a href=\"#\" class=\"adminmenu_subelem\" rel=\"{$menukey}:{$key}\" title=\"Click to edit; drag to re-order\">{$submenutitle}</a></li>\n";
             }
         }
     }

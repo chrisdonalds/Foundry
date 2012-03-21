@@ -119,7 +119,8 @@ switch($op){
                 $html.= "||".getAdminMenuEditorSubMenu($val);
             }else{
                 $vals = explode(":", $val);
-                $html = getAdminMenuEditorHTML($vals[1], $vals[0], $level);
+                if(isset($vals[0]))
+                    $html = getAdminMenuEditorHTML($vals[1], $vals[0], $level);
             }
             echo $html;
         }

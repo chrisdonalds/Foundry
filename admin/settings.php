@@ -428,8 +428,7 @@ function showSettingsMenusforAdmin(){
         if($chosen != 'unchosen') $sublevel = getAdminMenuEditorSubMenu($key);
         $menutitle = $menu['title'];
         if($menu['restricted']) $menutitle = '['.$menutitle.']';
-        $delbutton = (($key != 'pages') ? "<span class=\"adminmenu_deltop\" title=\"Delete menu\"></span>" : "");
-        $toplevel .= "<li class=\"{$chosen}\" id=\"setmenu_{$key}\"><a href=\"#\" class=\"adminmenu_topelem\" rel=\"{$key}\" title=\"Click to edit; drag to re-order\">{$menutitle}</a>{$delbutton}</li>\n";
+        $toplevel .= "<li class=\"{$chosen}\" id=\"setmenu_{$key}\"><a href=\"#\" class=\"adminmenu_topelem\" rel=\"{$key}\" title=\"Click to edit; drag to re-order\">{$menutitle}</a></li>\n";
     }
     $toplevel = "<ul id=\"adminmenu_navigation\">$toplevel</ul>\n";
     $sublevel = "<ul id=\"adminmenu_subnavigation\">$sublevel</ul>\n";
