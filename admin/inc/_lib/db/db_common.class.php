@@ -9,8 +9,6 @@
  */
 
 abstract class DB_common {
-	private $data_array;
-
 	//common method
 	public function loadDataArray($result) {
 		$data_array = array();
@@ -82,7 +80,7 @@ abstract class DB_common {
 
 	//log error function
 	public function log_error($db, $query) {
-		error_log("\nDB ERROR => Filename: ".__FILE__." Line: ".__LINE__."\nSQL: $query \nProblem: ". $db->error."\n");
+		submitErrorLog("DB ERROR In Filename: ".__FILE__." at Line: ".__LINE__."\nSQL: $query \nProblem: ". $db->error);
 	}
 }
 

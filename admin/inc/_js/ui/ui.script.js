@@ -372,6 +372,20 @@ jQuery(function($){
             return false;
         });
 
+        $('.adminmenu_addsub a').click(function(e){
+            e.preventDefault();
+            var topmnu = $('#adminmenu_navigation .chosen a');
+            if($('#adminmenu_subnavigation li:last a').text() != '-New-'){
+                $('#adminmenu_subnavigation li').each(function(){
+                    $(this).removeClass('chosen selected').addClass('unchosen');
+                });
+                var html = '<li id="setsubmenu_" class="chosen"><a title="Click to edit; drag to re-order" rel="'+topmnu.attr('rel')+':" class="adminmenu_subelem" href="#">-New-</a></li>';
+                $('#adminmenu_subnavigation').append(html);
+                $('#adminmenu_subnavigation .chosen a').trigger('click');
+            }
+            return false;
+        });
+
         $('div').delegate('#adminmenu_savetop', 'click', function(e){
             e.preventDefault();
             var mnu   = $('#adminmenu_navigation .chosen a');
@@ -401,9 +415,12 @@ jQuery(function($){
                         if(jsondata.success){
                             if(restr) title = '['+title+']';
                             mnu.text(title);
+                            if(key == '') {
+                                mnu.parent().append('<span title="Delete menu" class="adminmenu_deltop"></span>');
+                                mnu.attr('rel', jsondata.rtndata);
+                            }
                             $('#adminmenu_dirty').val('');
                             alert('The menu changes have been saved.');
-                            //$('#adminmenu_navigation .chosen a').text(title);
                         }else{
                             alert('There was a problem saving the menu changes.');
                         }
@@ -441,6 +458,10 @@ jQuery(function($){
                             if(restr) title = '['+title+']';
                             mnu.text(title);
                             $('#adminmenu_dirty').val('');
+                            if(key == '') {
+                                mnu.parent().append('<span title="Delete menu" class="adminmenu_delsub"></span>');
+                                mnu.attr('rel', jsondata.rtndata);
+                            }
                             alert('The menu changes have been saved.');
                         }else{
                             alert('There was a problem saving the menu changes.');
@@ -476,6 +497,42 @@ jQuery(function($){
 
         $('div').delegate('#adminmenu_restricted', 'change', function(){
             $('#adminmenu_dirty').val('1');
+        });
+
+        $('div').delegate('.adminmenu_deltop', 'click', function(){
+            var menu = $(this).siblings('a');
+            var rel = menu.attr('rel');
+            if(confirm('Delete the \''+menu.text()+'\' menu and all submenus?')){
+                $.post(
+                    admin_core_url+"ajaxwrapper.php",
+                    {op:'deleteadminmenu', key:rel, level:'top', parentkey:''},
+                    function(jsondata){
+                        if(jsondata.success){
+                            menu.parent().remove();
+                            $('#adminmenu_navigation li:first a').trigger('click');
+                        }
+                    },
+                    'json');
+            }
+            return false;
+        });
+
+        $('div').delegate('.adminmenu_delsub', 'click', function(){
+            var menu = $(this).siblings('a');
+            var rel = menu.attr('rel').split(':');
+            if(confirm('Delete the \''+menu.text()+'\' submenu?')){
+                $.post(
+                    admin_core_url+"ajaxwrapper.php",
+                    {op:'deleteadminmenu', key:rel[1], level:'sub', parentkey:rel[0]},
+                    function(jsondata){
+                        if(jsondata.success){
+                            menu.parent().remove();
+                            $('#adminmenu_navigation li a[rel='+rel[0]+']').trigger('click');
+                        }
+                    },
+                    'json');
+            }
+            return false;
         });
 
 	    // Plugins

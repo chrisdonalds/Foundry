@@ -17,6 +17,7 @@ define("DB_USED", ((isset($_REQUEST['db_used'])) ? (bool) $_REQUEST['db_used'] :
 include ($_SERVER['DOCUMENT_ROOT'].VHOST."admin/inc/_core/getinc.php");				// required - starts PHP incls!!!
 $op = strtolower(getRequestVar("op"));
 $val = getRequestVar("val");
+extractVariables($_REQUEST);
 
 switch($op){
     // SETTINGS
@@ -88,7 +89,7 @@ switch($op){
 		$limit = intval(getRequestVar('limit'));
 		if($limit <= 0) $limit = "";
 		$order = getRequestVar('order');
-		if($table != '' && $fld != ''){
+		if(!isblank($table) && !isblank($fld)){
 			$recarry = getRec($table, "id, $fld", $crit, $order, $limit);
 			exitAjax(true, $recarry);
 		}else{
@@ -103,7 +104,7 @@ switch($op){
     // MENUS
 
     case 'updateadminmenulayout':
-        if($val != '') {
+        if(!isblank($val)) {
             $ok = updateAdminMenusLayout($val);
             exitAjax($ok, '');
         }else{
@@ -112,7 +113,7 @@ switch($op){
         break;
     case 'getadminmenueditorhtml':
         $level = getRequestVar('level');
-        if($level != '') {
+        if(!isblank($level)) {
             if($level == 'top'){
                 $html = getAdminMenuEditorHTML($val, "", $level);
                 $html.= "||".getAdminMenuEditorSubMenu($val);
@@ -124,32 +125,36 @@ switch($op){
         }
         break;
     case 'saveadmintopmenu':
-        extractVariables($_REQUEST);
         if($key == 'pages'){
             $table = 'pages';
             $targettype = '';
         }
         $ok = false;
         if(!isblank($table) && !isblank($title)){
-            $ok = saveAdminMenu($level, $key, "", $title, $table, $targettype, $alias, $restricted);
+            list($ok, $key) = saveAdminMenu($level, $key, '', $title, $table, $targettype, $alias, $restricted);
         }
-        exitAjax($ok);
+        exitAjax($ok, $key);
         break;
     case 'saveadminsubmenu':
-        extractVariables($_REQUEST);
         $ok = false;
         if(!isblank($parent) && !isblank($table) && !isblank($title)){
-            $ok = saveAdminMenu($level, $key, $parent, $title, $table, '', $alias, $restricted);
+            list($ok, $key) = saveAdminMenu($level, $key, $parent, $title, $table, '', $alias, $restricted);
         }
-        exitAjax($ok);
+        exitAjax($ok, $key);
         break;
     case 'getadminmenutarget':
-        extractVariables($_REQUEST);
         $html = '';
         if(!isblank($table) && $table != '- Unknown -'){
             $html = getAdminMenuTarget($table, $alias, getIfSet($targettype));
         }
         echo $html;
+        break;
+    case 'deleteadminmenu':
+        $ok = false;
+        if(!isblank($key) && !isblank($level)){
+            $ok = deleteAdminMenu($key, $level, $parentkey);
+        }
+        exitAjax($ok);
         break;
 
 	// PLUGINS
@@ -233,7 +238,7 @@ switch($op){
 								$text = $data;
 								break;
 						}
-						if($text != '') $rtn .= (($rtn != '') ? '<br/>' : '').'<strong>'.$keys[$key].':</strong>&nbsp;'.$text;
+						if(!isblank($text)) $rtn .= ((!isblank($rtn)) ? '<br/>' : '').'<strong>'.$keys[$key].':</strong>&nbsp;'.$text;
 					}
 				}
 			}elseif($val == '_prob'){
@@ -245,7 +250,7 @@ switch($op){
 		break;
     case 'updateplugindata':
         $rel = getRequestVar('rel');
-        if($val != '' && $rel != ''){
+        if(!isblank($val) && !isblank($rel)){
             $rel = explode('|', $rel);
             if(updateRec("plugins", "`".$rel[1]."` = '$val'", "`id` = '".$rel[0]."'")){
                 exitAjax(true, '');
@@ -271,7 +276,7 @@ switch($op){
 					$plugin_data = getRec("plugins", "*", "id='{$plugin_id}'");
 					$rtn = array();
 					$rtn['row'] = getSettingsPluginRow($plugin_data[0], 'prob');
-					$rtn['setting'] = (($plugin_data[0]['settingsfunc'] != '') ? codify($plugin_data[0]['name']) : '');
+					$rtn['setting'] = ((!isblank($plugin_data[0]['settingsfunc'])) ? codify($plugin_data[0]['name']) : '');
 					exitAjax(true, $rtn);
 				}else{
 					exitAjax(false, 'Problem marking plugin as deleted in the database.');
@@ -287,7 +292,7 @@ switch($op){
 					$plugin_data = getRec("plugins", "*", "id='{$plugin_id}'");
 					$rtn = array();
 					$rtn['row'] = getSettingsPluginRow($plugin_data[0], 'normal');
-					$rtn['setting'] = (($plugin_data[0]['settingsfunc'] != '') ? getSettingsPluginSettingsRow($plugin_data[0]) : '');
+					$rtn['setting'] = ((!isblank($plugin_data[0]['settingsfunc'])) ? getSettingsPluginSettingsRow($plugin_data[0]) : '');
 					exitAjax(true, $rtn);
 				 }else{
 					 exitAjax(false, 'Problem marking plugin as un-deleted in the database.');
@@ -297,7 +302,7 @@ switch($op){
 		break;
 	case 'runpluginsettingsfunc':
         // execute a registered plugin trigger function called 'settingsfunc'
-		if($val != ''){
+		if(!isblank($val)){
 			$func = explode('|', $val);
 			if(function_exists($func[0])){
 				// plugin init file already included
@@ -317,7 +322,7 @@ switch($op){
 	case 'runpluginsettingsaction':
 		$action = getRequestVar('action');
 		$data = getRequestVar('data');
-		if($val != ''){
+		if(!isblank($val)){
 			$func = explode('|', $val);
 			if(function_exists($func[0])){
 				// plugin init file already included
@@ -454,7 +459,7 @@ switch($op){
 			if(count($plugin_data) == 1){
 				// get plugins field array (name[], license[], incl[], sysver[]...)
 				$field_array = getRecFieldArray("plugins", "*", "id != '{$plugin_id}'");
-				foreach($field_array as $key => $sub_array) foreach($sub_array as $sub_key => $value) { if($value != '' && !is_null($value)) { $field_array[$key][$sub_key] = strtolower($value); } else { unset($field_array[$key][$sub_key]); } }
+				foreach($field_array as $key => $sub_array) foreach($sub_array as $sub_key => $value) { if(!isblank($value) && !is_null($value)) { $field_array[$key][$sub_key] = strtolower($value); } else { unset($field_array[$key][$sub_key]); } }
 
 				// get error code array (plugin_cfgerr_...)
 				$errcode = $plugin_data[0]['error_code'];
@@ -493,7 +498,7 @@ switch($op){
 								}
 								break;
 							case "PLUGIN_CFGERR_LICENSEBAD":
-								if(!in_array($postvar, array('free', 'trial', 'limited', 'full', 'subscription')) && $postvar != ''){
+								if(!in_array($postvar, array('free', 'trial', 'limited', 'full', 'subscription')) && !isblank($postvar)){
 									$msg[] = strtoupper($field_from_code)." is still invalid.\n";
 								}else{
 									$errcode -= constant(strtoupper($code));
@@ -503,7 +508,7 @@ switch($op){
 							case "PLUGIN_CFGERR_USEDINNF":
 								if(isBlank($postvar)){
 									$msg[] = strtoupper($field_from_code)." was not chosen.\n";
-								}elseif(!in_array($postvar, array('admin', 'front', 'both')) && $postvar != ''){
+								}elseif(!in_array($postvar, array('admin', 'front', 'both')) && !isblank($postvar)){
 									$msg[] = strtoupper($field_from_code)." is still invalid.\n";
 								}else{
 									$errcode -= constant(strtoupper($code));
@@ -539,7 +544,7 @@ switch($op){
 						$fline_off = ((substr($fline_parts[0], 0, 2) == '//') ? '//' : '');
 						$field = strtolower(str_replace(array("#", "/"), "", $fline_parts[0]));
 						$value = trim($fline_parts[1]);
-						if($field != '' && $value != ''){
+						if(!isblank($field) && !isblank($value)){
 							if(isset(${$field})) $value = ${$field};
 							$fnewcontents .= $fline_off."#".$field.":".str_repeat(" ", (13-strlen($field))).$value.PHP_EOL;
 						}
@@ -555,7 +560,7 @@ switch($op){
 					$plugin_data = getRec("plugins", "*", "id = '{$plugin_id}'", "", "1");
 					$rtn = array();
 					$rtn['row'] = getSettingsPluginRow($plugin_data[0], 'normal');
-					$rtn['setting'] = (($plugin_data[0]['settingsfunc'] != '') ? getSettingsPluginSettingsRow($plugin_data[0]) : '');
+					$rtn['setting'] = ((!isblank($plugin_data[0]['settingsfunc'])) ? getSettingsPluginSettingsRow($plugin_data[0]) : '');
 					$rtn['plugins_issues'] = showSettingsIssues('plugins', true);
 					$rtn['settings_issues'] = showSettingsIssues('', true);
 					exitAjax(true, $rtn);
@@ -566,7 +571,7 @@ switch($op){
 		}
 		break;
 	case 'getsettingshelpfile':
-		if($val != ''){
+		if(!isblank($val)){
 			$val = SITE_PATH.$val;
 			if(file_exists($val)){
 				$fcontents = file_get_contents($val);
@@ -633,15 +638,15 @@ EOT;
 	case 'revertrobotfile':
 		$revertfile = SITE_PATH.ADMIN_FOLDER.$val;
 		$success = false;
-		if($val != '' && file_exists($revertfile)){
+		if(!isblank($val) && file_exists($revertfile)){
 			// first backup the current file
-		chmod(SITE_PATH."robots.txt", 0777);
-		if(copy (SITE_PATH."robots.txt", SITE_PATH.ADMIN_FOLDER.REV_FOLDER."robots.".date("YmdHis").".txt")){
-			$fcontents = file_get_contents($revertfile);
-			file_put_contents(SITE_APTH."robots.txt", $fcontents);
-			$success = true;
-		}
-		chmod(SITE_PATH."robots.txt", 0644);
+            chmod(SITE_PATH."robots.txt", 0777);
+            if(copy (SITE_PATH."robots.txt", SITE_PATH.ADMIN_FOLDER.REV_FOLDER."robots.".date("YmdHis").".txt")){
+                $fcontents = file_get_contents($revertfile);
+                file_put_contents(SITE_APTH."robots.txt", $fcontents);
+                $success = true;
+            }
+            chmod(SITE_PATH."robots.txt", 0644);
 		}
 		exitAjax($success, '');
 		break;
@@ -649,7 +654,7 @@ EOT;
     // DATA ALIASES
 
     case 'validatedataaliasmeta':
-        if($val != ''){
+        if(!isblank($val)){
             list(,$error) = getDataAliasPatternFromMeta($val);
             if($error == ''){
                 exitAjax(true, ((dataAliasIsCategory($val)) ? 'Valid category meta' : ''));
@@ -672,7 +677,7 @@ EOT;
 		$db_pass = getRequestVar('p');
 		$db_name = getRequestVar('n');
 		$db_port = intval(getRequestVar('r'));
-		if($db_host != '' && $db_user != '' && $db_name != '' && $db_pass != ''){
+		if(!isblank($db_host) && !isblank($db_user) && !isblank($db_name) && !isblank($db_pass)){
 			$db_hostport = (($db_port > 0 && $db_port != 3306) ? $db_host.':'.$db_port : $db_host);
 			$link = @mysql_connect($db_hostport, $db_user, $db_pass);
 			if($link){
@@ -731,7 +736,7 @@ EOT;
 
 		// get the parameters saved by the showlist operation
 		$funcrec = getRec("register", "*", "`type` = 'showlist' AND fileurl = '$page_url'");
-	    if($funcrec[0]['parameters'] != '') {
+	    if(!isblank($funcrec[0]['parameters'])) {
 	    	$list_params = json_decode($funcrec[0]['parameters'], true);
 	    }
 
@@ -764,7 +769,7 @@ EOT;
 						if(function_exists('sm_start')){
 							sm_start(false, "monthly", 1, 0, true, "", true);
 						}
-		    		}elseif($tables['db_child_table'] != ''){
+		    		}elseif(!isblank($tables['db_child_table'])){
 		    			// parent record
 						if(FULL_DELETE) {
 							$subimg_array = getRec("`".$tables['db_child_table']."`", "*", "cat_id = '{$param['row_id']}' OR cat_id IN (SELECT id FROM `{$tables['db_table']}` WHERE cat_id = '{$param['row_id']}')", "", "");
@@ -835,7 +840,7 @@ EOT;
 		    }
 		}
 
-		if($funcrec[0]['parameters'] != ''){
+		if(!isblank($funcrec[0]['parameters'])){
 	    	// the ajaxpage array is a simulated version of the $_page object
 	    	// passed to form functions so that the originating page data is preserved
 	    	$ajaxpage = array(
@@ -880,7 +885,7 @@ EOT;
 
 		// get the parameters saved by the showlist operation
 		$funcrec = getRec("register", "*", "`type` = 'showlist' AND fileurl = '$page_url'");
-	    if($funcrec[0]['parameters'] != '') {
+	    if(!isblank($funcrec[0]['parameters'])) {
 	    	$params = json_decode($funcrec[0]['parameters'], true);
 	    	$orgrec = univGetQuery($params['query']);
 
@@ -937,6 +942,11 @@ exit;
 
 /*------------------------------------------------------------------------------------------*/
 
+/**
+ * Return JSON results
+ * @param boolean $success
+ * @param mixed $rtndata
+ */
 function exitAjax($success, $rtndata = null){
 	echo json_encode(array('success' => $success, 'rtndata' => $rtndata));
 	exit;
@@ -964,7 +974,7 @@ function deleteFileContents($folder){
 	global $plugin_folder, $plugin_id;
 
 	$rtn = '';
-	if($folder != ''){
+	if(!isblank($folder)){
 		if(file_exists($folder)){
 			if(false !== ($handle = opendir($folder))) {
 				while (false !== ($file = readdir($handle))) {

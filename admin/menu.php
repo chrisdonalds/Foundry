@@ -46,15 +46,15 @@ $_page->menus = $menus;
 $toplevel = "";
 $sublevel = "";
 $p = parse_url($_SERVER['REQUEST_URI']);
-$filebase = preg_replace("/(^list-|^edit-)/i", "", basename($p['path'], ".php"));
+$basepath = str_replace(VHOST.ADMIN_FOLDER, "", $p['path']);
 foreach($menus as $key => $menu){
     if(userIsAllowedTo("view_locked_menus") || !$menu['restricted']){
-        $chosen = (($_page->menu['section'] == $key) ? "chosen" : "unchosen");
+        $chosen = ((dirname($basepath) == dirname($menu['target'])) ? "chosen" : "unchosen");
         $toplevel .= "<li class=\"{$chosen}\" id=\"menu_{$key}\"><a href=\"".WEB_URL.ADMIN_FOLDER.$menu['target']."\">{$menu['title']}</a></li>\n";
         if(is_array($menu['childmenus']) && $chosen == "chosen"){
             foreach($menu['childmenus'] as $skey => $smenu){
                 if(userIsAllowedTo("view_locked_menus") || !$smenu['restricted']){
-                    $schosen = (($filebase == $skey) ? "chosen" : "unchosen");
+                    $schosen = (($basepath == $smenu['target']) ? "chosen" : "unchosen");
                     $sublevel .= "<li class=\"{$schosen}\" id=\"submenu_".$skey."\"><a href=\"".WEB_URL.ADMIN_FOLDER.$smenu['target']."\">{$smenu['title']}</a></li>\n";
                 }
             }

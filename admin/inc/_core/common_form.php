@@ -1738,11 +1738,11 @@ function saveAdminMenu($level, $key, $parent, $title, $table, $targettype, $alia
                 );
                 $updated = true;
             }elseif(!isblank($parent)){
-                if(isset($menus[$parent]['childmenus'][$key])){
+                if(isset($menus[$parent])){
                     $target = getAdminMenuTarget($table, $alias, $targettype);
                     $key = codify($title);
                     $indx = "";
-                    while(isset($menus[$key.$indx])) {
+                    while(isset($menus[$key]['childmenus'][$key.$indx])) {
                         $indx = (($indx == "") ? 1 : $indx + 1);
                     }
                     $key .= $indx;
@@ -1759,6 +1759,39 @@ function saveAdminMenu($level, $key, $parent, $title, $table, $targettype, $alia
         }
 
         if($updated){
+            $menus_json = str_replace("'", "\'", json_encode($menus));
+            $ok = updateRec("settings", "`value` = '".$menus_json."'", "`name` = 'ADMIN_MENUS'");
+        }
+    }
+    return array($ok, $key);
+}
+
+function deleteAdminMenu($key, $level, $parent){
+    global $_system, $_page;
+
+    $ok = false;
+    if(!isblank($level)){
+        if(defined('IN_AJAX')) {
+            $menus = getAdminMenus();
+        }else{
+            $menus = $_page->menus;
+        }
+
+        if(!isblank($key)){
+            if($level == 'top'){
+                if(isset($menus[$key])){
+                    unset($menus[$key]);
+                    $ok = true;
+                }
+            }elseif(!isblank($parent)){
+                if(isset($menus[$parent]['childmenus'][$key])){
+                    unset($menus[$parent]['childmenus'][$key]);
+                    $ok = true;
+                }
+            }
+        }
+
+        if($ok){
             $menus_json = str_replace("'", "\'", json_encode($menus));
             $ok = updateRec("settings", "`value` = '".$menus_json."'", "`name` = 'ADMIN_MENUS'");
         }

@@ -24,9 +24,16 @@ class DB_wrapper extends DB_common {
 
 	/* class object variables */
 
-	// instantiate class object
-	public function __construct() {
-        $this->conn = new Connection();
+	/**
+     * Instantiate the DB class object
+     * @param string $db_username
+     * @param string $db_password
+     * @param string $db_database
+     * @param string $db_host
+     * @param string $db_port
+     */
+	public function __construct($db_username=null, $db_password=null, $db_database=null, $db_host=null, $db_port=null) {
+        $this->conn = new Connection($db_username, $db_password, $db_database, $db_host, $db_port);
 		$this->db = $this->conn->getConnection();
     }
 

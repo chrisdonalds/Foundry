@@ -341,7 +341,7 @@ function countIfSet(&$array){
 }
 
 /**
- * Return whether or not variable is blank, empty, not set, or null
+ * Return whether or not variable is '', blank, empty, not set, or null
  * @param mixed $var
  */
 function isBlank(&$var){

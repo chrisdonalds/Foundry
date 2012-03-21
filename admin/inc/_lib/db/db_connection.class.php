@@ -31,6 +31,14 @@ class Connection {
 	protected $db_host;
 	protected $db_port;
 
+    /**
+     * Instantiate the connection class
+     * @param string $db_username
+     * @param string $db_password
+     * @param string $db_database
+     * @param string $db_host
+     * @param string $db_port
+     */
 	public function __construct($db_username=null, $db_password=null, $db_database=null, $db_host=null, $db_port=null) {
 		if($db_username == ""){
 			global $db_username;

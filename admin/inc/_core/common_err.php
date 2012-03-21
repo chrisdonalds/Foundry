@@ -157,8 +157,8 @@ function _db_error(){
 }
 
 /**
- * Debugger-aware error log
- * @param type $message
+ * Debugger-aware error logger
+ * @param string $msg
  */
 function _log($msg){
 	if($msg != ''){
