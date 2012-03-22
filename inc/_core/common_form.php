@@ -550,10 +550,10 @@ function showTitle($incl_h1 = false, $incl_parent = false){
 
 /**
  * Return content of page or data
- * @param integer $id
- * @param string $code
+ * @param integer $id ID of data record (does not apply to pages)
+ * @param string $limitToTag HTML tag to limit contents to
  */
-function getContents($id = 0, $code = ''){
+function getContents($id = 0, $limitToTag = ''){
     global $_page, $_data;
 
     $contents = '';
@@ -562,11 +562,19 @@ function getContents($id = 0, $code = ''){
     }elseif($_page->contenttype == 'data'){
         $possible_fields = array('content', 'contents', 'descr', 'desc', 'description');
         foreach($possible_fields as $field){
-            if(isset($_data[0][$field])){
-                $contents = $_data[0][$field];
+            if(isset($_data[$id][$field])){
+                $contents = $_data[$id][$field];
             }
         }
     }
+
+    if($limitToTag != ''){
+        $limitToTag = ' '.ltrim($limitToTag);
+        if(preg_match('#<(.+)'.$limitToTag.'>([^<]*)</(.*)>#i', $contents, $tag_contents)){
+            $contents = getIfSet($tag_contents[0]);
+        }
+    }
+
     if($contents != ''){
         // parse out any macros ({func name=val, name=val} in the contents
         preg_match_all("/{(([a-z0-9]+)(.*))+}/i", $contents, $macros);
@@ -594,10 +602,12 @@ function getContents($id = 0, $code = ''){
 
 /**
  * Output page content
+ * @param integer $id ID of data record (does not apply to pages)
+ * @param string $limitToTag HTML tag to limit contents to
  * @todo hook here
  */
-function showContents(){
-    echo getContents().PHP_EOL;
+function showContents($id = 0, $limitToTag = ''){
+    echo getContents($id, $limitToTag).PHP_EOL;
 }
 
 /**

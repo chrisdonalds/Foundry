@@ -21,7 +21,7 @@ function testmacro($args){
 ?>
 	<div class="section">
 		<h1 admin="page:<?=$_page->id?>"><? showTitle(); ?></h1>
-		<? showContents(); ?>
+		<? showContents(0, 'id="whatever"'); ?>
 	</div>
 <?
 showFooter();
