@@ -286,6 +286,22 @@ jQuery(function($){
 
         // Menus
 
+        $('#websitemenu_sample ul').nestedSortable({
+            listType: 'ul',
+			disableNesting: 'no-nest',
+			forcePlaceholderSize: true,
+			handle: 'div',
+			items: 'li',
+			maxLevels: 5,
+			opacity: .6,
+			placeholder: 'nestedsortable-placeholder',
+			revert: 250,
+			tabSize: 5,
+			tolerance: 'pointer',
+			toleranceElement: '> div',
+            noJumpFix: 1
+		});
+
         $('#adminmenu_subnavigation').sortable({
             opacity: 0.8
         });

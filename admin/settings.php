@@ -7,6 +7,7 @@
 // ---------------------------
 //
 
+$uicore = 'nestedsortable';
 $settings_issues = array();
 include ("header.php");
 
@@ -414,7 +415,12 @@ function showSettingsUsersList($readonly){
 }
 
 function showSettingsMenusforWebsite(){
-
+    ?>
+    <div id="websitemenu_sample">
+        <?=getWebsiteMenuHTML();?>
+    </div>
+    <?
+    return true;
 }
 
 function showSettingsMenusforAdmin(){

@@ -934,8 +934,8 @@ function addHeadPlugin($name, $param_array = null, $in_head = true) {
 						$group[] = array("asType" => "script", "dir" => $jsfolder, "file" => "ui/ui.".$widget.".js", "media" => "");
 					}
 				}
-				if(in_array('nestedsortable', $widgets_array))
-					$group[] = array("asType" => "script", "dir" => $jsfolder, "file" => "ui/ui.interface-1.2.js", "media" => "");
+				//if(in_array('nestedsortable', $widgets_array))
+				//	$group[] = array("asType" => "script", "dir" => $jsfolder, "file" => "ui/ui.interface-1.2.js", "media" => "");
 			}
 			if(count($effects_array) > 0){
 				$valid_effects = explode(",", "blind,bounce,clip,drop,explode,fade,fold,highlight,pulsate,scale,shake,slide,transfer");

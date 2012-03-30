@@ -695,7 +695,7 @@ label {
 	display: block;
 }
 
-/* ERRORS AND MESSAGEBOXES
+/* ERRORS AND MESSAGE BOXES
 --------------------------------------------------------------------------------------- */
 .display_msg {
     width: 99%;
@@ -1379,7 +1379,6 @@ label {
 
 /* SETTINGS
 --------------------------------------------------------------------------------------- */
-
 #wait {
     display: none;
     text-align: center;
@@ -1570,6 +1569,8 @@ label {
     font-weight: bold;
 }
 
+/* ADMIN MENUS */
+
 #adminmenu_atts {
     position: relative;
     border: 1px solid #888;
@@ -1756,6 +1757,45 @@ label {
     height: 10px;
     background: url('images/icons/close_10.png') no-repeat transparent;
     cursor: pointer;
+}
+
+/* WEBSITE MENUS */
+
+#websitemenu_sample {
+    border: 1px solid #888;
+    margin-bottom: 10px;
+    overflow: hidden;
+    padding: 5px;
+    position: relative;
+    text-align: left;
+    width: 99%;
+}
+
+#websitemenu_sample ul.webmenu li {
+    margin-left: 20px;
+    cursor: move;
+}
+
+#websitemenu_sample ul.webmenu li div {
+    padding: 2px;
+    margin-top: 2px;
+    border: 1px solid #aaa;
+    width: 200px;
+}
+
+#websitemenu_sample ul.webmenu li div:hover {
+    background-color: #cfcfcf;
+}
+
+#websitemenu_sample .nestedsortable-placeholder {
+    background-color: #eee;
+    border: 1px dotted #888;
+    width: 200px;
+}
+
+#websitemenu_sample .ui-nestedSortable-error {
+    background: #ccc;
+    color: #ff8888;
 }
 
 /* PLUGINS */

@@ -1379,6 +1379,100 @@ function getShortContent($content, $length = 20, $url = '', $finish = '...') {
     return $output.$end;
 }
 
+
+// ----------- WEBSITE MENU FUNCTIONS ---------------
+
+/**
+ * Return a specific website menu array element or all website menus as a collection array
+ * @param string $menupart empty string (full), content, or layout
+ * @return array
+ */
+function getWebsiteMenus($menupart = ''){
+    // get data from DB
+    $menus_content_json = getRec("settings", "value", "`name` = 'WEBSITE_MENUS_CONTENT'", "", "1", "", true);
+    $menus_layout_ser = getRec("settings", "value", "`name` = 'WEBSITE_MENUS_LAYOUT'", "", "1", "", true);
+    if(isBlank($menus_content_json['value'])){
+        $menus_content = array(
+            1 => array("key" => "menu1", "table" => "events_a", "title" => "Menu1"),
+            2 => array("key" => "menu2", "table" => "events_b", "title" => "Menu2"),
+            3 => array("key" => "menu3", "table" => "events_c", "title" => "Menu3"),
+            4 => array("key" => "menu4", "table" => "events_d", "title" => "Menu4"),
+            5 => array("key" => "menu5", "table" => "events_e", "title" => "Menu5"),
+            6 => array("key" => "menu6", "table" => "events_f", "title" => "Menu6"),
+            7 => array("key" => "menu7", "table" => "events_g", "title" => "Menu7"),
+            8 => array("key" => "menu8", "table" => "events_h", "title" => "Menu8"),
+            9 => array("key" => "menu9", "table" => "events_i", "title" => "Menu9"),
+            10 => array("key" => "menu10", "table" => "events_j", "title" => "Menu10"),
+            11 => array("key" => "menu11", "table" => "events_k", "title" => "Menu11"),
+        );
+        $menus_layout_ser = "list[1]=root&list[5]=1&list[6]=5&list[2]=root&list[3]=2&list[4]=2&list[7]=root&list[8]=root&list[9]=root&list[10]=root&list[11]=10";
+    }else{
+        $menus_content = json_decode($menus_content_json['value'], true);
+    }
+
+    // unserialize layout
+    $layout_parts = explode("&", str_replace("list[", "", $menus_layout_ser));
+    $menus_layout = array();
+    foreach($layout_parts as $val){
+        $val_parts = explode("=", $val);
+        $menus_layout[intval($val_parts[0])] = $val_parts[1];
+    }
+
+    // merge the layout and contents into one array
+    $menus = $menus_content;
+    for($n = count($menus_layout); $n > 0; $n--){
+        $parent = $menus_layout[$n];
+        if(isset($menus[$parent]) && isset($menus[$n]) && $parent != 'root'){
+            $menus[$parent]['childmenus'][$n] = $menus[$n];
+            ksort($menus[$parent]['childmenus']);
+            unset($menus[$n]);
+        }
+    }
+    ksort($menus);
+
+    $menupart = strtolower($menupart);
+    if($menupart == 'content'){
+        return $menus_content;
+    }elseif($menupart == 'layout'){
+        return $menus_layout;
+    }else{
+        return $menus;
+    }
+}
+
+function getWebsiteMenuHTML(){
+    global $_page;
+
+    if(defined('IN_AJAX')) {
+        $menus = getWebsiteMenus();
+    }else{
+        $menus = $_page->menus;
+    }
+
+        $menus = getWebsiteMenus();
+    $html = '';
+    if(!isBlank($menus)){
+        $html = getWebsiteMenuHTMLNode($menus);
+    }
+    return $html;
+}
+
+function getWebsiteMenuHTMLNode($menus, $level=0, $parentindx=0){
+    $html = '';
+    if(count($menus) > 0){
+        $html = '<ul class="webmenu" id="p'.$parentindx.'">'.PHP_EOL;
+        foreach($menus as $indx => $menu){
+            $html.= '<li class="webmenuitem" id="'.$menu['key'].'" rel="'.$parentindx.'.'.$indx.'"><div>'.$menu['title'].'</div>';
+            if(!isBlank($menu['childmenus'])){
+                $html.= getWebsiteMenuHTMLNode($menu['childmenus'], $level+1, $parentindx.'.'.$indx).PHP_EOL;
+            }
+            $html.= '</li>'.PHP_EOL;
+        }
+        $html.= '</ul>'.PHP_EOL;
+    }
+    return $html;
+}
+
 // ----------- ADMIN MENU FUNCTIONS ---------------
 
 /**
