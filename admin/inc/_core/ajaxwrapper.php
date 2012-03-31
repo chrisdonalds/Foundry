@@ -221,8 +221,8 @@ switch($op){
 								$text = ((isBlank($data)) ? 'None' : $data);
 								break;
                             case 'ver':
-                                if(!isBlank($dataarry[0]['config_settings']) && userIsAllowedTo('update_plugins')){
-                                    $cfgs = explode(",", $dataarry[0]['config_settings']);
+                                if(!isBlank($dataarry[0]['inline_settings']) && userIsAllowedTo('update_plugins')){
+                                    $cfgs = explode(",", $dataarry[0]['inline_settings']);
                                     if(in_array($key, $cfgs)){
                                         $text = '<input type="text" class="plugin_datamod smallfldsize" rel="'.$dataarry[0]['id'].'|'.$key.'" value="'.$data.'" />';
                                     }else{

@@ -341,6 +341,27 @@ function countIfSet(&$array){
 }
 
 /**
+ * Check each array element and return the array with elements set, or null
+ * @param array $array
+ * @param array $strElements
+ * @param array $intElements
+ * @return array
+ */
+function getIfSetArray(&$array, $strElements = null, $intElements = null){
+    if(is_array($array)){
+        if(!is_null($strElements)){
+            foreach($strElements as $elem){
+                $array[$elem] = getIfSet($array[$elem]);
+            }
+            foreach($intElements as $elem){
+                $array[$elem] = getIntValIfSet($array[$elem]);
+            }
+        }
+    }
+    return $array;
+}
+
+/**
  * Return whether or not variable is '', blank, empty, not set, or null
  * @param mixed $var
  */

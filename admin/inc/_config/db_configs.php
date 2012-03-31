@@ -193,7 +193,7 @@ EOT;
     echo <<<EOT
                         <p>If you don't have the following information ready, you can obtain it from your web host.</p>
                         <p class="cfgblock">
-                            <span class="cfglabel">Domain</span><span class="cfgdata"><input type="text" name="db_host" id="db_host" value="{$_SERVER['HTTP_HOST']}" readonly="readonly" style="background-color: #ddd"/></span><span class="cfgnote"></span><br/>
+                            <span class="cfglabel">Domain</span><span class="cfgdata"><input type="text" name="db_domain" id="db_domain" value="{$_SERVER['HTTP_HOST']}" readonly="readonly" style="background-color: #ddd"/></span><span class="cfgnote"></span><br/>
                             <span class="cfglabel">Database Host</span><span class="cfgdata"><input type="text" name="db_host" id="db_host" value="{$dbset['db_host']}"/></span><span class="cfgnote">Try <b>localhost</b>.  Otherwise you will need to contact your provider.</span><br/>
                             <span class="cfglabel">Database Name</span><span class="cfgdata"><input type="text" name="db_name" id="db_name" value="{$dbset['db_name']}"/></span><span class="cfgnote">The name of the database you want to use with this site.</span><br/>
                             <span class="cfglabel">Username</span><span class="cfgdata"><input type="text" name="db_user" id="db_user" value="{$dbset['db_user']}"/></span><span class="cfgnote">The username which grants access to this database.</span><br/>
@@ -313,7 +313,14 @@ function checkDB(){
 					('EMAIL_NOTIFY', null, 'str'),
 					('IMG_LOGIN_LOGO', '', 'str'),
 					('THEME', 'default', 'str'),
-					('THEMES_ENABLED', '0', 'int')";
+					('THEMES_ENABLED', '0', 'int'),
+					('JQUERY_FALLBACK_VER', '1.7.1', 'str'),
+					('JQUERYUI_FALLBACK_VER', '1.8.18', 'str'),
+					('CKEDITOR_FALLBACK_VER', '3.5', 'str'),
+                    ('ALLOW_DEBUGGING', '1', 'int'),
+                    ('ERROR_LOG_TYPE', '0', 'int'),
+                    ('SITEOFFLINE', '0', 'int')
+                    ";
 					break;
 				case "sections":
 					$sql = "CREATE TABLE `sections` (
@@ -356,8 +363,8 @@ function checkDB(){
 					  PRIMARY KEY  (`id`)
 					)".((DB_VER > 3.99) ? " ENGINE=MyISAM DEFAULT CHARSET=latin1" : "");
 
-					$sql2 = "INSERT INTO `admin_accts` (`username`, `password`, `phash`, `pcle`, `email`, `hint`, `activated`, `blocked`, `blocked_time`, `level`, ) VALUES
-					('admin', '5f4dcc3b5aa765d61d8327deb882cf99', 'd4617373776f7264:2cd911c6b4f2098a5c72ce9feaf2d075', '5336f4d3c830c63d4e84dd49f6f572476c6d53d1', null, 'Location and date', '1', '0', null, ".ADMLEVEL_DEVELOPER.")";
+					$sql2 = "INSERT INTO `admin_accts` (`username`, `password`, `phash`, `pcle`, `email`, `hint`, `activated`, `blocked`, `blocked_time`, `level`) VALUES
+					('admin', '5f4dcc3b5aa765d61d8327deb882cf99', 'd4617373776f7264:2cd911c6b4f2098a5c72ce9feaf2d075', '5336f4d3c830c63d4e84dd49f6f572476c6d53d1', null, 'Location and date', '1', '0', null, 0)";
 					break;
 				case "pages":
 					$sql = "CREATE TABLE `pages` (
@@ -392,7 +399,6 @@ function checkDB(){
 					('0', '0', 'aboutus', null, 'About Us', null, null, null, '', 'english', '1', '1', '1', '1', '0', '0', '1'),
 					('0', '0', 'events', null, 'Events', null, null, null, '', 'english', '2', '1', '1', '0', '0', '0', '1'),
 					('0', '0', 'galleries', null, 'Galleries', null, null, null, '', 'english', '2', '1', '1', '0', '0', '0', '1'),
-					('0', '0', 'requestinfo', null, 'Request More Info', null, null, null, '', 'english', '1', '1', '1', '1', '0', '0', '1'),
 					('0', '0', 'contactus', null, 'Contact Us', null, null, null, '', 'english', '1', '1', '1', '1', '0', '0', '1'),
 					('0', '0', 'whatsnew', null, 'Whats New', null, null, null, '', 'english', '1', '1', '1', '1', '0', '0', '1'),
 					('0', '0', '404', null, 'Page Not Found', null, null, null, '', 'english', '1', '1', '0', '0', '0', '0', '1'),
@@ -454,6 +460,8 @@ function checkDB(){
                       `initfile` varchar(255) DEFAULT NULL,
                       `headerfunc` varchar(255) DEFAULT NULL,
                       `settingsfunc` varchar(255) DEFAULT NULL,
+                      `inline_settings` varchar(255) DEFAULT NULL,
+                      `custom_settings` text DEFAULT NULL,
                       `nodisable` tinyint(1) DEFAULT '0',
                       `nodelete` tinyint(1) DEFAULT '0',
                       `builtin` tinyint(1) DEFAULT '0',

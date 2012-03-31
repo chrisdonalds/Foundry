@@ -161,7 +161,7 @@ $defcfg  = array(	"BUSINESS" => "Business",
 					"EMAIL_CONFIRM" => "",
 					"EMAIL_NOTIFY" => "",
 					"THEME" => "default",
-					"THEMES_ENABLED" => false,
+					"THEMES_ENABLED" => true,
 					"PHP_DATE_FORMAT" => "Y-m-d",
 					"SITEOFFLINE" => false,
 					"SITEOFFLINE_MSG" => "This site is down for maintenance. Please check back again soon.",
@@ -169,6 +169,9 @@ $defcfg  = array(	"BUSINESS" => "Business",
 					"ERROR_SENSITIVITY" => E_ERROR | E_WARNING | E_PARSE,
 					"ALLOW_DEBUGGING" => true,
 					"ERROR_LOG_TYPE" => 0,
+                    "JQUERY_FALLBACK_VER" => "1.7.1",
+                    "JQUERYUI_FALLBACK_VER" => "1.8.18",
+                    "CKEDITOR_FALLBACK_VER" => "3.5"
 					);
 $configs = getCustomConfigVals();
 foreach($configs as $ckey => $cval) define($ckey, $cval);
@@ -218,7 +221,8 @@ define ("REQD_ENTRY", "<span style=\"color: red\">*</span>");
 
 /**
  * Checks for the existence of critical control files and folders.
- * Doing so will return more description of the missing file or folder
+ * Doing so will return more description of the missing file or folder.
+ * Also, make sure specific files and folders are writable
  */
 function checkFolders(){
 	$setold = 0;
@@ -233,6 +237,18 @@ function checkFolders(){
 	testFiles(SITE_PATH.ADMIN_FOLDER.ADM_CSS_FOLDER.DEF_ADM_SKIN, SITE_PATH.ADMIN_FOLDER.ADM_CSS_FOLDER.DEF_ADM_SKIN, true);
 	testFiles(SITE_PATH.ADMIN_FOLDER.JS_FOLDER, SITE_PATH.ADMIN_FOLDER.JS_FOLDER, true);
 	testFiles(SITE_PATH.ADMIN_FOLDER.DB_FOLDER, SITE_PATH.ADMIN_FOLDER.DB_FOLDER, true);
+
+    if(file_exists(SITE_PATH.IMG_UPLOAD_FOLDER)){
+        if(!is_writable(SITE_PATH.IMG_UPLOAD_FOLDER)) chmod(SITE_PATH.IMG_UPLOAD_FOLDER, 0777);
+    }
+
+    if(file_exists(SITE_PATH.THM_UPLOAD_FOLDER)){
+        if(!is_writable(SITE_PATH.THM_UPLOAD_FOLDER)) chmod(SITE_PATH.THM_UPLOAD_FOLDER, 0777);
+    }
+
+    if(file_exists(SITE_PATH.FILE_UPLOAD_FOLDER)){
+        if(!is_writable(SITE_PATH.FILE_UPLOAD_FOLDER)) chmod(SITE_PATH.FILE_UPLOAD_FOLDER, 0777);
+    }
 }
 
 /**
@@ -330,7 +346,7 @@ function doInitUpdate($fieldname, $conn){
 	switch($fieldname){
 		case "CKE_CSS_COLORS":
 			// read all color attributes from "{root}css/layout.css" file
-			if(!is_writable(SITE_PATH.CKE_FOLDER."config.js")) die("CKEditor config.js file not writable!");
+			if(!is_writable(SITE_PATH.CKE_FOLDER."config.js")) chmod(SITE_PATH.CKE_FOLDER."config.js", 0777);
 
 			$values = array();
 			$public_css_folder = SITE_PATH."css/";      // test css first

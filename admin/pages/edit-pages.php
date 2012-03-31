@@ -70,7 +70,11 @@ $recset = getRec($db->table, "*", "id = '{$_page->row_id}'", "", "");
 if(count($recset) == 1) {
     extractVariables($recset[0]);
 	$pageset = getRec($db->child_table, "*", "pageid = '{$_page->row_id}'", "", "");
-	if(count($pageset) > 0) extractVariables($pageset[0]);
+	if(count($pageset) > 0) {
+        extractVariables($pageset[0]);
+    }else{
+        $content = '';
+    }
 }else{
     gotoPage("list-pages.php");
 	exit;
@@ -104,7 +108,7 @@ showObject("text", $atts);
 if(userIsAtleast(ADMLEVEL_DEVELOPER)) {
 	$after = 'after:'.(($pagealias != 'index' && !file_exists(SITE_PATH."index.php") && $ppage_id == 0) ? '<input type="button" id="editpage_setashome" value="Set as Home Page" />' : '');
 	$after .= "&nbsp;<a href=\"#\" class=\"editor_button_preview\">Preview it</a>";
-	$atts = array("label" => "Page Alias", "id" => "pagename", "value" => (($pagealias != 'index') ? $pagename : ''), "wrappertext" => $after.", before:'".WEB_URL."', help:'Tip: folder paths are accepted.'");
+	$atts = array("label" => "Page Alias", "id" => "pagename", "value" => (($pagealias != 'index') ? $pagename : ''), "wrappertext" => $after.", before:'".WEB_URL."', help:'Spoiler: The page alias can be any folder depth.'");
 	showObject("text", $atts);
 }else{
 	$atts = array("id" => "pagename", "value" => $pagename);
@@ -112,7 +116,7 @@ if(userIsAtleast(ADMLEVEL_DEVELOPER)) {
 }
 $atts = array("id" => "pagealias", "value" => $pagealias);
 showObject("hidden", $atts);
-$atts = array("label" => "Parent Page", "id" => "ppage_id", "valuearray" => $ppage_array, "selectedvalue" => $ppage_id, "wrappertext" => "help:'Tip: only pages with no parent can be the home page.'", "disablevalue" => $_page->row_id);
+$atts = array("label" => "Parent Page", "id" => "ppage_id", "valuearray" => $ppage_array, "selectedvalue" => $ppage_id, "wrappertext" => "help:'Tip: You can make any top level page a home page.'", "disablevalue" => $_page->row_id);
 showObject("list", $atts);
 if(userIsAtleast(ADMLEVEL_DEVELOPER)) {
 	$atts = array("label" => "Page is Locked?", "id" => "locked", "value" => 1, "chkstate" => $locked, "text" => "If checked, this page will be locked");

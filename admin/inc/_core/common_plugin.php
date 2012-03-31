@@ -59,9 +59,9 @@ function initPluginsandFrameworks(){
  	if(count($rec_p) > 0){
         // if plugin is dependent on another non-built-in plugin
         // that is not in inclusion list, add parent to list
- 		foreach($rec_p as $the_plugin){
+ 		foreach($rec_p as $k => $the_plugin){
  			$depends = trim($the_plugin['depends']);
-            if(!in_array($depends, array('jquery', 'jqueryui')) && $depends != '' && in_array($the_plugin['incl'], $incl_array)){
+            if(!in_array($depends, array('jquery', 'jqueryui')) && !isBlank($depends) && in_array($the_plugin['incl'], $incl_array)){
               	if(!in_array($depends, $incl_array)){
                 	$incl_array[] = $depends;
                	}
@@ -119,7 +119,9 @@ function initPluginsandFrameworks(){
  * @return string
  */
 function getJQueryVer(){
-    return getRecItem("`plugins`", "ver", "`incl` = 'jquery'");
+    $ver = getRecItem("`plugins`", "ver", "`incl` = 'jquery'");
+    if(isBlank($ver)) $ver = JQUERY_FALLBACK_VER;
+    return $ver;
 }
 
 /**
@@ -127,15 +129,19 @@ function getJQueryVer(){
  * @return string
  */
 function getJQueryUIVer(){
-    return getRecItem("`plugins`", "ver", "`incl` = 'jqueryui'");
+    $ver = getRecItem("`plugins`", "ver", "`incl` = 'jqueryui'");
+    if(isBlank($ver)) $ver = JQUERYUI_FALLBACK_VER;
+    return $ver;
 }
 
 /**
- * Return jQuery version number
+ * Return CKEditor version number
  * @return string
  */
 function getCKEditorVer(){
-    return getRecItem("`plugins`", "ver", "`incl` = 'ckeditor'");
+    $ver = getRecItem("`plugins`", "ver", "`incl` = 'ckeditor'");
+    if(isBlank($ver)) $ver = CKEDITOR_FALLBACK_VER;
+    return $ver;
 }
 
 // ----------- PLUGIN SETTINGS FUNCTIONS ---------------
@@ -170,17 +176,16 @@ function getInstalledPlugins($status = "all"){
 	readInstalledPluginInfoFiles($pluginpaths);
 
 	// add built-in plugins
-	$pluginslist = array('ckeditor' => array(
-							'id' => getRecItem("plugins", "id", "name='CKEditor'"),
+	$pluginslist = array(
+                        'ckeditor' => array(
+							'id' => getRecItem("plugins", "id", "incl='ckeditor'"), "ver" => "3.5",
 							'name' => 'CKEditor', 'author' => 'Frederico Knabben', 'created' => BLANK_DATE,
-							'revised' => BLANK_DATE, 'descr' => 'CMS HTML editor', 'sysver' => 1.5,
-							'website' => 'http://www.ckeditor.com', 'usedin' => 'both', 'incl' => 'ckeditor', 'initfile' => 'jquery.min.js',
-							'headerfunc' => '', 'settingsfunc' => '', 'depends' => 'jquery', 'is_framework' => 0,
+							'revised' => BLANK_DATE, 'descr' => 'CMS HTML editor', 'sysver' => 1.5, 'folder' => 'ckeditor',
+							'website' => 'http://www.ckeditor.com', 'usedin' => 'both', 'incl' => 'ckeditor', 'initfile' => 'ckeditor.js',
+							'headerfunc' => '', 'settingsfunc' => '', 'depends' => 'jquery', 'is_framework' => 0, 'inline_settings' => 'ver, folder',
 							'nodelete' => 1, 'nodisable' => 1, 'builtin' => 1, 'active' => 1
-					)) + $pluginslist;
-
-	// delete temp marked records
-	//deleteRec("plugins", "updflag = -2");
+                        )
+    ) + $pluginslist;
 
 	// loop through plugins updating/adding each to the database
 	foreach($pluginslist as $pluginslug => $pluginarry){
@@ -245,14 +250,14 @@ function getInstalledFrameworks($updflag){
 
 	// add built-in frameworks
 	$fwlist = array('jqueryui' => array(
-							'name' => 'jQuery UI', 'author' => 'various', 'created' => BLANK_DATE,
+							'name' => 'jQuery UI', 'author' => 'various', 'created' => BLANK_DATE, 'ver' => getJQueryUIVer(),
 							'revised' => BLANK_DATE, 'descr' => 'User Interface module for jQuery.  Includes UI Core, several interactions, widgets, and effects.',
 							'sysver' => 2, 'website' => 'http://www.jqueryui.com', 'usedin' => 'both', 'incl' => 'jqueryui', 'initfile' => 'jquery-ui.min.js',
 							'headerfunc' => '', 'settingsfunc' => '', 'depends' => 'jquery', 'is_framework' => 1, 'inline_settings' => 'ver',
 							'nodelete' => 1, 'nodisable' => 1, 'builtin' => 1, 'active' => 1
 					)) +
 					array('jquery' => array(
-							'name' => 'jQuery', 'author' => 'John Resig', 'created' => '2010-11-11',
+							'name' => 'jQuery', 'author' => 'John Resig', 'created' => '2010-11-11', 'ver' => getJQueryVer(),
 							'revised' => BLANK_DATE, 'descr' => 'jQuery core framework.', 'sysver' => 2,
 							'website' => 'http://www.jquery.com', 'usedin' => 'both', 'incl' => 'jquery', 'initfile' => 'jquery.min.js',
 							'headerfunc' => '', 'settingsfunc' => '', 'depends' => '', 'is_framework' => 1, 'inline_settings' => 'ver',
@@ -268,30 +273,29 @@ function getInstalledFrameworks($updflag){
 
 	foreach($fwlist as $fwslug => $fwarry){
 		// find framework record
+        $fwarry['errors'] = '';
+        $fwarry['error_code'] = 0;
+        $fwarry['updflag'] = $updflag;
+        $fwarry['is_framework'] = 1;
+
 		$fwfromdb = getRec("plugins", "*", "name = '{$fwarry['name']}' AND is_framework = 1", "", "1");
-		$fwid     = $fwfromdb[0]['id'];
+        $fwid = getIntValIfSet($fwfromdb[0]['id']);
 
-		$fwarry['errors'] = '';
-		$fwarry['error_code'] = 0;
-		$fwarry['updflag'] = $updflag;
-		$fwarry['is_framework'] = 1;
-
-		// update the records
-		if($fwid > 0){
-			// update
-			$fldvals = '';
-			foreach($fwarry as $key => $data) $fldvals .= (($fldvals != '') ? ', ' : '')."`$key`='".str_replace("'", "&#34;", $data)."'";
-			updateRec('plugins', $fldvals, "id = {$fwid}");
-			$numUpd++;
-		}else{
-			// insert (framework is iniitially disabled)
-			if(!isset($fwarry['active'])) $fwarry['active'] = 0;
-			$flds = join(", ", array_keys($fwarry));
-			$vals = '';
-			foreach($fwarry as $data) $vals .= (($vals != '') ? ', ' : '')."'".str_replace("'", "&#34;", $data)."'";
-			$fwid = insertRec('plugins', $flds, $vals);
-			$numIns++;
-		}
+        // update the records
+        if($fwid > 0){
+            // update
+            $fldvals = '';
+            foreach($fwarry as $key => $data) $fldvals .= (($fldvals != '') ? ', ' : '')."`$key`='".str_replace("'", "&#34;", $data)."'";
+            if(updateRec('plugins', $fldvals, "id = {$fwid}")) $numUpd++;
+        }else{
+            // insert (framework is initially disabled)
+            if(!isset($fwarry['active'])) $fwarry['active'] = 0;
+            $flds = join(", ", array_keys($fwarry));
+            $vals = '';
+            foreach($fwarry as $data) $vals .= (($vals != '') ? ', ' : '')."'".str_replace("'", "&#34;", $data)."'";
+            $fwid = insertRec('plugins', $flds, $vals);
+            if($fwid > 0) $numIns++;
+        }
 	}
 
 	// present issues
@@ -848,7 +852,10 @@ function prepHeaderPluginsBlock(){
         // on-demand UIs
 	    addHeadPlugin("jqueryui", array("widgets" => $uicore, "effects" => $uieffects));
 	}
-	if(IN_ADMIN) addHeadPlugin("ckeditor");
+	if(IN_ADMIN) {
+        $the_plugin = $_system->plugins['ckeditor'];
+        addHeadPlugin("ckeditor", array("folder" => $the_plugin['folder'], "initfile" => $the_plugin['initfile'], "headerfunc" => $the_plugin['headerfunc']));
+    }
 
 	// Initiate additional framework header processes
 	if(count($_system->frameworks) > 0){
@@ -864,7 +871,7 @@ function prepHeaderPluginsBlock(){
 	if(count($_system->pluginsincl) > 0){
 		foreach($_system->pluginsincl as $the_plugin){
 			if($the_plugin['headerfunc'] != ''){
-				addHeadPlugin($the_plugin['incl'], array("initfile" => $the_plugin['initfile'], "headerfunc" => $the_plugin['headerfunc']));
+				addHeadPlugin($the_plugin['incl'], array("folder" => $the_plugin['folder'], "initfile" => $the_plugin['initfile'], "headerfunc" => $the_plugin['headerfunc']));
 			}
 		}
 	}
@@ -912,6 +919,7 @@ function addHeadPlugin($name, $param_array = null, $in_head = true) {
 		$is_framework = getIfSet($param_array['is_framework']);
 		$ver = getIfSet($param_array['ver']);
 		$initfile = getIfSet($param_array['initfile']);
+        $folder = getIfSet($param_array['folder']);
 	}
 
 	$l_name = strtolower($name);
@@ -950,8 +958,9 @@ function addHeadPlugin($name, $param_array = null, $in_head = true) {
 			break;
 		case "ckeditor":
 			if(!preg_match("/(.+)/", getIfSet($ver))) $ver = getCKEditorVer();
-			if(!preg_match("/(.+)/", getIfSet($initfile))) $initfile = "ckeditor/ckeditor.js";
-			$group[] = array("asType" => "script", "dir" => WEB_URL, "file" => $initfile, "media" => "");
+			if(!preg_match("/(.+)/", getIfSet($initfile))) $initfile = "ckeditor.js";
+            if($folder != '') $folder .= '/';
+			$group[] = array("asType" => "script", "dir" => WEB_URL.$folder, "file" => $initfile, "media" => "");
 			break;
 		case ($param_array['is_framework'] == true):
 			$group[] = array("asType" => "script", "dir" => "http://ajax.googleapis.com/ajax/libs/$l_name/$ver/", "file" => $initfile, "media" => "");

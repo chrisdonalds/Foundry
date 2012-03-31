@@ -248,6 +248,7 @@ function initAllowances(){
 		"edit_advanced_settings":[1,0,0,0,0,0],
 		"manage_aliases":[1,0,0,0,0,0],
 		"manage_urls":[1,0,0,0,0,0],
+        "manage_robots":[1,0,0,0,0,0],
 		"manage_visibility":[1,1,0,0,0,0],
 		"manage_debugger":[1,0,0,0,0,0],
 		"upload_files":[1,1,1,1,1,1],

@@ -93,7 +93,7 @@ startPageForm("edit_form", "", "POST", true);
 $atts = array("label" => "Title*", "id" => "pagetitle", "value" => $pagetitle, "fldclass" => "bigfldtext");
 showObject("text", $atts);
 if(userIsAtleast(ADMLEVEL_DEVELOPER)) {
-	$atts = array("label" => "Page Alias", "id" => "pagename", "value" => (($pagealias != 'index') ? $pagename : ''), "wrappertext" => "before:".WEB_URL."', help:'Tip: folder paths are accepted.'");
+	$atts = array("label" => "Page Alias", "id" => "pagename", "value" => (($pagealias != 'index') ? $pagename : ''), "wrappertext" => "before:".WEB_URL."', help:'Spoiler: The page alias can be any folder depth.'");
 	showObject("text", $atts);
 }else{
 	$atts = array("id" => "pagename", "value" => $pagename);
@@ -101,7 +101,7 @@ if(userIsAtleast(ADMLEVEL_DEVELOPER)) {
 }
 $atts = array("id" => "pagealias", "value" => $pagealias);
 showObject("hidden", $atts);
-$atts = array("label" => "Parent Page", "id" => "ppage_id", "valuearray" => $ppage_array, "selectedvalue" => $ppage_id, "wrappertext" => "help:'Tip: only pages with no parent can be the home page.'");
+$atts = array("label" => "Parent Page", "id" => "ppage_id", "valuearray" => $ppage_array, "selectedvalue" => $ppage_id, "wrappertext" => "help:'Tip: You can make any top level page a home page.'");
 showObject("list", $atts);
 if(userIsAtleast(ADMLEVEL_DEVELOPER)) {
 	$atts = array("label" => "Page is Locked?", "id" => "locked", "value" => 1, "chkstate" => $locked, "text" => "If checked, this page will be locked");

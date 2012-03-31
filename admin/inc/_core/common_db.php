@@ -520,7 +520,9 @@ function getRecItem($table, $field, $crit) {
 		if(isset($item_rec[0])){
 			_e(current($item_rec[0]))."<br/>";
 			return current($item_rec[0]);
-		}
+		}else{
+            return null;
+        }
 	}else{
 		_e(MISSING_ARG.__FUNCTION__, true);
 		return false;

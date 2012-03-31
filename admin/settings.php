@@ -479,32 +479,39 @@ function showSettingsAliases($readonly = ""){
         unset($aliases[$key]);
         $aliases[$tkey] = $arry;
     }
+
+    if(count($data_tables) > 0){
     ?>
     <div class="setlabel"><h3 class="header">Table</h3></div>
     <div class="setdata"><h3 class="header">Alias Meta</h3></div>
     <?
-	foreach($data_tables as $table){
-        $t = str_replace(DB_TABLE_PREFIX, "", $table);
-        $notice = '';
-        $notice_color = ' gray';
-        $rel = '';
-        if(isset($aliases[$table])){
-            if($aliases[$table]['error'] == ''){
-                if($aliases[$table]['iscategory'] == 1) $notice = 'Valid Category meta';
-            }else{
-                $notice = $aliases[$table]['error'].'...';
-                $notice_color = ' red';
+        foreach($data_tables as $table){
+            $t = str_replace(DB_TABLE_PREFIX, "", $table);
+            $notice = '';
+            $notice_color = ' gray';
+            $rel = '';
+            if(isset($aliases[$table])){
+                if($aliases[$table]['error'] == ''){
+                    if($aliases[$table]['iscategory'] == 1) $notice = 'Valid Category meta';
+                }else{
+                    $notice = $aliases[$table]['error'].'...';
+                    $notice_color = ' red';
+                }
+                list($rel, ) = getDataAliasPatternFromMeta($aliases[$table]['meta']);
             }
-            list($rel, ) = getDataAliasPatternFromMeta($aliases[$table]['meta']);
+            ?>
+            <div class="setlabel"><?=$table?></div>
+            <div class="setdata">
+                <input type="text" name="dataalias_meta[<?=$t?>]" class="dataalias_meta bigfldsize" value="<?=getIfSet($aliases[$table]['meta'])?>" rel="<?=$table?>" title="<?=$rel?>" />
+                <span class="dataalias_notice<?=$notice_color?>"><?=$notice?></span>
+            </div>
+        <?
         }
-        ?>
-        <div class="setlabel"><?=$table?></div>
-        <div class="setdata">
-            <input type="text" name="dataalias_meta[<?=$t?>]" class="dataalias_meta bigfldsize" value="<?=getIfSet($aliases[$table]['meta'])?>" rel="<?=$table?>" title="<?=$rel?>" />
-            <span class="dataalias_notice<?=$notice_color?>"><?=$notice?></span>
-        </div>
-	<?
-	}
+    }else{
+    ?>
+    <p><strong>Currently, there are no data tables (tables starting with '<?=DB_TABLE_PREFIX?>') in the database, so Data Aliasing will not be available.</strong></p>
+    <?
+    }
 }
 
 function showSettingsLinksArea($readonly = ""){
@@ -891,7 +898,7 @@ function showSettingsSiteVisibilityArea(){
 				</div>
 				<? }
 
-				if(userIsAllowedTo('view_themes')) { ?>
+				if(THEMES_ENABLED && userIsAllowedTo('view_themes')) { ?>
 				<div id="tabs-themes" class="settingstab">
 	                <p id="issues-themes" class="setissue<? if(getSettingsIssuesCount('themes') == 0) echo ' disabled';?>"><? showSettingsIssues('themes'); ?></p>
 	                <ul>
