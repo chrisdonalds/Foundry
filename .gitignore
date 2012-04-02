@@ -1,17 +1,7 @@
 /images/data_photos/
 /images/data_galleries/
-<<<<<<< HEAD
-<<<<<<< HEAD
 /_notes/
-thumbs.db
+Thumbs.db
 error.log
 /admin/inc/_cache/
-=======
-/_notes/
->>>>>>> Update: New readme documentation
-=======
-/_notes/
-thumbs.db
-error.log
-/admin/inc/_cache/
->>>>>>> Update: Changed AME delete button icon and fixed ajaxwrapper (AJAXW) on
+/:wimages/fileuploads/temp/.
